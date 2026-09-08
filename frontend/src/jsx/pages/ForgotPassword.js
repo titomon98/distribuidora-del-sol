@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 // image
-import logo from "../../images/logo-full.png";
+import logo from "../../images/logo-full.jpeg";
 const ForgotPassword = ({ history }) => {
   const navigate = useNavigate();
 

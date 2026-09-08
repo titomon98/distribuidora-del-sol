@@ -6,7 +6,7 @@ import {
     signupAction,
 } from '../../store/actions/AuthActions';
 // image
-import logo from "../../images/logo-full.png";
+import logo from "../../images/logo-full.jpeg";
 
 function Register(props) {
     const [email, setEmail] = useState('');

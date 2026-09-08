@@ -177,9 +177,9 @@ const SideBar = () => {
               <Link to={"#"} className="btn bg-white btn-sm">Upgrade</Link>
           </div>
           <div className="copyright mt-0">
-              <p><strong>Food Desk - Online Food Delivery Admin Dashboard</strong> © 2022 All Rights Reserved</p>
-              <p className="fs-12">Made with 
-                <span className="heart" onClick={()=>heartBlast()}></span> by DexignLab
+              <p><strong>Distribuidora del Sol - Administración de miscelánea</strong> © {new Date().getFullYear()} Todos los derechos reservados</p>
+              <p className="fs-12">Hecho con
+                <span className="heart" onClick={()=>heartBlast()}></span> por XelaCode
               </p>
           </div>
         </PerfectScrollbar>

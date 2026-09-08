@@ -178,7 +178,7 @@ const ProductDetail = () => {
                       className="img-fluid rounded"
                       width={78}
                       src={avater1}
-                      alt="DexignZone"
+                      alt="Distribuidora del Sol"
                     />
                   </div>
                   <div className="form-group">

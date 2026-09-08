@@ -22,7 +22,9 @@ comunicación **en tiempo real** entre ellos. Recibos internos (sin facturación
 
 ## Estructura
 
-- `backend/` — API NestJS + WebSockets + TypeORM + PostgreSQL (por construir).
+- `backend/` — API NestJS + TypeORM + PostgreSQL. Esqueleto listo: `migrations/` (001..018),
+  `src/entities/` (15 tablas), `src/common/` (base entity, idempotencia, auditoría). WebSockets
+  pendiente. Ver `backend/README.md`. **Aún NO migrar a PostgreSQL ni unir con el frontend.**
 - `frontend/` — SPA React (Fooddesk). Código en `src/jsx` (UI), `src/store` (Redux), `src/services`
   (axios/auth — reemplazar por la API NestJS), estilos en `src/scss`. Trae contenido demo del
   template: conservar solo lo del alcance e ir podando el resto.
@@ -38,6 +40,9 @@ comunicación **en tiempo real** entre ellos. Recibos internos (sin facturación
 3. **Multi-sucursal desde el día 1:** cada tabla de dominio lleva `branch_id`.
 4. **Dinero e inventario son contables:** montos en GTQ (`Q`) sin `float`; movimientos de
    inventario y ventas dentro de transacciones, con historial, nunca sobrescribiendo contadores.
+   **Toda operación de escritura debe ser idempotente** (varios clicks al mismo botón):
+   `Idempotency-Key` + índices únicos. Cada tabla lleva `estado`, timestamps, `created_by/updated_by`
+   y se audita en `auditoria`.
 5. **Idioma:** UI y datos de dominio en español; código (identificadores, tablas) en inglés.
 6. **No cambies el stack ni agregues dependencias pesadas** sin confirmarlo con el usuario.
 7. **Git:** el repo aún no está inicializado; no crees commits salvo que el usuario lo pida.

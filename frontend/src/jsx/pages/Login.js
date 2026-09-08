@@ -6,7 +6,7 @@ import { loadingToggleAction,loginAction,
 
 //
 
-import logo from '../../images/logo-full.png'
+import logo from '../../images/logo-full.jpeg'
 import bgimage from '../../images/login-img/pic-5.jpg';
 
 function Login (props) {

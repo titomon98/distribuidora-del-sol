@@ -41,7 +41,7 @@ const UiMediaObject = () => {
                     className='me-3 img-fluid '
                     width='60'
                     src={avatar1}
-                    alt='DexignZone'
+                    alt='Distribuidora del Sol'
                   />
                   <Media.Body>
                     <h5 className='mt-0'>{heading}</h5>
@@ -53,7 +53,7 @@ const UiMediaObject = () => {
                     className='me-3 img-fluid '
                     width='60'
                     src={avatar7}
-                    alt='DexignZone'
+                    alt='Distribuidora del Sol'
                   />
                   <Media.Body>
                     <h5 className='mt-0'>{heading}</h5>
@@ -76,7 +76,7 @@ const UiMediaObject = () => {
                     className='me-3 '
                     width='60'
                     src={avatar2}
-                    alt='DexignZone'
+                    alt='Distribuidora del Sol'
                   />
                   <Media.Body>
                     <h5 className='mt-0'>{heading}</h5>
@@ -88,7 +88,7 @@ const UiMediaObject = () => {
                           className=''
                           width='60'
                           src={avatar3}
-                          alt='DexignZone'
+                          alt='Distribuidora del Sol'
                         />
                       </Link>
                       <Media.Body>
@@ -117,7 +117,7 @@ const UiMediaObject = () => {
                     className='align-self-start me-3 '
                     width='60'
                     src={avatar4}
-                    alt='DexignZone'
+                    alt='Distribuidora del Sol'
                   />
                   <Media.Body>
                     <h5 className='mt-0'>Top-aligned media</h5>
@@ -141,7 +141,7 @@ const UiMediaObject = () => {
                     className='align-self-center me-3 '
                     width='60'
                     src={avatar5}
-                    alt='DexignZone'
+                    alt='Distribuidora del Sol'
                   />
                   <Media.Body>
                     <h5 className='mt-0'>Center-aligned media</h5>
@@ -168,7 +168,7 @@ const UiMediaObject = () => {
                     className='align-self-end me-3 '
                     width='60'
                     src={avatar6}
-                    alt='DexignZone'
+                    alt='Distribuidora del Sol'
                   />
                   <Media.Body>
                     <h5 className='mt-0'>Bottom-aligned media</h5>
@@ -196,7 +196,7 @@ const UiMediaObject = () => {
                     className='ms-3 '
                     width='60'
                     src={avatar7}
-                    alt='DexignZone'
+                    alt='Distribuidora del Sol'
                   />
                 </Media>
               </div>
@@ -219,7 +219,7 @@ const UiMediaObject = () => {
                       className='me-3 '
                       width='60'
                       src={avatar8}
-                      alt='DexignZone'
+                      alt='Distribuidora del Sol'
                     />
                     <Media.Body>
                       <h5 className='mt-0'>List-based media object</h5>
@@ -231,7 +231,7 @@ const UiMediaObject = () => {
                       className='me-3 '
                       width='60'
                       src={avatar1}
-                      alt='DexignZone'
+                      alt='Distribuidora del Sol'
                     />
                     <Media.Body>
                       <h5 className='mt-0'>List-based media object</h5>
@@ -243,7 +243,7 @@ const UiMediaObject = () => {
                       className='me-3 '
                       width='60'
                       src={avatar2}
-                      alt='DexignZone'
+                      alt='Distribuidora del Sol'
                     />
                     <Media.Body>
                       <h5 className='mt-0'>List-based media object</h5>

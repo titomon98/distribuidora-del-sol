@@ -224,8 +224,8 @@ const Setting = () => {
 					</Tab.Content>
 				</Tab.Container>
 				<div className="note-text">
-					<span className="text-danger">*Note :</span> This theme switcher is not part of product. It is only for demo. you will get all guideline in documentation. please check <a href="https://fooddesk.dexignlab.com/react/doc" target="_blank" className="text-primary">documentation.</a>
-				</div>				
+					<span className="text-danger">*Nota :</span> Este selector de tema es solo para pruebas de personalización.
+				</div>
 			</div>
 		</div>
 	
@@ -337,9 +337,8 @@ const Setting = () => {
 					</div>		
 				</PerfectScrollbar>		
 				<div className="note-text">
-					<span className="text-danger">*Note :</span>
-					This theme switcher is not part of product. It is only for demo. you will get all guideline in documentation. please check 
-					<a href="https://getskills.dexignzone.com/react/doc" target='_blank' className="text-primary"> documentation.</a>
+					<span className="text-danger">*Nota :</span>
+					Este selector de tema es solo para pruebas de personalización.
 				</div>
 			</div>
 		</div>

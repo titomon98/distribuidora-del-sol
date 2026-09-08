@@ -65,7 +65,12 @@ confirmación.
 
 ```
 distribuidora-del-sol/
-├── backend/      # API NestJS + WebSocket Gateway + TypeORM + PostgreSQL (por construir)
+├── backend/      # API NestJS + TypeORM + PostgreSQL (esqueleto listo; WebSocket pendiente)
+│   ├── migrations/          # una migración por paso, en orden (001..018)
+│   └── src/
+│       ├── config/data-source.ts  # DataSource central (app + CLI migraciones)
+│       ├── common/          # BaseEntity, idempotency (interceptor), audit (subscriber)
+│       └── entities/        # 15 entidades de dominio del esquema
 ├── frontend/     # SPA React (plantilla Fooddesk)
 │   ├── public/
 │   ├── src/
@@ -88,6 +93,15 @@ distribuidora-del-sol/
 
 - **Idioma:** UI, mensajes al usuario y datos de dominio en **español**. Nombres de código
   (variables, funciones, tablas) en inglés.
+- **Marca (frontend):** color primario **Amarillo Huevo / Egg Yellow `#D18F2C`** (definido en
+  `src/scss/abstracts/_bs-custom.scss` como `$primary`; el tema lo expone en `--primary` y usa
+  `color_1` por defecto). Logo oficial del cliente (sol + listón "Distribuidora Del Sol"):
+  `src/images/logo-full.jpeg` y `public/logo-distribuidora.jpeg` (favicon/PWA); se usa como `<img>`
+  en `layouts/nav/NavHader.js` y en las páginas de auth. Original en la raíz del frontend
+  (`logo_distribuidora_del_sol.jpeg`). **No reinterpretar el logo: usar este archivo tal cual.**
+  Si se recompila SCSS con `npm run sass`, los tonos derivados (`--primary-hover`, `--primary-dark`,
+  `--rgba-primary-*`) se regeneran solos; el `src/css/style.css` incluido ya está parcheado con
+  esos valores.
 - **Moneda:** Quetzal guatemalteco (GTQ, `Q`). Guardar montos en enteros (centavos) o `numeric`,
   nunca en `float`.
 - **Multi-sucursal:** toda tabla de dominio (productos, existencias, ventas, pedidos, cajas) lleva
@@ -95,6 +109,13 @@ distribuidora-del-sol/
 - **Cierre de caja e inventario son contables:** usar transacciones de base de datos; nunca
   perder ni duplicar movimientos. Las existencias se ajustan como movimientos con historial, no
   sobrescribiendo un contador.
+- **Idempotencia (obligatoria desde el diseño):** la app puede recibir varios clicks al mismo
+  botón. Toda operación de escritura debe ser idempotente — cabecera `Idempotency-Key` +
+  `IdempotencyInterceptor`, e índices únicos (`idempotency_key` en `venta`/`compra`). Ver
+  `backend/README.md`.
+- **Auditoría y campos comunes:** toda tabla de dominio lleva `estado`, `created_at`,
+  `updated_at`, `created_by`, `updated_by`; los cambios se registran en la tabla `auditoria`
+  (vía `AuditSubscriber`).
 - **Roles:** al menos administrador, cajero (cobro) y despachador. La activación de sucursales es
   exclusiva del administrador.
 
@@ -102,8 +123,10 @@ distribuidora-del-sol/
 
 - **Frontend** (`frontend/`): `npm install`, luego `npm start` (dev en :3000), `npm run build`
   (producción), `npm test`, y `npm run sass` para recompilar estilos SCSS mientras se desarrolla.
-- **Backend** (`backend/`): por iniciar. Cuando se establezca NestJS, documenta aquí los comandos
-  (instalar, `start:dev`, migraciones de TypeORM, tests) y mantenlos actualizados.
+- **Backend** (`backend/`): esqueleto NestJS + TypeORM listo (ver `backend/README.md`).
+  `npm install`, `cp .env.example .env`. Migraciones: `npm run migration:run` / `migration:revert`
+  / `migration:show`; app: `npm run start:dev` (:3001/api). **Aún NO migrar a PostgreSQL** ni unir
+  con el frontend hasta que el usuario lo autorice.
 - El repo **todavía no está bajo git.** No inicialices git ni hagas commits salvo que el usuario
   lo pida.
 - Antes de agregar dependencias pesadas o cambiar el stack de la sección 4, **confírmalo con el

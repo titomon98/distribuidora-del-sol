@@ -22,7 +22,7 @@ const inputBlog = [
 
 const helpblog = [
     {title:'Check your Booking Status'},
-    {title:'Checkout of FoodDesk'},
+    {title:'Checkout de Distribuidora del Sol'},
     {title:'Order Tracking Problem'},
     {title:'Login issue'},
 ];

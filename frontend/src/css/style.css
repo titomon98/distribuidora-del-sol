@@ -75,20 +75,20 @@
 @import url(./../vendor/perfect-scrollbar/css/perfect-scrollbar.css);
 @import url(./../vendor/metismenu/css/metisMenu.min.css);
 :root {
-  --primary: #FC8019;
+  --primary: #D18F2C;
   --secondary: #9D1CB2;
   --secondary-dark: #761586;
-  --primary-hover: #df6703;
-  --primary-dark: #7a3802;
-  --rgba-primary-1: rgba(252, 128, 25, 0.1);
-  --rgba-primary-2: rgba(252, 128, 25, 0.2);
-  --rgba-primary-3: rgba(252, 128, 25, 0.3);
-  --rgba-primary-4: rgba(252, 128, 25, 0.4);
-  --rgba-primary-5: rgba(252, 128, 25, 0.5);
-  --rgba-primary-6: rgba(252, 128, 25, 0.6);
-  --rgba-primary-7: rgba(252, 128, 25, 0.7);
-  --rgba-primary-8: rgba(252, 128, 25, 0.8);
-  --rgba-primary-9: rgba(252, 128, 25, 0.9);
+  --primary-hover: #A77223;
+  --primary-dark: #533911;
+  --rgba-primary-1: rgba(209, 143, 44, 0.1);
+  --rgba-primary-2: rgba(209, 143, 44, 0.2);
+  --rgba-primary-3: rgba(209, 143, 44, 0.3);
+  --rgba-primary-4: rgba(209, 143, 44, 0.4);
+  --rgba-primary-5: rgba(209, 143, 44, 0.5);
+  --rgba-primary-6: rgba(209, 143, 44, 0.6);
+  --rgba-primary-7: rgba(209, 143, 44, 0.7);
+  --rgba-primary-8: rgba(209, 143, 44, 0.8);
+  --rgba-primary-9: rgba(209, 143, 44, 0.9);
   --rgba-secondary-1: rgba(157, 28, 178, 0.1);
   --rgba-secondary-2: rgba(157, 28, 178, 0.2);
   --rgba-secondary-3: rgba(157, 28, 178, 0.3);
@@ -261,7 +261,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --bs-white: #fff;
   --bs-gray: #6c757d;
   --bs-gray-dark: #343a40;
-  --bs-primary: #FC8019;
+  --bs-primary: #D18F2C;
   --bs-secondary: #9D1CB2;
   --bs-success: #1FBF75;
   --bs-info: #33A9FF;
@@ -407,7 +407,7 @@ sup {
   top: -.5em; }
 
 a {
-  color: #FC8019;
+  color: #D18F2C;
   text-decoration: underline; }
   a:hover {
     color: #ca6614; }
@@ -1765,7 +1765,7 @@ progress {
     background-color: #fff;
     border-color: #fec08c;
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(252, 128, 25, 0.25); }
+    box-shadow: 0 0 0 0.25rem rgba(209, 143, 44, 0.25); }
   .form-control::-webkit-date-and-time-value {
     height: 1.5em; }
   .form-control::placeholder {
@@ -1894,7 +1894,7 @@ textarea.form-control-lg {
   .form-select:focus {
     border-color: #fec08c;
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(252, 128, 25, 0.25); }
+    box-shadow: 0 0 0 0.25rem rgba(209, 143, 44, 0.25); }
   .form-select[multiple], .form-select[size]:not([size="1"]) {
     padding-right: 0.75rem;
     background-image: none; }
@@ -1947,17 +1947,17 @@ textarea.form-control-lg {
   .form-check-input:focus {
     border-color: #fec08c;
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(252, 128, 25, 0.25); }
+    box-shadow: 0 0 0 0.25rem rgba(209, 143, 44, 0.25); }
   .form-check-input:checked {
-    background-color: #FC8019;
-    border-color: #FC8019; }
+    background-color: #D18F2C;
+    border-color: #D18F2C; }
     .form-check-input:checked[type="checkbox"] {
       background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e"); }
     .form-check-input:checked[type="radio"] {
       background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e"); }
   .form-check-input[type="checkbox"]:indeterminate {
-    background-color: #FC8019;
-    border-color: #FC8019;
+    background-color: #D18F2C;
+    border-color: #D18F2C;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/%3e%3c/svg%3e"); }
   .form-check-input:disabled {
     pointer-events: none;
@@ -2006,16 +2006,16 @@ textarea.form-control-lg {
   .form-range:focus {
     outline: 0; }
     .form-range:focus::-webkit-slider-thumb {
-      box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 0.25rem rgba(252, 128, 25, 0.25); }
+      box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 0.25rem rgba(209, 143, 44, 0.25); }
     .form-range:focus::-moz-range-thumb {
-      box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 0.25rem rgba(252, 128, 25, 0.25); }
+      box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 0.25rem rgba(209, 143, 44, 0.25); }
   .form-range::-moz-focus-outer {
     border: 0; }
   .form-range::-webkit-slider-thumb {
     width: 1rem;
     height: 1rem;
     margin-top: -0.25rem;
-    background-color: #FC8019;
+    background-color: #D18F2C;
     border: 0;
     border-radius: 1rem;
     transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -2036,7 +2036,7 @@ textarea.form-control-lg {
   .form-range::-moz-range-thumb {
     width: 1rem;
     height: 1rem;
-    background-color: #FC8019;
+    background-color: #D18F2C;
     border: 0;
     border-radius: 1rem;
     transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
@@ -2319,7 +2319,7 @@ textarea.form-control-lg {
     color: #777777; }
   .btn-check:focus + .btn, .btn:focus {
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(252, 128, 25, 0.25); }
+    box-shadow: 0 0 0 0.25rem rgba(209, 143, 44, 0.25); }
   .btn:disabled, .btn.disabled,
   fieldset:disabled .btn {
     pointer-events: none;
@@ -2327,8 +2327,8 @@ textarea.form-control-lg {
 
 .btn-primary {
   color: #000;
-  background-color: #FC8019;
-  border-color: #FC8019; }
+  background-color: #D18F2C;
+  border-color: #D18F2C; }
   .btn-primary:hover {
     color: #000;
     background-color: #fc933c;
@@ -2350,8 +2350,8 @@ textarea.form-control-lg {
       box-shadow: 0 0 0 0.25rem rgba(214, 109, 21, 0.5); }
   .btn-primary:disabled, .btn-primary.disabled {
     color: #000;
-    background-color: #FC8019;
-    border-color: #FC8019; }
+    background-color: #D18F2C;
+    border-color: #D18F2C; }
 
 .btn-secondary {
   color: #fff;
@@ -2550,24 +2550,24 @@ textarea.form-control-lg {
     border-color: #7E808C; }
 
 .btn-outline-primary {
-  color: #FC8019;
-  border-color: #FC8019; }
+  color: #D18F2C;
+  border-color: #D18F2C; }
   .btn-outline-primary:hover {
     color: #000;
-    background-color: #FC8019;
-    border-color: #FC8019; }
+    background-color: #D18F2C;
+    border-color: #D18F2C; }
   .btn-check:focus + .btn-outline-primary, .btn-outline-primary:focus {
-    box-shadow: 0 0 0 0.25rem rgba(252, 128, 25, 0.5); }
+    box-shadow: 0 0 0 0.25rem rgba(209, 143, 44, 0.5); }
   .btn-check:checked + .btn-outline-primary,
   .btn-check:active + .btn-outline-primary, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show {
     color: #000;
-    background-color: #FC8019;
-    border-color: #FC8019; }
+    background-color: #D18F2C;
+    border-color: #D18F2C; }
     .btn-check:checked + .btn-outline-primary:focus,
     .btn-check:active + .btn-outline-primary:focus, .btn-outline-primary:active:focus, .btn-outline-primary.active:focus, .btn-outline-primary.dropdown-toggle.show:focus {
-      box-shadow: 0 0 0 0.25rem rgba(252, 128, 25, 0.5); }
+      box-shadow: 0 0 0 0.25rem rgba(209, 143, 44, 0.5); }
   .btn-outline-primary:disabled, .btn-outline-primary.disabled {
-    color: #FC8019;
+    color: #D18F2C;
     background-color: transparent; }
 
 .btn-outline-secondary {
@@ -2719,7 +2719,7 @@ textarea.form-control-lg {
 
 .btn-link {
   font-weight: 400;
-  color: #FC8019;
+  color: #D18F2C;
   text-decoration: underline; }
   .btn-link:hover {
     color: #ca6614; }
@@ -2967,7 +2967,7 @@ textarea.form-control-lg {
   .dropdown-item.active, .dropdown-item:active {
     color: #fff;
     text-decoration: none;
-    background-color: #FC8019; }
+    background-color: #D18F2C; }
   .dropdown-item.disabled, .dropdown-item:disabled {
     color: #adb5bd;
     pointer-events: none;
@@ -3000,7 +3000,7 @@ textarea.form-control-lg {
       background-color: rgba(255, 255, 255, 0.15); }
     .dropdown-menu-dark .dropdown-item.active, .dropdown-menu-dark .dropdown-item:active {
       color: #fff;
-      background-color: #FC8019; }
+      background-color: #D18F2C; }
     .dropdown-menu-dark .dropdown-item.disabled, .dropdown-menu-dark .dropdown-item:disabled {
       color: #adb5bd; }
   .dropdown-menu-dark .dropdown-divider {
@@ -3145,7 +3145,7 @@ textarea.form-control-lg {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: #fff;
-  background-color: #FC8019; }
+  background-color: #D18F2C; }
 
 .nav-fill > .nav-link,
 .nav-fill .nav-item {
@@ -3585,7 +3585,7 @@ textarea.form-control-lg {
     z-index: 3;
     border-color: #fec08c;
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(252, 128, 25, 0.25); }
+    box-shadow: 0 0 0 0.25rem rgba(209, 143, 44, 0.25); }
 
 .accordion-header {
   margin-bottom: 0; }
@@ -3655,7 +3655,7 @@ textarea.form-control-lg {
 .page-link {
   position: relative;
   display: block;
-  color: #FC8019;
+  color: #D18F2C;
   text-decoration: none;
   background-color: #fff;
   border: 1px solid #dee2e6;
@@ -3673,7 +3673,7 @@ textarea.form-control-lg {
     color: #ca6614;
     background-color: #e9ecef;
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(252, 128, 25, 0.25); }
+    box-shadow: 0 0 0 0.25rem rgba(209, 143, 44, 0.25); }
 
 .page-item:not(:first-child) .page-link {
   margin-left: -1px; }
@@ -3681,8 +3681,8 @@ textarea.form-control-lg {
 .page-item.active .page-link {
   z-index: 3;
   color: #fff;
-  background-color: #FC8019;
-  border-color: #FC8019; }
+  background-color: #D18F2C;
+  border-color: #D18F2C; }
 
 .page-item.disabled .page-link {
   color: #6c757d;
@@ -3841,7 +3841,7 @@ textarea.form-control-lg {
   color: #fff;
   text-align: center;
   white-space: nowrap;
-  background-color: #FC8019;
+  background-color: #D18F2C;
   transition: width 0.6s ease; }
   @media (prefers-reduced-motion: reduce) {
     .progress-bar {
@@ -3897,8 +3897,8 @@ textarea.form-control-lg {
   .list-group-item.active {
     z-index: 2;
     color: #fff;
-    background-color: #FC8019;
-    border-color: #FC8019; }
+    background-color: #D18F2C;
+    border-color: #D18F2C; }
   .list-group-item + .list-group-item {
     border-top-width: 0; }
     .list-group-item + .list-group-item.active {
@@ -4123,7 +4123,7 @@ textarea.form-control-lg {
     opacity: 0.75; }
   .btn-close:focus {
     outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(252, 128, 25, 0.25);
+    box-shadow: 0 0 0 0.25rem rgba(209, 143, 44, 0.25);
     opacity: 1; }
   .btn-close:disabled, .btn-close.disabled {
     pointer-events: none;
@@ -4831,7 +4831,7 @@ textarea.form-control-lg {
   content: ""; }
 
 .link-primary {
-  color: #FC8019; }
+  color: #D18F2C; }
   .link-primary:hover, .link-primary:focus {
     color: #fd9947; }
 
@@ -5143,7 +5143,7 @@ textarea.form-control-lg {
   border-left: 0 !important; }
 
 .border-primary {
-  border-color: #FC8019 !important; }
+  border-color: #D18F2C !important; }
 
 .border-secondary {
   border-color: #9D1CB2 !important; }
@@ -5739,7 +5739,7 @@ textarea.form-control-lg {
   text-align: center !important; }
 
 .text-primary {
-  color: #FC8019 !important; }
+  color: #D18F2C !important; }
 
 .text-secondary {
   color: #9D1CB2 !important; }
@@ -5793,7 +5793,7 @@ textarea.form-control-lg {
   line-height: 2 !important; }
 
 .bg-primary {
-  background-color: #FC8019 !important; }
+  background-color: #D18F2C !important; }
 
 .bg-secondary {
   background-color: #9D1CB2 !important; }
@@ -9349,7 +9349,7 @@ svg.pulse-svg {
   padding: 0.9375rem 0;
   min-width: 12.5rem; }
   .header-profile .dropdown-menu a:hover, .header-profile .dropdown-menu a:focus, .header-profile .dropdown-menu a.active {
-    color: #FC8019; }
+    color: #D18F2C; }
 
 .header-profile img {
   width: 3.5rem;
@@ -9368,7 +9368,7 @@ svg.pulse-svg {
     display: none; } }
 
 .header-profile .profile_title {
-  background: #FC8019;
+  background: #D18F2C;
   color: #fff;
   padding: 0.625rem 1.25rem; }
   .header-profile .profile_title h5, .header-profile .profile_title .h5 {
@@ -11406,7 +11406,7 @@ svg.pulse-svg {
       margin-right: 10px; }
     [direction="rtl"] .widget-timeline-icon li {
       border-left: 0;
-      border-right: 6px solid #FC8019; }
+      border-right: 6px solid #D18F2C; }
       [direction="rtl"] .widget-timeline-icon li a {
         padding: 0 30px 30px 0; }
       [direction="rtl"] .widget-timeline-icon li .icon {
@@ -12214,7 +12214,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
     [data-sibebarbg="color_2"][data-layout="horizontal"] .dlabnav .metismenu > li.mega-menu:hover > ul::after {
       background-color: #f21719; }
     [data-sibebarbg="color_3"][data-layout="horizontal"] .dlabnav .metismenu > li.mega-menu:hover > ul::after {
-      background-color: #df6703; }
+      background-color: #A77223; }
     [data-sibebarbg="color_4"][data-layout="horizontal"] .dlabnav .metismenu > li.mega-menu:hover > ul::after {
       background-color: #132c42; }
     [data-sibebarbg="color_5"][data-layout="horizontal"] .dlabnav .metismenu > li.mega-menu:hover > ul::after {
@@ -12280,20 +12280,20 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   width: 50vw; }
 
 :root {
-  --primary: #FC8019;
+  --primary: #D18F2C;
   --secondary: #9D1CB2;
   --secondary-dark: #761586;
-  --primary-hover: #df6703;
-  --primary-dark: #7a3802;
-  --rgba-primary-1: rgba(252, 128, 25, 0.1);
-  --rgba-primary-2: rgba(252, 128, 25, 0.2);
-  --rgba-primary-3: rgba(252, 128, 25, 0.3);
-  --rgba-primary-4: rgba(252, 128, 25, 0.4);
-  --rgba-primary-5: rgba(252, 128, 25, 0.5);
-  --rgba-primary-6: rgba(252, 128, 25, 0.6);
-  --rgba-primary-7: rgba(252, 128, 25, 0.7);
-  --rgba-primary-8: rgba(252, 128, 25, 0.8);
-  --rgba-primary-9: rgba(252, 128, 25, 0.9);
+  --primary-hover: #A77223;
+  --primary-dark: #533911;
+  --rgba-primary-1: rgba(209, 143, 44, 0.1);
+  --rgba-primary-2: rgba(209, 143, 44, 0.2);
+  --rgba-primary-3: rgba(209, 143, 44, 0.3);
+  --rgba-primary-4: rgba(209, 143, 44, 0.4);
+  --rgba-primary-5: rgba(209, 143, 44, 0.5);
+  --rgba-primary-6: rgba(209, 143, 44, 0.6);
+  --rgba-primary-7: rgba(209, 143, 44, 0.7);
+  --rgba-primary-8: rgba(209, 143, 44, 0.8);
+  --rgba-primary-9: rgba(209, 143, 44, 0.9);
   --rgba-secondary-1: rgba(157, 28, 178, 0.1);
   --rgba-secondary-2: rgba(157, 28, 178, 0.2);
   --rgba-secondary-3: rgba(157, 28, 178, 0.3);
@@ -12520,20 +12520,20 @@ The smaller device rules always should write below the bigger device rules
 Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Component
 */
 :root {
-  --primary: #FC8019;
+  --primary: #D18F2C;
   --secondary: #9D1CB2;
   --secondary-dark: #761586;
-  --primary-hover: #df6703;
-  --primary-dark: #7a3802;
-  --rgba-primary-1: rgba(252, 128, 25, 0.1);
-  --rgba-primary-2: rgba(252, 128, 25, 0.2);
-  --rgba-primary-3: rgba(252, 128, 25, 0.3);
-  --rgba-primary-4: rgba(252, 128, 25, 0.4);
-  --rgba-primary-5: rgba(252, 128, 25, 0.5);
-  --rgba-primary-6: rgba(252, 128, 25, 0.6);
-  --rgba-primary-7: rgba(252, 128, 25, 0.7);
-  --rgba-primary-8: rgba(252, 128, 25, 0.8);
-  --rgba-primary-9: rgba(252, 128, 25, 0.9);
+  --primary-hover: #A77223;
+  --primary-dark: #533911;
+  --rgba-primary-1: rgba(209, 143, 44, 0.1);
+  --rgba-primary-2: rgba(209, 143, 44, 0.2);
+  --rgba-primary-3: rgba(209, 143, 44, 0.3);
+  --rgba-primary-4: rgba(209, 143, 44, 0.4);
+  --rgba-primary-5: rgba(209, 143, 44, 0.5);
+  --rgba-primary-6: rgba(209, 143, 44, 0.6);
+  --rgba-primary-7: rgba(209, 143, 44, 0.7);
+  --rgba-primary-8: rgba(209, 143, 44, 0.8);
+  --rgba-primary-9: rgba(209, 143, 44, 0.9);
   --rgba-secondary-1: rgba(157, 28, 178, 0.1);
   --rgba-secondary-2: rgba(157, 28, 178, 0.2);
   --rgba-secondary-3: rgba(157, 28, 178, 0.3);
@@ -12768,20 +12768,20 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     transform: rotate(-225deg) translateY(-50%); } }
 
 :root {
-  --primary: #FC8019;
+  --primary: #D18F2C;
   --secondary: #9D1CB2;
   --secondary-dark: #761586;
-  --primary-hover: #df6703;
-  --primary-dark: #7a3802;
-  --rgba-primary-1: rgba(252, 128, 25, 0.1);
-  --rgba-primary-2: rgba(252, 128, 25, 0.2);
-  --rgba-primary-3: rgba(252, 128, 25, 0.3);
-  --rgba-primary-4: rgba(252, 128, 25, 0.4);
-  --rgba-primary-5: rgba(252, 128, 25, 0.5);
-  --rgba-primary-6: rgba(252, 128, 25, 0.6);
-  --rgba-primary-7: rgba(252, 128, 25, 0.7);
-  --rgba-primary-8: rgba(252, 128, 25, 0.8);
-  --rgba-primary-9: rgba(252, 128, 25, 0.9);
+  --primary-hover: #A77223;
+  --primary-dark: #533911;
+  --rgba-primary-1: rgba(209, 143, 44, 0.1);
+  --rgba-primary-2: rgba(209, 143, 44, 0.2);
+  --rgba-primary-3: rgba(209, 143, 44, 0.3);
+  --rgba-primary-4: rgba(209, 143, 44, 0.4);
+  --rgba-primary-5: rgba(209, 143, 44, 0.5);
+  --rgba-primary-6: rgba(209, 143, 44, 0.6);
+  --rgba-primary-7: rgba(209, 143, 44, 0.7);
+  --rgba-primary-8: rgba(209, 143, 44, 0.8);
+  --rgba-primary-9: rgba(209, 143, 44, 0.9);
   --rgba-secondary-1: rgba(157, 28, 178, 0.1);
   --rgba-secondary-2: rgba(157, 28, 178, 0.2);
   --rgba-secondary-3: rgba(157, 28, 178, 0.3);
@@ -13847,7 +13847,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   .sidebar-right #sidebar_color_3 + label,
   .sidebar-right #secondary_color_3 + label,
   .sidebar-right #primary_color_3 + label {
-    background-color: #FC8019; }
+    background-color: #D18F2C; }
   .sidebar-right #nav_header_color_4 + label,
   .sidebar-right #header_color_4 + label,
   .sidebar-right #sidebar_color_4 + label,
@@ -14456,7 +14456,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-nav-headerbg="color_3"][data-theme-version="dark"],
 [data-nav-headerbg="color_3"] {
-  --nav-headbg: #FC8019;
+  --nav-headbg: #D18F2C;
   /* &[data-nav-headerbg="color_8"]{
 				.nav-header{
 					.brand-logo{
@@ -15078,7 +15078,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-sibebarbg="color_3"][data-theme-version="dark"],
 [data-sibebarbg="color_3"] {
-  --sidebar-bg: #FC8019;
+  --sidebar-bg: #D18F2C;
   /* .hamburger .line{
 				background:$white;
 			} */
@@ -15147,7 +15147,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 			} */ }
   [data-sibebarbg="color_3"][data-theme-version="dark"] .menu-toggle .dlabnav .metismenu li > ul,
   [data-sibebarbg="color_3"] .menu-toggle .dlabnav .metismenu li > ul {
-    background: #FC8019 !important; }
+    background: #D18F2C !important; }
   [data-sibebarbg="color_3"][data-theme-version="dark"] .dlabnav .metismenu ul a:before,
   [data-sibebarbg="color_3"] .dlabnav .metismenu ul a:before {
     background: rgba(255, 255, 255, 0.5); }
@@ -17715,7 +17715,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 [data-headerbg="color_3"][data-theme-version="dark"],
 [data-headerbg="color_3"] {
-  --headerbg: #FC8019;
+  --headerbg: #D18F2C;
   /* &[data-headerbg="color_8"]{
 					
 				.search-area .input-group-text,
@@ -19621,18 +19621,18 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --rgba-primary-9: rgba(245, 71, 73, 0.9); }
 
 [data-primary="color_3"] {
-  --primary: #FC8019;
-  --primary-hover: #df6703;
-  --primary-dark: #7a3802;
-  --rgba-primary-1: rgba(252, 128, 25, 0.1);
-  --rgba-primary-2: rgba(252, 128, 25, 0.2);
-  --rgba-primary-3: rgba(252, 128, 25, 0.3);
-  --rgba-primary-4: rgba(252, 128, 25, 0.4);
-  --rgba-primary-5: rgba(252, 128, 25, 0.5);
-  --rgba-primary-6: rgba(252, 128, 25, 0.6);
-  --rgba-primary-7: rgba(252, 128, 25, 0.7);
-  --rgba-primary-8: rgba(252, 128, 25, 0.8);
-  --rgba-primary-9: rgba(252, 128, 25, 0.9); }
+  --primary: #D18F2C;
+  --primary-hover: #A77223;
+  --primary-dark: #533911;
+  --rgba-primary-1: rgba(209, 143, 44, 0.1);
+  --rgba-primary-2: rgba(209, 143, 44, 0.2);
+  --rgba-primary-3: rgba(209, 143, 44, 0.3);
+  --rgba-primary-4: rgba(209, 143, 44, 0.4);
+  --rgba-primary-5: rgba(209, 143, 44, 0.5);
+  --rgba-primary-6: rgba(209, 143, 44, 0.6);
+  --rgba-primary-7: rgba(209, 143, 44, 0.7);
+  --rgba-primary-8: rgba(209, 143, 44, 0.8);
+  --rgba-primary-9: rgba(209, 143, 44, 0.9); }
 
 [data-primary="color_4"] {
   --primary: #1E466A;
@@ -19807,8 +19807,8 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --secondary-dark: #f21719; }
 
 [data-secondary="color_3"] {
-  --secondary: #FC8019;
-  --secondary-dark: #df6703; }
+  --secondary: #D18F2C;
+  --secondary-dark: #A77223; }
 
 [data-secondary="color_4"] {
   --secondary: #1E466A;
@@ -19874,20 +19874,20 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   font-family: 'HelveticaNeue'; }
 
 :root {
-  --primary: #FC8019;
+  --primary: #D18F2C;
   --secondary: #9D1CB2;
   --secondary-dark: #761586;
-  --primary-hover: #df6703;
-  --primary-dark: #7a3802;
-  --rgba-primary-1: rgba(252, 128, 25, 0.1);
-  --rgba-primary-2: rgba(252, 128, 25, 0.2);
-  --rgba-primary-3: rgba(252, 128, 25, 0.3);
-  --rgba-primary-4: rgba(252, 128, 25, 0.4);
-  --rgba-primary-5: rgba(252, 128, 25, 0.5);
-  --rgba-primary-6: rgba(252, 128, 25, 0.6);
-  --rgba-primary-7: rgba(252, 128, 25, 0.7);
-  --rgba-primary-8: rgba(252, 128, 25, 0.8);
-  --rgba-primary-9: rgba(252, 128, 25, 0.9);
+  --primary-hover: #A77223;
+  --primary-dark: #533911;
+  --rgba-primary-1: rgba(209, 143, 44, 0.1);
+  --rgba-primary-2: rgba(209, 143, 44, 0.2);
+  --rgba-primary-3: rgba(209, 143, 44, 0.3);
+  --rgba-primary-4: rgba(209, 143, 44, 0.4);
+  --rgba-primary-5: rgba(209, 143, 44, 0.5);
+  --rgba-primary-6: rgba(209, 143, 44, 0.6);
+  --rgba-primary-7: rgba(209, 143, 44, 0.7);
+  --rgba-primary-8: rgba(209, 143, 44, 0.8);
+  --rgba-primary-9: rgba(209, 143, 44, 0.9);
   --rgba-secondary-1: rgba(157, 28, 178, 0.1);
   --rgba-secondary-2: rgba(157, 28, 178, 0.2);
   --rgba-secondary-3: rgba(157, 28, 178, 0.3);
@@ -19963,7 +19963,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   color: #fff; }
   [data-theme-version="transparent"] .header-left input:focus {
     box-shadow: none;
-    border-color: #FC8019; }
+    border-color: #D18F2C; }
   [data-theme-version="transparent"] .header-left input::placeholder {
     color: #fff; }
 
@@ -20020,20 +20020,20 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     border-color: transparent transparent rgba(0, 0, 0, 0.15) transparent; }
 
 :root {
-  --primary: #FC8019;
+  --primary: #D18F2C;
   --secondary: #9D1CB2;
   --secondary-dark: #761586;
-  --primary-hover: #df6703;
-  --primary-dark: #7a3802;
-  --rgba-primary-1: rgba(252, 128, 25, 0.1);
-  --rgba-primary-2: rgba(252, 128, 25, 0.2);
-  --rgba-primary-3: rgba(252, 128, 25, 0.3);
-  --rgba-primary-4: rgba(252, 128, 25, 0.4);
-  --rgba-primary-5: rgba(252, 128, 25, 0.5);
-  --rgba-primary-6: rgba(252, 128, 25, 0.6);
-  --rgba-primary-7: rgba(252, 128, 25, 0.7);
-  --rgba-primary-8: rgba(252, 128, 25, 0.8);
-  --rgba-primary-9: rgba(252, 128, 25, 0.9);
+  --primary-hover: #A77223;
+  --primary-dark: #533911;
+  --rgba-primary-1: rgba(209, 143, 44, 0.1);
+  --rgba-primary-2: rgba(209, 143, 44, 0.2);
+  --rgba-primary-3: rgba(209, 143, 44, 0.3);
+  --rgba-primary-4: rgba(209, 143, 44, 0.4);
+  --rgba-primary-5: rgba(209, 143, 44, 0.5);
+  --rgba-primary-6: rgba(209, 143, 44, 0.6);
+  --rgba-primary-7: rgba(209, 143, 44, 0.7);
+  --rgba-primary-8: rgba(209, 143, 44, 0.8);
+  --rgba-primary-9: rgba(209, 143, 44, 0.9);
   --rgba-secondary-1: rgba(157, 28, 178, 0.1);
   --rgba-secondary-2: rgba(157, 28, 178, 0.2);
   --rgba-secondary-3: rgba(157, 28, 178, 0.3);
@@ -20050,9 +20050,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 [data-theme-version="dark"] {
   background: #20203c;
   color: #828690;
-  --nav-headbg: #FC8019;
+  --nav-headbg: #D18F2C;
   --sidebar-bg: #20203c;
-  --headerbg: #FC8019; }
+  --headerbg: #D18F2C; }
   [data-theme-version="dark"] h1, [data-theme-version="dark"] .h1,
   [data-theme-version="dark"] h2,
   [data-theme-version="dark"] .h2,
@@ -22505,20 +22505,20 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   border-bottom-left-radius: 0.5rem !important; }
 
 :root {
-  --primary: #FC8019;
+  --primary: #D18F2C;
   --secondary: #9D1CB2;
   --secondary-dark: #761586;
-  --primary-hover: #df6703;
-  --primary-dark: #7a3802;
-  --rgba-primary-1: rgba(252, 128, 25, 0.1);
-  --rgba-primary-2: rgba(252, 128, 25, 0.2);
-  --rgba-primary-3: rgba(252, 128, 25, 0.3);
-  --rgba-primary-4: rgba(252, 128, 25, 0.4);
-  --rgba-primary-5: rgba(252, 128, 25, 0.5);
-  --rgba-primary-6: rgba(252, 128, 25, 0.6);
-  --rgba-primary-7: rgba(252, 128, 25, 0.7);
-  --rgba-primary-8: rgba(252, 128, 25, 0.8);
-  --rgba-primary-9: rgba(252, 128, 25, 0.9);
+  --primary-hover: #A77223;
+  --primary-dark: #533911;
+  --rgba-primary-1: rgba(209, 143, 44, 0.1);
+  --rgba-primary-2: rgba(209, 143, 44, 0.2);
+  --rgba-primary-3: rgba(209, 143, 44, 0.3);
+  --rgba-primary-4: rgba(209, 143, 44, 0.4);
+  --rgba-primary-5: rgba(209, 143, 44, 0.5);
+  --rgba-primary-6: rgba(209, 143, 44, 0.6);
+  --rgba-primary-7: rgba(209, 143, 44, 0.7);
+  --rgba-primary-8: rgba(209, 143, 44, 0.8);
+  --rgba-primary-9: rgba(209, 143, 44, 0.9);
   --rgba-secondary-1: rgba(157, 28, 178, 0.1);
   --rgba-secondary-2: rgba(157, 28, 178, 0.2);
   --rgba-secondary-3: rgba(157, 28, 178, 0.3);
@@ -22937,7 +22937,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     color: #7e7e7e;
     appearance: none; }
   .picker-data .color-time-picker .react-time-picker__wrapper .react-time-picker__clock-button {
-    background: #FC8019;
+    background: #D18F2C;
     color: #b7b7b7;
     padding: .532rem .75rem;
     border-radius: 0 0.75rem 0.75rem 0;
@@ -22954,7 +22954,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   border: 10px solid #ededed; }
 
 .picker-data .color-time-picker .react-clock__hand__body {
-  background-color: #FC8019; }
+  background-color: #D18F2C; }
 
 .picker-data .color-time-picker .react-time-picker__clock {
   box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
@@ -23062,20 +23062,20 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   color: #777777; }
 
 :root {
-  --primary: #FC8019;
+  --primary: #D18F2C;
   --secondary: #9D1CB2;
   --secondary-dark: #761586;
-  --primary-hover: #df6703;
-  --primary-dark: #7a3802;
-  --rgba-primary-1: rgba(252, 128, 25, 0.1);
-  --rgba-primary-2: rgba(252, 128, 25, 0.2);
-  --rgba-primary-3: rgba(252, 128, 25, 0.3);
-  --rgba-primary-4: rgba(252, 128, 25, 0.4);
-  --rgba-primary-5: rgba(252, 128, 25, 0.5);
-  --rgba-primary-6: rgba(252, 128, 25, 0.6);
-  --rgba-primary-7: rgba(252, 128, 25, 0.7);
-  --rgba-primary-8: rgba(252, 128, 25, 0.8);
-  --rgba-primary-9: rgba(252, 128, 25, 0.9);
+  --primary-hover: #A77223;
+  --primary-dark: #533911;
+  --rgba-primary-1: rgba(209, 143, 44, 0.1);
+  --rgba-primary-2: rgba(209, 143, 44, 0.2);
+  --rgba-primary-3: rgba(209, 143, 44, 0.3);
+  --rgba-primary-4: rgba(209, 143, 44, 0.4);
+  --rgba-primary-5: rgba(209, 143, 44, 0.5);
+  --rgba-primary-6: rgba(209, 143, 44, 0.6);
+  --rgba-primary-7: rgba(209, 143, 44, 0.7);
+  --rgba-primary-8: rgba(209, 143, 44, 0.8);
+  --rgba-primary-9: rgba(209, 143, 44, 0.9);
   --rgba-secondary-1: rgba(157, 28, 178, 0.1);
   --rgba-secondary-2: rgba(157, 28, 178, 0.2);
   --rgba-secondary-3: rgba(157, 28, 178, 0.3);
@@ -23310,20 +23310,20 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   border-bottom-right-radius: 0; }
 
 :root {
-  --primary: #FC8019;
+  --primary: #D18F2C;
   --secondary: #9D1CB2;
   --secondary-dark: #761586;
-  --primary-hover: #df6703;
-  --primary-dark: #7a3802;
-  --rgba-primary-1: rgba(252, 128, 25, 0.1);
-  --rgba-primary-2: rgba(252, 128, 25, 0.2);
-  --rgba-primary-3: rgba(252, 128, 25, 0.3);
-  --rgba-primary-4: rgba(252, 128, 25, 0.4);
-  --rgba-primary-5: rgba(252, 128, 25, 0.5);
-  --rgba-primary-6: rgba(252, 128, 25, 0.6);
-  --rgba-primary-7: rgba(252, 128, 25, 0.7);
-  --rgba-primary-8: rgba(252, 128, 25, 0.8);
-  --rgba-primary-9: rgba(252, 128, 25, 0.9);
+  --primary-hover: #A77223;
+  --primary-dark: #533911;
+  --rgba-primary-1: rgba(209, 143, 44, 0.1);
+  --rgba-primary-2: rgba(209, 143, 44, 0.2);
+  --rgba-primary-3: rgba(209, 143, 44, 0.3);
+  --rgba-primary-4: rgba(209, 143, 44, 0.4);
+  --rgba-primary-5: rgba(209, 143, 44, 0.5);
+  --rgba-primary-6: rgba(209, 143, 44, 0.6);
+  --rgba-primary-7: rgba(209, 143, 44, 0.7);
+  --rgba-primary-8: rgba(209, 143, 44, 0.8);
+  --rgba-primary-9: rgba(209, 143, 44, 0.9);
   --rgba-secondary-1: rgba(157, 28, 178, 0.1);
   --rgba-secondary-2: rgba(157, 28, 178, 0.2);
   --rgba-secondary-3: rgba(157, 28, 178, 0.3);
@@ -23344,20 +23344,20 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     color: #fff; }
 
 :root {
-  --primary: #FC8019;
+  --primary: #D18F2C;
   --secondary: #9D1CB2;
   --secondary-dark: #761586;
-  --primary-hover: #df6703;
-  --primary-dark: #7a3802;
-  --rgba-primary-1: rgba(252, 128, 25, 0.1);
-  --rgba-primary-2: rgba(252, 128, 25, 0.2);
-  --rgba-primary-3: rgba(252, 128, 25, 0.3);
-  --rgba-primary-4: rgba(252, 128, 25, 0.4);
-  --rgba-primary-5: rgba(252, 128, 25, 0.5);
-  --rgba-primary-6: rgba(252, 128, 25, 0.6);
-  --rgba-primary-7: rgba(252, 128, 25, 0.7);
-  --rgba-primary-8: rgba(252, 128, 25, 0.8);
-  --rgba-primary-9: rgba(252, 128, 25, 0.9);
+  --primary-hover: #A77223;
+  --primary-dark: #533911;
+  --rgba-primary-1: rgba(209, 143, 44, 0.1);
+  --rgba-primary-2: rgba(209, 143, 44, 0.2);
+  --rgba-primary-3: rgba(209, 143, 44, 0.3);
+  --rgba-primary-4: rgba(209, 143, 44, 0.4);
+  --rgba-primary-5: rgba(209, 143, 44, 0.5);
+  --rgba-primary-6: rgba(209, 143, 44, 0.6);
+  --rgba-primary-7: rgba(209, 143, 44, 0.7);
+  --rgba-primary-8: rgba(209, 143, 44, 0.8);
+  --rgba-primary-9: rgba(209, 143, 44, 0.9);
   --rgba-secondary-1: rgba(157, 28, 178, 0.1);
   --rgba-secondary-2: rgba(157, 28, 178, 0.2);
   --rgba-secondary-3: rgba(157, 28, 178, 0.3);
@@ -23394,20 +23394,20 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
     margin-bottom: .5rem; }
 
 :root {
-  --primary: #FC8019;
+  --primary: #D18F2C;
   --secondary: #9D1CB2;
   --secondary-dark: #761586;
-  --primary-hover: #df6703;
-  --primary-dark: #7a3802;
-  --rgba-primary-1: rgba(252, 128, 25, 0.1);
-  --rgba-primary-2: rgba(252, 128, 25, 0.2);
-  --rgba-primary-3: rgba(252, 128, 25, 0.3);
-  --rgba-primary-4: rgba(252, 128, 25, 0.4);
-  --rgba-primary-5: rgba(252, 128, 25, 0.5);
-  --rgba-primary-6: rgba(252, 128, 25, 0.6);
-  --rgba-primary-7: rgba(252, 128, 25, 0.7);
-  --rgba-primary-8: rgba(252, 128, 25, 0.8);
-  --rgba-primary-9: rgba(252, 128, 25, 0.9);
+  --primary-hover: #A77223;
+  --primary-dark: #533911;
+  --rgba-primary-1: rgba(209, 143, 44, 0.1);
+  --rgba-primary-2: rgba(209, 143, 44, 0.2);
+  --rgba-primary-3: rgba(209, 143, 44, 0.3);
+  --rgba-primary-4: rgba(209, 143, 44, 0.4);
+  --rgba-primary-5: rgba(209, 143, 44, 0.5);
+  --rgba-primary-6: rgba(209, 143, 44, 0.6);
+  --rgba-primary-7: rgba(209, 143, 44, 0.7);
+  --rgba-primary-8: rgba(209, 143, 44, 0.8);
+  --rgba-primary-9: rgba(209, 143, 44, 0.9);
   --rgba-secondary-1: rgba(157, 28, 178, 0.1);
   --rgba-secondary-2: rgba(157, 28, 178, 0.2);
   --rgba-secondary-3: rgba(157, 28, 178, 0.3);
@@ -23461,20 +23461,20 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   font-size: 2rem; }
 
 :root {
-  --primary: #FC8019;
+  --primary: #D18F2C;
   --secondary: #9D1CB2;
   --secondary-dark: #761586;
-  --primary-hover: #df6703;
-  --primary-dark: #7a3802;
-  --rgba-primary-1: rgba(252, 128, 25, 0.1);
-  --rgba-primary-2: rgba(252, 128, 25, 0.2);
-  --rgba-primary-3: rgba(252, 128, 25, 0.3);
-  --rgba-primary-4: rgba(252, 128, 25, 0.4);
-  --rgba-primary-5: rgba(252, 128, 25, 0.5);
-  --rgba-primary-6: rgba(252, 128, 25, 0.6);
-  --rgba-primary-7: rgba(252, 128, 25, 0.7);
-  --rgba-primary-8: rgba(252, 128, 25, 0.8);
-  --rgba-primary-9: rgba(252, 128, 25, 0.9);
+  --primary-hover: #A77223;
+  --primary-dark: #533911;
+  --rgba-primary-1: rgba(209, 143, 44, 0.1);
+  --rgba-primary-2: rgba(209, 143, 44, 0.2);
+  --rgba-primary-3: rgba(209, 143, 44, 0.3);
+  --rgba-primary-4: rgba(209, 143, 44, 0.4);
+  --rgba-primary-5: rgba(209, 143, 44, 0.5);
+  --rgba-primary-6: rgba(209, 143, 44, 0.6);
+  --rgba-primary-7: rgba(209, 143, 44, 0.7);
+  --rgba-primary-8: rgba(209, 143, 44, 0.8);
+  --rgba-primary-9: rgba(209, 143, 44, 0.9);
   --rgba-secondary-1: rgba(157, 28, 178, 0.1);
   --rgba-secondary-2: rgba(157, 28, 178, 0.2);
   --rgba-secondary-3: rgba(157, 28, 178, 0.3);
@@ -29324,7 +29324,7 @@ table.dataTable.display tbody td {
     box-shadow: unset;
     border-color: var(--rgba-primary-1); }
     .grid-tab .nav-link.active svg path {
-      fill: #FC8019; }
+      fill: #D18F2C; }
 
 .booking-table img {
   width: 4.375rem;
@@ -32849,7 +32849,7 @@ table.dataTable.display tbody td {
       margin-right: 10px; }
     [direction="rtl"] .widget-timeline-icon li {
       border-left: 0;
-      border-right: 6px solid #FC8019; }
+      border-right: 6px solid #D18F2C; }
       [direction="rtl"] .widget-timeline-icon li a {
         padding: 0 30px 30px 0; }
       [direction="rtl"] .widget-timeline-icon li .icon {
@@ -33013,20 +33013,20 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   padding-right: 9.375rem; }
 
 :root {
-  --primary: #FC8019;
+  --primary: #D18F2C;
   --secondary: #9D1CB2;
   --secondary-dark: #761586;
-  --primary-hover: #df6703;
-  --primary-dark: #7a3802;
-  --rgba-primary-1: rgba(252, 128, 25, 0.1);
-  --rgba-primary-2: rgba(252, 128, 25, 0.2);
-  --rgba-primary-3: rgba(252, 128, 25, 0.3);
-  --rgba-primary-4: rgba(252, 128, 25, 0.4);
-  --rgba-primary-5: rgba(252, 128, 25, 0.5);
-  --rgba-primary-6: rgba(252, 128, 25, 0.6);
-  --rgba-primary-7: rgba(252, 128, 25, 0.7);
-  --rgba-primary-8: rgba(252, 128, 25, 0.8);
-  --rgba-primary-9: rgba(252, 128, 25, 0.9);
+  --primary-hover: #A77223;
+  --primary-dark: #533911;
+  --rgba-primary-1: rgba(209, 143, 44, 0.1);
+  --rgba-primary-2: rgba(209, 143, 44, 0.2);
+  --rgba-primary-3: rgba(209, 143, 44, 0.3);
+  --rgba-primary-4: rgba(209, 143, 44, 0.4);
+  --rgba-primary-5: rgba(209, 143, 44, 0.5);
+  --rgba-primary-6: rgba(209, 143, 44, 0.6);
+  --rgba-primary-7: rgba(209, 143, 44, 0.7);
+  --rgba-primary-8: rgba(209, 143, 44, 0.8);
+  --rgba-primary-9: rgba(209, 143, 44, 0.9);
   --rgba-secondary-1: rgba(157, 28, 178, 0.1);
   --rgba-secondary-2: rgba(157, 28, 178, 0.2);
   --rgba-secondary-3: rgba(157, 28, 178, 0.3);
@@ -33043,9 +33043,9 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 [data-theme-version="dark"] {
   background: #20203c;
   color: #828690;
-  --nav-headbg: #FC8019;
+  --nav-headbg: #D18F2C;
   --sidebar-bg: #20203c;
-  --headerbg: #FC8019; }
+  --headerbg: #D18F2C; }
   [data-theme-version="dark"] h1, [data-theme-version="dark"] .h1,
   [data-theme-version="dark"] h2,
   [data-theme-version="dark"] .h2,

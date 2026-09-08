@@ -490,7 +490,7 @@ const ProductList = () => {
                       className="img-fluid rounded"
                       width={78}
                       src={avatar1}
-                      alt="DexignZone"
+                      alt="Distribuidora del Sol"
                     />
                   </div>
                   <div className="form-group">
