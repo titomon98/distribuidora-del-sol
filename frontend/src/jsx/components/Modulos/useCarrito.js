@@ -14,6 +14,7 @@ const uuid = () =>
 export function useCarrito() {
 	const [items, setItems] = useState([]); // { id, nombre, precio, cantidad }
 	const [clienteId, setClienteId] = useState(""); // "" = Consumidor Final
+	const [descuento, setDescuento] = useState("");
 	const [pagos, setPagos] = useState([{ metodoPago: "EFECTIVO", monto: "" }]);
 	const [cobrando, setCobrando] = useState(false);
 	const [recibo, setRecibo] = useState(null);
@@ -46,10 +47,20 @@ export function useCarrito() {
 			.map((it) => (it.id === id ? { ...it, cantidad: it.cantidad + delta } : it))
 			.filter((it) => it.cantidad > 0));
 
+	// Fija la cantidad manualmente (mínimo 1).
+	const setCantidad = (id, valor) =>
+		setItems((prev) => prev.map((it) => {
+			if (it.id !== id) return it;
+			const n = Math.max(1, parseInt(valor, 10) || 1);
+			return { ...it, cantidad: n };
+		}));
+
 	const quitar = (id) => setItems((prev) => prev.filter((it) => it.id !== id));
 	const vaciar = () => setItems([]);
 
-	const total = items.reduce((s, it) => s + it.precio * it.cantidad, 0);
+	const subtotal = items.reduce((s, it) => s + it.precio * it.cantidad, 0);
+	const desc = Math.min(Math.max(Number(descuento) || 0, 0), subtotal);
+	const total = +(subtotal - desc).toFixed(2); // total a pagar (con descuento)
 	const unidades = items.reduce((s, it) => s + it.cantidad, 0);
 
 	// Convierte las líneas de pago: la primera con monto vacío toma el restante.
@@ -71,11 +82,13 @@ export function useCarrito() {
 		try {
 			const { data } = await axiosInstance.post("/ventas", {
 				...(clienteId ? { clienteId } : {}),
+				descuento: desc,
 				pagos: construirPagos(),
 				items: items.map((it) => ({ productoId: it.id, cantidad: it.cantidad, precioUnitario: it.precio })),
 			}, { headers: { "Idempotency-Key": idemKey.current } });
 			setItems([]);
 			setClienteId("");
+			setDescuento("");
 			setPagos([{ metodoPago: "EFECTIVO", monto: "" }]);
 			setRecibo(data);
 			idemKey.current = uuid();
@@ -88,8 +101,8 @@ export function useCarrito() {
 	};
 
 	return {
-		items, clienteId, setClienteId, pagos, agregarPago, quitarPago, actualizarPago,
+		items, clienteId, setClienteId, descuento, setDescuento, pagos, agregarPago, quitarPago, actualizarPago,
 		cobrando, recibo, setRecibo,
-		total, unidades, agregar, cambiarCantidad, quitar, vaciar, cobrar,
+		subtotal, total, unidades, agregar, cambiarCantidad, setCantidad, quitar, vaciar, cobrar,
 	};
 }

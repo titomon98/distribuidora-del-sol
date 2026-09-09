@@ -16,7 +16,7 @@ class ReportesService {
        FROM venta v
        LEFT JOIN cliente c ON c.id=v.cliente_id
        LEFT JOIN usuario u ON u.id=v.usuario_id
-       WHERE v.tienda_id=$1 AND v.estado<>'ELIMINADO'
+       WHERE v.tienda_id=$1 AND v.estado='ACTIVO'
          AND ($2::date IS NULL OR v.fecha >= $2::date)
          AND ($3::date IS NULL OR v.fecha < ($3::date + interval '1 day'))
        ORDER BY v.fecha DESC LIMIT 1000;`, [t, desde || null, hasta || null]);

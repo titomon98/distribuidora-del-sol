@@ -79,14 +79,14 @@ const ComprasRegistrar = () => {
 						<label className="form-label">Cantidad</label>
 						<input type="number" className="form-control" value={cantidad} onChange={(e) => setCantidad(e.target.value)} />
 					</div>
-					<div className="col-md-3 mb-2">
+					<div className="col-md-4 mb-2">
 						<label className="form-label">Costo unitario (Q)</label>
 						<input type="number" step="0.01" className="form-control" value={costo} onChange={(e) => setCosto(e.target.value)} />
 					</div>
-					<div className="col-md-1 mb-2">
-						<button className="btn btn-outline-primary w-100" onClick={agregarItem}><i className="bi bi-plus-lg"></i></button>
-					</div>
 				</div>
+				<button className="btn btn-outline-primary mb-2" onClick={agregarItem}>
+					<i className="bi bi-plus-lg me-1"></i>Agregar ítem
+				</button>
 
 				{items.length > 0 && (
 					<table className="table table-sm mt-3">

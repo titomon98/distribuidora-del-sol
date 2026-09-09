@@ -46,6 +46,24 @@ export class DashboardRepository {
     return Number(row.cantidad);
   }
 
+  /** Conteo de productos con stock bajo o agotado (alertas de inventario). */
+  async alertasStock(tiendaId: string): Promise<{ bajo: number; agotado: number }> {
+    const rows = await this.ventas.query(
+      `SELECT
+         COUNT(*) FILTER (WHERE stock <= 0)::int AS agotado,
+         COUNT(*) FILTER (WHERE stock > 0 AND stock <= stock_minimo)::int AS bajo
+       FROM (
+         SELECT p.stock_minimo, COALESCE(SUM(l.cantidad_disponible),0) AS stock
+         FROM producto p
+         LEFT JOIN lote l ON l.producto_id = p.id AND l.estado='ACTIVO'
+         WHERE p.tienda_id=$1 AND p.estado<>'ELIMINADO'
+         GROUP BY p.id, p.stock_minimo
+       ) s;`,
+      [tiendaId],
+    );
+    return { bajo: rows[0]?.bajo ?? 0, agotado: rows[0]?.agotado ?? 0 };
+  }
+
   /** Top de productos por cantidad vendida (histórico). */
   async productosMasVendidos(tiendaId: string, limite = 5): Promise<ProductoVendido[]> {
     const rows = await this.detalles

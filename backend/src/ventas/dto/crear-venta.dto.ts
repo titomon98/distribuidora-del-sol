@@ -35,6 +35,9 @@ export class CrearVentaDto {
   @IsOptional() @IsString()
   tipo?: string;
 
+  @IsOptional() @IsNumber() @Min(0)
+  descuento?: number;
+
   @IsArray() @ArrayMinSize(1)
   @ValidateNested({ each: true })
   @Type(() => ItemVentaDto)

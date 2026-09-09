@@ -7,8 +7,8 @@ import SearchSelect from "./SearchSelect";
 
 /** Tabla del carrito + resumen (cliente, método de pago, total, cobrar) + recibo. */
 const CarritoPanel = ({ carrito }) => {
-	const { items, clienteId, setClienteId, pagos, agregarPago, quitarPago, actualizarPago, cobrando, recibo, setRecibo,
-		total, unidades, cambiarCantidad, quitar, vaciar, cobrar } = carrito;
+	const { items, clienteId, setClienteId, descuento, setDescuento, pagos, agregarPago, quitarPago, actualizarPago, cobrando, recibo, setRecibo,
+		subtotal, total, unidades, setCantidad, quitar, vaciar, cobrar } = carrito;
 
 	const [clienteOpt, setClienteOpt] = useState(null);
 	// Al reiniciarse la venta (cobro) vuelve a Consumidor Final.
@@ -42,11 +42,9 @@ const CarritoPanel = ({ carrito }) => {
 											<td>{it.nombre}</td>
 											<td className="text-end">{money(it.precio)}</td>
 											<td className="text-center">
-												<div className="btn-group btn-group-sm" role="group">
-													<button className="btn btn-outline-primary" onClick={() => cambiarCantidad(it.id, -1)}>−</button>
-													<span className="btn btn-outline-primary disabled">{it.cantidad}</span>
-													<button className="btn btn-outline-primary" onClick={() => cambiarCantidad(it.id, 1)}>+</button>
-												</div>
+												<input type="number" min="1" className="form-control form-control-sm text-center mx-auto"
+													style={{ width: 80 }} value={it.cantidad}
+													onChange={(e) => setCantidad(it.id, e.target.value)} />
 											</td>
 											<td className="text-end fw-bold">{money(it.precio * it.cantidad)}</td>
 											<td className="text-end">
@@ -80,7 +78,7 @@ const CarritoPanel = ({ carrito }) => {
 						<div className="d-flex justify-content-between align-items-center mb-2">
 							<label className="form-label mb-0">Pago(s)</label>
 							<button className="btn btn-sm btn-outline-primary py-0 px-2" onClick={agregarPago}>
-								<i className="bi bi-plus-lg"></i> método
+								<i className="bi bi-plus-lg"></i> Varios métodos de pago
 							</button>
 						</div>
 						{pagos.map((p, i) => (
@@ -106,6 +104,15 @@ const CarritoPanel = ({ carrito }) => {
 								Suma pagos: {money(sumaPagos)} / Total: {money(total)}
 							</div>
 						)}
+						<div className="d-flex justify-content-between align-items-center mb-2">
+							<span>Subtotal</span><span>{money(subtotal)}</span>
+						</div>
+						<div className="d-flex justify-content-between align-items-center mb-2">
+							<label className="mb-0">Descuento (Q)</label>
+							<input type="number" step="0.01" min="0" className="form-control form-control-sm"
+								style={{ maxWidth: 110 }} value={descuento} placeholder="0.00"
+								onChange={(e) => setDescuento(e.target.value)} />
+						</div>
 						<div className="d-flex justify-content-between mb-3">
 							<h4 className="mb-0">Total</h4><h3 className="mb-0 text-primary">{money(total)}</h3>
 						</div>

@@ -6,6 +6,7 @@ export interface ResumenDashboard {
   despachadasHoy: number;
   pendientesHoy: number;
   productosMasVendidos: ProductoVendido[];
+  alertasStock: { bajo: number; agotado: number };
 }
 
 /** Capa de negocio del dashboard. */
@@ -14,13 +15,14 @@ export class DashboardService {
   constructor(private readonly repo: DashboardRepository) {}
 
   async resumen(tiendaId: string): Promise<ResumenDashboard> {
-    const [ventasHoy, despachadasHoy, pendientesHoy, productosMasVendidos] =
+    const [ventasHoy, despachadasHoy, pendientesHoy, productosMasVendidos, alertasStock] =
       await Promise.all([
         this.repo.ventasHoy(tiendaId),
         this.repo.despachoHoy(tiendaId, 'DESPACHADO'),
         this.repo.despachoHoy(tiendaId, 'PENDIENTE'),
         this.repo.productosMasVendidos(tiendaId),
+        this.repo.alertasStock(tiendaId),
       ]);
-    return { ventasHoy, despachadasHoy, pendientesHoy, productosMasVendidos };
+    return { ventasHoy, despachadasHoy, pendientesHoy, productosMasVendidos, alertasStock };
   }
 }

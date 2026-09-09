@@ -19,6 +19,10 @@ class CrearUsuarioDto {
   @IsString() @IsNotEmpty() rolId: string;
   @IsString() @MinLength(4) @MaxLength(72) password: string;
 }
+class CambiarPasswordDto {
+  @IsString() @MinLength(1) actual: string;
+  @IsString() @MinLength(4) @MaxLength(72) nueva: string;
+}
 class ActualizarUsuarioDto {
   @IsOptional() @IsString() @MaxLength(150) nombre?: string;
   @IsOptional() @IsString() @MinLength(3) @MaxLength(60) username?: string;
@@ -78,6 +82,17 @@ class UsuariosService {
     return { id: u.id };
   }
 
+  async cambiarPasswordPropia(tiendaId: string, userId: string, actual: string, nueva: string) {
+    const u = await this.usuarios.findOne({ where: { id: userId, tiendaId } });
+    if (!u) throw new BadRequestException('Usuario no encontrado');
+    const ok = await bcrypt.compare(actual, u.passwordHash);
+    if (!ok) throw new BadRequestException('La contraseña actual no es correcta.');
+    u.passwordHash = await bcrypt.hash(nueva, 10);
+    u.updatedBy = userId;
+    await this.usuarios.save(u);
+    return { ok: true };
+  }
+
   async eliminar(tiendaId: string, actorId: string, id: string) {
     const u = await this.usuarios.findOne({ where: { id, tiendaId } });
     if (!u) throw new BadRequestException('Usuario no encontrado');
@@ -101,6 +116,13 @@ class UsuariosController {
 
   @Get('roles')
   roles() { return this.service.listarRoles(); }
+
+  // Cualquier usuario autenticado puede cambiar SU propia contraseña.
+  @Patch('usuarios/me/password')
+  cambiarMiPassword(@Body() dto: CambiarPasswordDto, @Req() req: Request) {
+    const u = reqUser(req);
+    return this.service.cambiarPasswordPropia(u.tiendaId, u.sub, dto.actual, dto.nueva);
+  }
 
   @Get('usuarios')
   listar(@Req() req: Request) { this.soloAdmin(req); return this.service.listar(reqUser(req).tiendaId); }

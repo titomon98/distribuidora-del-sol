@@ -36,7 +36,7 @@ export function signupAction(email, password, navigate) {
 			//history.push('/dashboard');
         })
         .catch((error) => {
-            const errorMessage = formatError(error.response.data);
+            const errorMessage = formatError(error?.response?.data);
             dispatch(signupFailedAction(errorMessage));
         });
     };
@@ -63,19 +63,12 @@ export function loginAction(email, password, navigate) {
                     navigate,
                 );
                dispatch(loginConfirmedAction(response.data));
-			   //console.log('kk------1');
-			   //console.log(kk);
-			   //console.log(response.data);
-			   //console.log('kk------2');
-			   //return response.data;
-				//return 'success';
-				//history.push('/dashboard');                
-				navigate('/dashboard');                
+					navigate({ CAJERO: '/cobro', DESPACHADOR: '/despacho' }[response.data.rol] || '/dashboard');
             })
             .catch((error) => {
 				//console.log('error');
 				//console.log(error);
-                const errorMessage = formatError(error.response.data);
+                const errorMessage = formatError(error?.response?.data);
                 dispatch(loginFailedAction(errorMessage));
             });
     };

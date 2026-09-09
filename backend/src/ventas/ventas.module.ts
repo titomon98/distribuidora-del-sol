@@ -1,5 +1,5 @@
 import {
-  Body, Controller, Get, Headers, Param, Patch, Post, Query, Req, UseGuards, Module,
+  Body, Controller, ForbiddenException, Get, Headers, Param, Patch, Post, Query, Req, UseGuards, Module,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -38,6 +38,15 @@ class VentasController {
   despachar(@Param('id') id: string, @Req() req: Request) {
     const u = reqUser(req);
     return this.service.despachar(u.tiendaId, u.sub, id);
+  }
+
+  @Patch(':id/anular')
+  anular(@Param('id') id: string, @Req() req: Request) {
+    const u = reqUser(req);
+    if (u.rol !== 'ADMINISTRADOR') {
+      throw new ForbiddenException('Solo el administrador puede anular ventas.');
+    }
+    return this.service.anular(u.tiendaId, u.sub, id);
   }
 }
 

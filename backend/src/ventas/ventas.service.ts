@@ -33,4 +33,10 @@ export class VentasService {
     if (res.actualizado) this.events.ventaDespachada(tiendaId, { id });
     return res;
   }
+  async anular(tiendaId: string, userId: string, id: string) {
+    const res = await this.repo.anular(tiendaId, userId, id);
+    // Refresca despacho/dashboard (la venta anulada sale de las listas).
+    this.events.ventaDespachada(tiendaId, { id });
+    return res;
+  }
 }

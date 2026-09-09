@@ -15,6 +15,7 @@ import { ComprasModule } from './compras/compras.module';
 import { ProveedoresModule } from './proveedores/proveedores.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { ClientesModule } from './clientes/clientes.module';
+import { CreditosModule } from './creditos/creditos.module';
 
 /**
  * Módulo raíz.
@@ -43,6 +44,7 @@ import { ClientesModule } from './clientes/clientes.module';
     ProveedoresModule,
     UsuariosModule,
     ClientesModule,
+    CreditosModule,
   ],
 })
 export class AppModule {}

@@ -18,6 +18,7 @@ export interface CrearVentaInput {
   /** Pago mixto: varios métodos a la vez. Si se omite, se usa `metodoPago`. */
   pagos?: PagoVenta[];
   tipo?: string;
+  descuento?: number;
   items: ItemVenta[];
   idempotencyKey?: string;
 }
@@ -45,15 +46,17 @@ export class VentasRepository {
 
       const clienteId = dto.clienteId ?? (await this.clienteCF(tiendaId, m));
       const subtotal = +dto.items.reduce((s, i) => s + i.cantidad * i.precioUnitario, 0).toFixed(2);
+      const descuento = Math.min(Math.max(dto.descuento ?? 0, 0), subtotal);
+      const total = +(subtotal - descuento).toFixed(2);
 
-      // Pago mixto: normaliza a lista de pagos y valida que sumen el total.
+      // Pago mixto: normaliza a lista de pagos y valida que sumen el TOTAL (con descuento).
       const pagos: PagoVenta[] = (dto.pagos && dto.pagos.length)
         ? dto.pagos
-        : [{ metodoPago: dto.metodoPago ?? 'EFECTIVO', monto: subtotal }];
+        : [{ metodoPago: dto.metodoPago ?? 'EFECTIVO', monto: total }];
       const sumaPagos = +pagos.reduce((s, p) => s + Number(p.monto), 0).toFixed(2);
-      if (Math.abs(sumaPagos - subtotal) > 0.01) {
+      if (Math.abs(sumaPagos - total) > 0.01) {
         throw new BadRequestException(
-          `Los pagos (Q${sumaPagos}) no cuadran con el total (Q${subtotal}).`,
+          `Los pagos (Q${sumaPagos}) no cuadran con el total (Q${total}).`,
         );
       }
       const metodoResumen = pagos.length > 1 ? 'MIXTO' : pagos[0].metodoPago;
@@ -62,9 +65,9 @@ export class VentasRepository {
         `INSERT INTO venta (tienda_id, cliente_id, usuario_id, numero_venta, subtotal,
                             descuento, total, metodo_pago, tipo, estado_despacho, idempotency_key, created_by)
          VALUES ($1,$2,$3, 'V-'||to_char(now(),'YYYYMMDD')||'-'||substr(md5(random()::text),1,6),
-                 $4, 0, $4, $5, $6, 'PENDIENTE', $7, $3)
+                 $4, $5, $6, $7, $8, 'PENDIENTE', $9, $3)
          RETURNING id;`,
-        [tiendaId, clienteId, userId, subtotal, metodoResumen, dto.tipo ?? 'CONTADO', dto.idempotencyKey ?? null],
+        [tiendaId, clienteId, userId, subtotal, descuento, total, metodoResumen, dto.tipo ?? 'CONTADO', dto.idempotencyKey ?? null],
       );
       const ventaId = ventaRows[0].id;
 
@@ -83,7 +86,7 @@ export class VentasRepository {
       await auditar(m, {
         usuarioId: userId, tiendaId, accion: 'INSERT', tabla: 'venta',
         registroId: ventaId,
-        datosNuevos: { total: subtotal, items: dto.items.length, metodoPago: dto.metodoPago ?? 'EFECTIVO' },
+        datosNuevos: { total, descuento, items: dto.items.length },
       });
 
       return this.detalle(tiendaId, ventaId, m);
@@ -159,11 +162,11 @@ export class VentasRepository {
   }
 
   listar(tiendaId: string, estadoDespacho?: string) {
-    const cond = estadoDespacho ? `AND v.estado_despacho = $2` : '';
+    const cond = estadoDespacho ? `AND v.estado_despacho = $2 AND v.estado = 'ACTIVO'` : '';
     const params = estadoDespacho ? [tiendaId, estadoDespacho] : [tiendaId];
     return this.ds.query(
       `SELECT v.id, v.numero_venta AS "numeroVenta", v.fecha, v.total, v.metodo_pago AS "metodoPago",
-              v.estado_despacho AS "estadoDespacho", c.nombre AS cliente, u.nombre AS usuario
+              v.estado_despacho AS "estadoDespacho", v.estado, c.nombre AS cliente, u.nombre AS usuario
        FROM venta v
        LEFT JOIN cliente c ON c.id = v.cliente_id
        LEFT JOIN usuario u ON u.id = v.usuario_id
@@ -171,6 +174,47 @@ export class VentasRepository {
        ORDER BY v.fecha DESC LIMIT 300;`,
       params,
     );
+  }
+
+  /** Anula una venta: devuelve el stock a cada lote y cancela su crédito. */
+  async anular(tiendaId: string, userId: string, ventaId: string) {
+    return this.ds.transaction(async (m) => {
+      const venta = (await m.query(
+        `SELECT id, estado FROM venta WHERE tienda_id=$1 AND id=$2 FOR UPDATE;`,
+        [tiendaId, ventaId],
+      ))[0];
+      if (!venta) throw new BadRequestException('Venta no encontrada');
+      if (venta.estado === 'ANULADO') throw new BadRequestException('La venta ya está anulada');
+
+      // Devolver el stock a cada lote según lo que se descontó.
+      const detalles = await m.query(
+        `SELECT lote_id, cantidad FROM detalle_venta WHERE tienda_id=$1 AND venta_id=$2;`,
+        [tiendaId, ventaId],
+      );
+      for (const d of detalles) {
+        if (d.lote_id) {
+          await m.query(
+            `UPDATE lote SET cantidad_disponible = cantidad_disponible + $1, updated_by=$2 WHERE id=$3;`,
+            [d.cantidad, userId, d.lote_id],
+          );
+        }
+      }
+      // Cancelar crédito del cliente ligado a la venta, si lo hay.
+      await m.query(
+        `UPDATE credito_cliente SET saldo=0, estado='ANULADO', updated_by=$3
+         WHERE tienda_id=$1 AND venta_id=$2 AND estado<>'ANULADO';`,
+        [tiendaId, ventaId, userId],
+      );
+      await m.query(
+        `UPDATE venta SET estado='ANULADO', updated_by=$3 WHERE tienda_id=$1 AND id=$2;`,
+        [tiendaId, ventaId, userId],
+      );
+      await auditar(m, {
+        usuarioId: userId, tiendaId, accion: 'UPDATE', tabla: 'venta',
+        registroId: ventaId, datosNuevos: { estado: 'ANULADO' },
+      });
+      return { id: ventaId, anulado: true };
+    });
   }
 
   async marcarDespachado(tiendaId: string, userId: string, ventaId: string) {

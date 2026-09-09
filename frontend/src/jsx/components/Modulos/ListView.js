@@ -14,7 +14,7 @@ import { exportarExcel, exportarPdf } from "./exportar";
  *  - exportable?: agrega botones Exportar Excel / PDF, exportName? nombre de archivo
  */
 const ListView = ({ title, endpoint, columns, actions, emptyText, refreshKey,
-	dateFilter, exportable, exportName }) => {
+	dateFilter, exportable, exportName, totalField }) => {
 	const [rows, setRows] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
@@ -108,6 +108,22 @@ const ListView = ({ title, endpoint, columns, actions, emptyText, refreshKey,
 								</tr>
 							))}
 						</tbody>
+						{totalField && !loading && filas.length > 0 && (() => {
+							const col = columns.find((c) => c.name === totalField);
+							const suma = filas.reduce((s, row) => s + Number(row[totalField] || 0), 0);
+							return (
+								<tfoot>
+									<tr className="fw-bold">
+										{columns.map((c, i) => (
+											<td key={c.name} className={c.name === totalField ? "text-end text-primary" : ""}>
+												{c.name === totalField ? (col?.format ? col.format(suma) : suma) : (i === 0 ? "Total" : "")}
+											</td>
+										))}
+										{actions && <td></td>}
+									</tr>
+								</tfoot>
+							);
+						})()}
 					</table>
 				</div>
 			</div>

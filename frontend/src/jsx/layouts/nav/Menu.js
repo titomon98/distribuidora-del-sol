@@ -65,6 +65,12 @@ export const MenuList = [
         ],
     },
     {
+        title: 'Créditos',
+        iconStyle: "bi bi-wallet2",
+        to: 'creditos',
+        roles: ['ADMINISTRADOR'],
+    },
+    {
         title: 'Cierre de caja',
         iconStyle: "bi bi-journal-check",
         to: 'cierre-caja',

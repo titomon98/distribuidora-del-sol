@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Dropdown } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LogoutPage from './Logout';
 
@@ -37,6 +38,10 @@ const Header = () => {
 											</div>
 										</Dropdown.Toggle>
 										<Dropdown.Menu className="dropdown-menu-end">
+											<Link to="/mi-cuenta" className="dropdown-item ai-icon">
+												<i className="bi bi-gear text-primary"></i>
+												<span className="ms-2">Mi cuenta</span>
+											</Link>
 											<LogoutPage />
 										</Dropdown.Menu>
 									</Dropdown>

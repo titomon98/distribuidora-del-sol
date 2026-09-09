@@ -6,7 +6,7 @@ const num = (v) => Number(v || 0);
 
 export const ReporteVentas = () => (
 	<ListView title="Reporte de ventas" endpoint="reportes/ventas" emptyText="Sin ventas."
-		dateFilter exportable exportName="reporte-ventas"
+		dateFilter exportable exportName="reporte-ventas" totalField="total"
 		columns={[
 			{ name: "numeroVenta", label: "No. venta" },
 			{ name: "fecha", label: "Fecha", format: fecha, exportFormat: fecha },
@@ -20,7 +20,7 @@ export const ReporteVentas = () => (
 
 export const ReporteCompras = () => (
 	<ListView title="Reporte de compras" endpoint="reportes/compras" emptyText="Sin compras."
-		dateFilter exportable exportName="reporte-compras"
+		dateFilter exportable exportName="reporte-compras" totalField="total"
 		columns={[
 			{ name: "numeroCompra", label: "No. compra" },
 			{ name: "fecha", label: "Fecha", format: fecha, exportFormat: fecha },

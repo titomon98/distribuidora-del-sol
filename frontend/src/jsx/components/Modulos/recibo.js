@@ -14,6 +14,11 @@ export function reciboHtml(venta) {
 			<td class="r">${q(it.subtotal)}</td>
 		</tr>`).join("");
 
+	const pagos = venta.pagos || [];
+	const filasPagos = pagos.length
+		? `<hr><table>${pagos.map((p) => `<tr><td class="l">${p.metodoPago}</td><td class="r">${q(p.monto)}</td></tr>`).join("")}</table>`
+		: "";
+
 	return `<!doctype html><html lang="es"><head><meta charset="utf-8">
 	<title>Recibo ${numero}</title>
 	<style>
@@ -42,18 +47,31 @@ export function reciboHtml(venta) {
 		<table>${filas}</table>
 		<hr>
 		<table><tr><td class="l tot">TOTAL</td><td class="r tot">${q(venta.total)}</td></tr></table>
+		${filasPagos}
 		<div class="foot">¡Gracias por su compra!</div>
 	</body></html>`;
 }
 
-/** Abre el recibo en una ventana e invoca la impresión del navegador. */
+/**
+ * Imprime un HTML usando un iframe oculto (sin abrir ventana emergente).
+ * Dispara el diálogo de impresión del navegador sobre el contenido dado.
+ */
+export function imprimirHtml(html) {
+	const iframe = document.createElement("iframe");
+	iframe.style.cssText = "position:fixed;right:0;bottom:0;width:0;height:0;border:0;";
+	document.body.appendChild(iframe);
+	const limpiar = () => setTimeout(() => document.body.removeChild(iframe), 1000);
+	iframe.onload = () => {
+		try {
+			iframe.contentWindow.focus();
+			iframe.contentWindow.print();
+		} finally { limpiar(); }
+	};
+	const doc = iframe.contentWindow.document;
+	doc.open(); doc.write(html); doc.close();
+}
+
+/** Imprime el recibo de una venta (vía iframe, sin ventana emergente). */
 export function imprimirRecibo(venta) {
-	const w = window.open("", "_blank", "width=340,height=600");
-	if (!w) return;
-	w.document.write(reciboHtml(venta));
-	w.document.close();
-	w.focus();
-	w.onload = () => { w.print(); };
-	// fallback si onload no dispara
-	setTimeout(() => { try { w.print(); } catch { /* noop */ } }, 400);
+	imprimirHtml(reciboHtml(venta));
 }

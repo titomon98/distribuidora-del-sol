@@ -26,6 +26,8 @@ import ComprasRegistrar from "./components/Modulos/ComprasRegistrar";
 import ComprasListado from "./components/Modulos/ComprasListado";
 import VentasListado from "./components/Modulos/VentasListado";
 import Clientes from "./components/Modulos/Clientes";
+import Creditos from "./components/Modulos/Creditos";
+import MiCuenta from "./components/Modulos/MiCuenta";
 import Despacho from "./components/Modulos/Despacho";
 import CierreCaja from "./components/Modulos/CierreCaja";
 import Usuarios from "./components/Modulos/Usuarios";
@@ -158,6 +160,8 @@ const Markup = () => {
     { url: "categorias", component: <Categorias /> },
     { url: "marcas", component: <Marcas /> },
     { url: "cierre-caja", component: <CierreCaja /> },
+    { url: "creditos", component: <Creditos /> },
+    { url: "mi-cuenta", component: <MiCuenta /> },
     { url: "usuarios", component: <Usuarios /> },
     { url: "reporte-ventas", component: <ReporteVentas /> },
     { url: "reporte-compras", component: <ReporteCompras /> },

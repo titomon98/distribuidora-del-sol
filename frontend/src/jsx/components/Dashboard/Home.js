@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ThemeContext } from "../../../context/ThemeContext";
 import axiosInstance from '../../../services/AxiosInstance';
 import { getSocket } from '../../../services/socket';
@@ -50,7 +51,9 @@ const Home = () => {
 		despachadasHoy: 0,
 		pendientesHoy: 0,
 		productosMasVendidos: [],
+		alertasStock: { bajo: 0, agotado: 0 },
 	};
+	const al = r.alertasStock || { bajo: 0, agotado: 0 };
 
 	return (
 		<>
@@ -59,6 +62,16 @@ const Home = () => {
 			</div>
 
 			{error && <div className="alert alert-warning">{error}</div>}
+
+			{(al.agotado > 0 || al.bajo > 0) && (
+				<div className="alert alert-warning d-flex align-items-center justify-content-between flex-wrap">
+					<span>
+						<i className="bi bi-exclamation-triangle me-2"></i>
+						Alertas de inventario: <strong>{al.agotado}</strong> agotado(s) y <strong>{al.bajo}</strong> con stock bajo.
+					</span>
+					<Link to="/inventario" className="btn btn-sm btn-warning">Ver inventario</Link>
+				</div>
+			)}
 
 			<div className="row">
 				<StatCard icon="bi bi-cash-stack" titulo="Ventas de hoy" valor={money(r.ventasHoy.total)}
