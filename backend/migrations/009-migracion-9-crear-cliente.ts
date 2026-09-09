@@ -5,8 +5,8 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
  * Incluye `es_cf` para marcar el cliente Consumidor Final por defecto de la
  * tienda (se crea en la migración de datos iniciales).
  */
-export class Migracion9CrearCliente0009 implements MigrationInterface {
-  name = 'Migracion9CrearCliente0009';
+export class Migracion9CrearCliente1700000000009 implements MigrationInterface {
+  name = 'Migracion9CrearCliente1700000000009';
 
   public async up(q: QueryRunner): Promise<void> {
     await q.query(`

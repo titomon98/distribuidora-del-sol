@@ -1,8 +1,8 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 /** Migración 17: tabla `credito_cliente` (crédito otorgado a clientes). */
-export class Migracion17CrearCreditoCliente0017 implements MigrationInterface {
-  name = 'Migracion17CrearCreditoCliente0017';
+export class Migracion17CrearCreditoCliente1700000000017 implements MigrationInterface {
+  name = 'Migracion17CrearCreditoCliente1700000000017';
 
   public async up(q: QueryRunner): Promise<void> {
     await q.query(`

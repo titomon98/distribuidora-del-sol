@@ -1,8 +1,8 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 /** Migración 2: tabla `rol` (roles de los usuarios del sistema). */
-export class Migracion2CrearRol0002 implements MigrationInterface {
-  name = 'Migracion2CrearRol0002';
+export class Migracion2CrearRol1700000000002 implements MigrationInterface {
+  name = 'Migracion2CrearRol1700000000002';
 
   public async up(q: QueryRunner): Promise<void> {
     await q.query(`

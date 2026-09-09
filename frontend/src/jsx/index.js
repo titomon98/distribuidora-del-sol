@@ -14,6 +14,22 @@ import Footer from "./layouts/Footer";
 //import Main from './layouts/Main';
 
 import ScrollToTop from "./layouts/ScrollToTop";
+/// Módulos Distribuidora del Sol
+import EnConstruccion from "./components/Modulos/EnConstruccion";
+import PuntoCobro from "./components/Modulos/PuntoCobro";
+import VentaManual from "./components/Modulos/VentaManual";
+import Productos from "./components/Modulos/Productos";
+import Categorias from "./components/Modulos/Categorias";
+import Marcas from "./components/Modulos/Marcas";
+import Inventario from "./components/Modulos/Inventario";
+import ComprasRegistrar from "./components/Modulos/ComprasRegistrar";
+import ComprasListado from "./components/Modulos/ComprasListado";
+import VentasListado from "./components/Modulos/VentasListado";
+import Clientes from "./components/Modulos/Clientes";
+import Despacho from "./components/Modulos/Despacho";
+import CierreCaja from "./components/Modulos/CierreCaja";
+import Usuarios from "./components/Modulos/Usuarios";
+import { ReporteVentas, ReporteCompras, ReporteProductos, ReporteUsuarios } from "./components/Modulos/Reportes";
 /// Dashboard
 import Home from "./components/Dashboard/Home";
 import DashboardDark from "./components/Dashboard/DashboardDark";
@@ -127,9 +143,27 @@ import { ThemeContext } from "../context/ThemeContext";
 const Markup = () => {
 
   const allroutes = [
-    /// Dashboard
+    /// Distribuidora del Sol — módulos
     { url: "", component: <Home /> },
     { url: "dashboard", component: <Home /> },
+    { url: "cobro", component: <PuntoCobro /> },
+    { url: "venta-manual", component: <VentaManual /> },
+    { url: "ventas", component: <VentasListado /> },
+    { url: "clientes", component: <Clientes /> },
+    { url: "despacho", component: <Despacho /> },
+    { url: "inventario", component: <Inventario /> },
+    { url: "compras", component: <ComprasRegistrar /> },
+    { url: "compras-listado", component: <ComprasListado /> },
+    { url: "productos", component: <Productos /> },
+    { url: "categorias", component: <Categorias /> },
+    { url: "marcas", component: <Marcas /> },
+    { url: "cierre-caja", component: <CierreCaja /> },
+    { url: "usuarios", component: <Usuarios /> },
+    { url: "reporte-ventas", component: <ReporteVentas /> },
+    { url: "reporte-compras", component: <ReporteCompras /> },
+    { url: "reporte-productos", component: <ReporteProductos /> },
+    { url: "reporte-usuarios", component: <ReporteUsuarios /> },
+    /// Dashboard (plantilla)
     { url: "dashboard-dark", component: <DashboardDark /> },
     { url: "food-order", component: <FoodOrder /> },
     { url: "favorite-menu", component: <FavoriteMenu /> },

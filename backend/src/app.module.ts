@@ -2,6 +2,19 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from './config/data-source';
+import { AuthModule } from './auth/auth.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { ProductosModule } from './productos/productos.module';
+import { MarcasModule } from './marcas/marcas.module';
+import { CategoriasModule } from './categorias/categorias.module';
+import { InventarioModule } from './inventario/inventario.module';
+import { VentasModule } from './ventas/ventas.module';
+import { CierreCajaModule } from './cierre-caja/cierre-caja.module';
+import { ReportesModule } from './reportes/reportes.module';
+import { ComprasModule } from './compras/compras.module';
+import { ProveedoresModule } from './proveedores/proveedores.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
+import { ClientesModule } from './clientes/clientes.module';
 
 /**
  * Módulo raíz.
@@ -17,6 +30,19 @@ import { dataSourceOptions } from './config/data-source';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(dataSourceOptions),
+    AuthModule,
+    DashboardModule,
+    ProductosModule,
+    MarcasModule,
+    CategoriasModule,
+    InventarioModule,
+    VentasModule,
+    CierreCajaModule,
+    ReportesModule,
+    ComprasModule,
+    ProveedoresModule,
+    UsuariosModule,
+    ClientesModule,
   ],
 })
 export class AppModule {}

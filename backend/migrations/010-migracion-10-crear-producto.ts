@@ -5,8 +5,8 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
  * Precios (compra, mayorista, venta), codigo_barras y stock_minimo para
  * alertas de existencia baja. FK opcionales a marca y tipo_producto.
  */
-export class Migracion10CrearProducto0010 implements MigrationInterface {
-  name = 'Migracion10CrearProducto0010';
+export class Migracion10CrearProducto1700000000010 implements MigrationInterface {
+  name = 'Migracion10CrearProducto1700000000010';
 
   public async up(q: QueryRunner): Promise<void> {
     await q.query(`

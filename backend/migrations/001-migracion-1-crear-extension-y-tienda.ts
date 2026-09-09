@@ -4,8 +4,8 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
  * Migración 1: extensión pgcrypto (para gen_random_uuid) y tabla `tienda`.
  * La tienda engloba todo el sistema; el resto de tablas de dominio la referencian.
  */
-export class Migracion1CrearExtensionYTienda0001 implements MigrationInterface {
-  name = 'Migracion1CrearExtensionYTienda0001';
+export class Migracion1CrearExtensionYTienda1700000000001 implements MigrationInterface {
+  name = 'Migracion1CrearExtensionYTienda1700000000001';
 
   public async up(q: QueryRunner): Promise<void> {
     await q.query(`CREATE EXTENSION IF NOT EXISTS pgcrypto;`);

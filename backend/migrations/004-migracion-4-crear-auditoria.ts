@@ -5,8 +5,8 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
  * Guarda quién realizó qué acción sobre qué tabla y registro, con datos
  * anteriores y nuevos.
  */
-export class Migracion4CrearAuditoria0004 implements MigrationInterface {
-  name = 'Migracion4CrearAuditoria0004';
+export class Migracion4CrearAuditoria1700000000004 implements MigrationInterface {
+  name = 'Migracion4CrearAuditoria1700000000004';
 
   public async up(q: QueryRunner): Promise<void> {
     await q.query(`

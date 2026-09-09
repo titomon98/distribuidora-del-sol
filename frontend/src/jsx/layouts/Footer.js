@@ -5,12 +5,7 @@ const Footer = () => {
 	return (
 		<div className="footer">
 			<div className="copyright border-top">
-				<p>Copyright © Distribuidora del Sol · Desarrollado por{" "}
-					<a href="https://xelacode.com/" target="_blank"  rel="noreferrer">
-						XelaCode
-					</a>{" "}
-					{d.getFullYear()}
-				</p>
+				<p>Copyright © Distribuidora del Sol · Desarrollado por Arturo Monterroso {d.getFullYear()}</p>
 			</div>
 		</div>
 	);

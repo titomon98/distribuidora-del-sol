@@ -1,0 +1,156 @@
+import React, { useEffect, useState } from "react";
+import { Modal } from "react-bootstrap";
+import swal from "sweetalert";
+import { money } from "./format";
+import { imprimirRecibo } from "./recibo";
+import SearchSelect from "./SearchSelect";
+
+/** Tabla del carrito + resumen (cliente, método de pago, total, cobrar) + recibo. */
+const CarritoPanel = ({ carrito }) => {
+	const { items, clienteId, setClienteId, pagos, agregarPago, quitarPago, actualizarPago, cobrando, recibo, setRecibo,
+		total, unidades, cambiarCantidad, quitar, vaciar, cobrar } = carrito;
+
+	const [clienteOpt, setClienteOpt] = useState(null);
+	// Al reiniciarse la venta (cobro) vuelve a Consumidor Final.
+	useEffect(() => { if (!clienteId) setClienteOpt(null); }, [clienteId]);
+
+	const sumaPagos = pagos.reduce((s, p) => s + (p.monto === "" ? 0 : Number(p.monto)), 0);
+	const hayBlanco = pagos.some((p) => p.monto === "");
+	// Con un solo método basta; con varios, o si escribió montos, deben cuadrar.
+	const cuadra = pagos.length === 1 || hayBlanco || Math.abs(sumaPagos - total) < 0.01;
+
+	return (
+		<>
+			<div className="col-xl-8">
+				<div className="card">
+					<div className="card-header"><h4 className="card-title">Carrito</h4></div>
+					<div className="card-body">
+						<div className="table-responsive">
+							<table className="table table-striped verticle-middle">
+								<thead>
+									<tr>
+										<th>Producto</th><th className="text-end">Precio</th>
+										<th className="text-center">Cantidad</th><th className="text-end">Subtotal</th><th></th>
+									</tr>
+								</thead>
+								<tbody>
+									{items.length === 0 && (
+										<tr><td colSpan={5} className="text-center text-muted py-4">Agrega productos para vender.</td></tr>
+									)}
+									{items.map((it) => (
+										<tr key={it.id}>
+											<td>{it.nombre}</td>
+											<td className="text-end">{money(it.precio)}</td>
+											<td className="text-center">
+												<div className="btn-group btn-group-sm" role="group">
+													<button className="btn btn-outline-primary" onClick={() => cambiarCantidad(it.id, -1)}>−</button>
+													<span className="btn btn-outline-primary disabled">{it.cantidad}</span>
+													<button className="btn btn-outline-primary" onClick={() => cambiarCantidad(it.id, 1)}>+</button>
+												</div>
+											</td>
+											<td className="text-end fw-bold">{money(it.precio * it.cantidad)}</td>
+											<td className="text-end">
+												<button className="btn btn-sm btn-danger light" onClick={() => quitar(it.id)}>
+													<i className="bi bi-trash"></i>
+												</button>
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div className="col-xl-4">
+				<div className="card">
+					<div className="card-header"><h4 className="card-title">Resumen</h4></div>
+					<div className="card-body">
+						<div className="mb-3">
+							<label className="form-label">Cliente</label>
+							<SearchSelect endpoint="clientes" value={clienteOpt}
+								placeholder="Consumidor Final (buscar cliente)"
+								getLabel={(c) => `${c.nombre}${c.nit ? ` (${c.nit})` : ""}`}
+								onChange={(o) => { setClienteOpt(o); setClienteId(o?.value || ""); }} />
+						</div>
+						<div className="d-flex justify-content-between mb-2"><span>Artículos</span><span>{items.length}</span></div>
+						<div className="d-flex justify-content-between mb-2"><span>Unidades</span><span>{unidades}</span></div>
+						<hr />
+						<div className="d-flex justify-content-between align-items-center mb-2">
+							<label className="form-label mb-0">Pago(s)</label>
+							<button className="btn btn-sm btn-outline-primary py-0 px-2" onClick={agregarPago}>
+								<i className="bi bi-plus-lg"></i> método
+							</button>
+						</div>
+						{pagos.map((p, i) => (
+							<div className="d-flex gap-1 mb-2" key={i}>
+								<select className="form-control form-control-sm" value={p.metodoPago}
+									onChange={(e) => actualizarPago(i, "metodoPago", e.target.value)}>
+									<option value="EFECTIVO">Efectivo</option>
+									<option value="TARJETA">Tarjeta</option>
+									<option value="TRANSFERENCIA">Transferencia</option>
+								</select>
+								<input type="number" step="0.01" className="form-control form-control-sm"
+									style={{ maxWidth: 110 }} placeholder={pagos.length === 1 ? total.toFixed(2) : "monto"}
+									value={p.monto} onChange={(e) => actualizarPago(i, "monto", e.target.value)} />
+								{pagos.length > 1 && (
+									<button className="btn btn-sm btn-danger light py-0 px-2" onClick={() => quitarPago(i)}>
+										<i className="bi bi-x"></i>
+									</button>
+								)}
+							</div>
+						))}
+						{pagos.length > 1 && (
+							<div className={`small mb-2 ${cuadra ? "text-muted" : "text-danger"}`}>
+								Suma pagos: {money(sumaPagos)} / Total: {money(total)}
+							</div>
+						)}
+						<div className="d-flex justify-content-between mb-3">
+							<h4 className="mb-0">Total</h4><h3 className="mb-0 text-primary">{money(total)}</h3>
+						</div>
+						<button className="btn btn-primary btn-block" disabled={items.length === 0 || cobrando || !cuadra}
+							onClick={() => cobrar((m) => swal("No se pudo cobrar", m, "error"))}>
+							{cobrando ? "Cobrando…" : "Cobrar"}
+						</button>
+						<button className="btn btn-outline-danger btn-block mt-2" disabled={items.length === 0} onClick={vaciar}>
+							Vaciar
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<Modal show={!!recibo} onHide={() => setRecibo(null)} centered>
+				<div className="modal-header">
+					<h5 className="modal-title">Venta registrada</h5>
+					<button type="button" className="btn-close" onClick={() => setRecibo(null)}></button>
+				</div>
+				<div className="modal-body">
+					{recibo && (
+						<>
+							<div className="alert alert-success py-2">
+								No. <strong>{recibo.numeroVenta || recibo.numero_venta}</strong> · enviada a despacho.
+							</div>
+							<table className="table table-sm mb-0">
+								<tbody>
+									{(recibo.items || []).map((it, i) => (
+										<tr key={i}><td>{it.cantidad} × {it.producto}</td><td className="text-end">{money(it.subtotal)}</td></tr>
+									))}
+								</tbody>
+								<tfoot><tr className="fw-bold"><td>Total</td><td className="text-end text-primary">{money(recibo.total)}</td></tr></tfoot>
+							</table>
+						</>
+					)}
+				</div>
+				<div className="modal-footer">
+					<button type="button" className="btn btn-secondary" onClick={() => setRecibo(null)}>Cerrar</button>
+					<button type="button" className="btn btn-primary" onClick={() => imprimirRecibo(recibo)}>
+						<i className="bi bi-printer me-1"></i>Imprimir recibo
+					</button>
+				</div>
+			</Modal>
+		</>
+	);
+};
+
+export default CarritoPanel;

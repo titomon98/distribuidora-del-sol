@@ -1,8 +1,8 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 /** Migración 16: tabla `detalle_venta` (producto + venta como FK). */
-export class Migracion16CrearDetalleVenta0016 implements MigrationInterface {
-  name = 'Migracion16CrearDetalleVenta0016';
+export class Migracion16CrearDetalleVenta1700000000016 implements MigrationInterface {
+  name = 'Migracion16CrearDetalleVenta1700000000016';
 
   public async up(q: QueryRunner): Promise<void> {
     await q.query(`

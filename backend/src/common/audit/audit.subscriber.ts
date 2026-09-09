@@ -14,8 +14,10 @@ import { Auditoria } from './auditoria.entity';
  * Se ignoran las tablas de infraestructura (`auditoria`, `idempotency_key` y la
  * tabla de migraciones) para no auditarse a sí mismo ni entrar en recursión.
  *
- * El `usuario_id` / `ip` reales se completarán vía contexto de request cuando
- * se conecten los módulos (por ahora quedan en null si no hay actor conocido).
+ * El `usuario_id` se toma del actor que la capa de negocio ya escribe en la
+ * entidad (`created_by` al insertar, `updated_by` al actualizar/eliminar). Así
+ * la bitácora registra quién hizo cada cambio sin acoplar el subscriber al
+ * request. Queda null solo si el cambio no trae actor (p.ej. seeds).
  */
 @EventSubscriber()
 export class AuditSubscriber implements EntitySubscriberInterface {
@@ -41,7 +43,7 @@ export class AuditSubscriber implements EntitySubscriberInterface {
       tabla,
       registroId: event.entity?.id ?? null,
       tiendaId: event.entity?.tiendaId ?? null,
-      createdBy: undefined,
+      usuarioId: event.entity?.createdBy ?? event.entity?.updatedBy ?? null,
       datosNuevos: event.entity ?? null,
     } as any);
   }
@@ -54,6 +56,7 @@ export class AuditSubscriber implements EntitySubscriberInterface {
       tabla,
       registroId: (event.entity as any)?.id ?? (event.databaseEntity as any)?.id ?? null,
       tiendaId: (event.entity as any)?.tiendaId ?? null,
+      usuarioId: (event.entity as any)?.updatedBy ?? (event.databaseEntity as any)?.updatedBy ?? null,
       datosAnteriores: event.databaseEntity ?? null,
       datosNuevos: event.entity ?? null,
     } as any);
@@ -67,6 +70,7 @@ export class AuditSubscriber implements EntitySubscriberInterface {
       tabla,
       registroId: (event.databaseEntity as any)?.id ?? null,
       tiendaId: (event.databaseEntity as any)?.tiendaId ?? null,
+      usuarioId: (event.databaseEntity as any)?.updatedBy ?? null,
       datosAnteriores: event.databaseEntity ?? null,
     } as any);
   }

@@ -1,55 +1,32 @@
-import axios from 'axios';
 import swal from "sweetalert";
+import axiosInstance from './AxiosInstance';
 import {
-    loginConfirmedAction,
     Logout,
+    loginConfirmedAction,
 } from '../store/actions/AuthActions';
 
-export function signUp(email, password) {
-    //axios call
-    const postData = {
-        email,
-        password,
-        returnSecureToken: true,
-    };
-    return axios.post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD3RPAp3nuETDn9OQimqn_YF6zdzqWITII`,
-        postData,
-    );
+// El backend (NestJS) responde con { idToken, expiresIn, localId, email, displayName, rol, tiendaId }.
+export function login(email, password) {
+    return axiosInstance.post('/auth/login', { email, password });
 }
 
-export function login(email, password) {
-    const postData = {
-        email,
-        password,
-        returnSecureToken: true,
-    };
-    return axios.post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD3RPAp3nuETDn9OQimqn_YF6zdzqWITII`,
-        postData,
-    );
+// El alta de usuarios es tarea del administrador dentro del sistema, no un
+// registro público. Se deshabilita el signUp del template.
+export function signUp() {
+    return Promise.reject({
+        response: { data: { message: 'El registro público está deshabilitado.' } },
+    });
 }
 
 export function formatError(errorResponse) {
-    switch (errorResponse.error.message) {
-        case 'EMAIL_EXISTS':
-            //return 'Email already exists';
-            swal("Oops", "Email already exists", "error");
-            break;
-        case 'EMAIL_NOT_FOUND':
-            //return 'Email not found';
-           swal("Oops", "Email not found", "error",{ button: "Try Again!",});
-           break;
-        case 'INVALID_PASSWORD':
-            //return 'Invalid Password';
-            swal("Oops", "Invalid Password", "error",{ button: "Try Again!",});
-            break;
-        case 'USER_DISABLED':
-            return 'User Disabled';
-
-        default:
-            return '';
+    // Errores del backend NestJS: { statusCode, message, error }.
+    const msg = errorResponse && errorResponse.message;
+    if (msg) {
+        swal("Error", Array.isArray(msg) ? msg.join('\n') : msg, "error", { button: "Reintentar" });
+        return msg;
     }
+    swal("Error", "No se pudo conectar con el servidor.", "error");
+    return '';
 }
 
 export function saveTokenInLocalStorage(tokenDetails) {
@@ -61,7 +38,6 @@ export function saveTokenInLocalStorage(tokenDetails) {
 
 export function runLogoutTimer(dispatch, timer, navigate) {
     setTimeout(() => {
-        //dispatch(Logout(history));
         dispatch(Logout(navigate));
     }, timer);
 }
@@ -82,9 +58,9 @@ export function checkAutoLogin(dispatch, navigate) {
         dispatch(Logout(navigate));
         return;
     }
-		
+
     dispatch(loginConfirmedAction(tokenDetails));
-	
+
     const timer = expireDate.getTime() - todaysDate.getTime();
     runLogoutTimer(dispatch, timer, navigate);
 }

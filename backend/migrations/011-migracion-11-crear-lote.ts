@@ -4,8 +4,8 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
  * Migración 11: tabla `lote`.
  * Lotes de producto que ingresan; `cantidad_disponible` sostiene la existencia.
  */
-export class Migracion11CrearLote0011 implements MigrationInterface {
-  name = 'Migracion11CrearLote0011';
+export class Migracion11CrearLote1700000000011 implements MigrationInterface {
+  name = 'Migracion11CrearLote1700000000011';
 
   public async up(q: QueryRunner): Promise<void> {
     await q.query(`

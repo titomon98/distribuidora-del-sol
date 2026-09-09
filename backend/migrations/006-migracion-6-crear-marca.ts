@@ -1,8 +1,8 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 /** Migración 6: tabla `marca` (marcas de producto, por tienda). */
-export class Migracion6CrearMarca0006 implements MigrationInterface {
-  name = 'Migracion6CrearMarca0006';
+export class Migracion6CrearMarca1700000000006 implements MigrationInterface {
+  name = 'Migracion6CrearMarca1700000000006';
 
   public async up(q: QueryRunner): Promise<void> {
     await q.query(`

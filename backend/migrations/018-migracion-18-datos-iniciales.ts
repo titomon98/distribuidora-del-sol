@@ -6,8 +6,8 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
  * cliente Consumidor Final (CF) por defecto. Usa UUIDs fijos + ON CONFLICT /
  * NOT EXISTS para que reejecutar la migración no duplique nada.
  */
-export class Migracion18DatosIniciales0018 implements MigrationInterface {
-  name = 'Migracion18DatosIniciales0018';
+export class Migracion18DatosIniciales1700000000018 implements MigrationInterface {
+  name = 'Migracion18DatosIniciales1700000000018';
 
   private readonly TIENDA = '00000000-0000-0000-0000-000000000001';
   private readonly CLIENTE_CF = '00000000-0000-0000-0000-000000000021';

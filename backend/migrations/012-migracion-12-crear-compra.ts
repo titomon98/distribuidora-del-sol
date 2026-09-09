@@ -4,8 +4,8 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
  * Migración 12: tabla `compra`.
  * `idempotency_key` único (parcial) evita duplicar la compra por doble click.
  */
-export class Migracion12CrearCompra0012 implements MigrationInterface {
-  name = 'Migracion12CrearCompra0012';
+export class Migracion12CrearCompra1700000000012 implements MigrationInterface {
+  name = 'Migracion12CrearCompra1700000000012';
 
   public async up(q: QueryRunner): Promise<void> {
     await q.query(`

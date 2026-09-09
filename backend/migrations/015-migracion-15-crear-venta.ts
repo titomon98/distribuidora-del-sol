@@ -5,8 +5,8 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
  * `estado_despacho` coordina cobro y despacho en tiempo real.
  * `idempotency_key` único (parcial) evita duplicar la venta por doble click.
  */
-export class Migracion15CrearVenta0015 implements MigrationInterface {
-  name = 'Migracion15CrearVenta0015';
+export class Migracion15CrearVenta1700000000015 implements MigrationInterface {
+  name = 'Migracion15CrearVenta1700000000015';
 
   public async up(q: QueryRunner): Promise<void> {
     await q.query(`

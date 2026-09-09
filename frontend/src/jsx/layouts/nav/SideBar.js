@@ -98,8 +98,12 @@ const SideBar = () => {
     >
       <PerfectScrollbar className="dlabnav-scroll">
           <ul className="metismenu" id="menu">
-			<li className="menu-title"> Main Menu</li>
-              {MenuList.map((data, index)=>{
+			<li className="menu-title"> Menú Principal</li>
+              {MenuList.filter((d) => {
+                let rol = "";
+                try { rol = (JSON.parse(localStorage.getItem("userDetails") || "{}")).rol || ""; } catch { rol = ""; }
+                return !d.roles || d.roles.includes(rol);
+              }).map((data, index)=>{
                 let menuClass = data.classsChange;
                   if(menuClass === "menu-title"){
                     return(
@@ -170,18 +174,6 @@ const SideBar = () => {
               })}
           
           </ul>
-          <div className="plus-box">
-              <div className="d-flex align-items-center">
-                <h5>Upgrade your Account to Get Free Voucher</h5>				
-              </div>
-              <Link to={"#"} className="btn bg-white btn-sm">Upgrade</Link>
-          </div>
-          <div className="copyright mt-0">
-              <p><strong>Distribuidora del Sol - Administración de miscelánea</strong> © {new Date().getFullYear()} Todos los derechos reservados</p>
-              <p className="fs-12">Hecho con
-                <span className="heart" onClick={()=>heartBlast()}></span> por XelaCode
-              </p>
-          </div>
         </PerfectScrollbar>
       </div>
     );

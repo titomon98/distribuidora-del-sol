@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 /// React router dom
 import { Link } from "react-router-dom";
-import logo from "../../../images/logo-full.jpeg";
+import logo from "../../../images/logo-full-transparent.png";
 
 export function  NavMenuToggle(){
 	setTimeout(()=>{	
@@ -20,8 +20,7 @@ const NavHader = () => {
   return (
     <div className="nav-header">
       <Link to="/dashboard" className="brand-logo">
-        <img className="logo-abbr" src={logo} alt="Distribuidora del Sol" width="45" height="45" style={{ objectFit: "contain" }} />
-        <img className="brand-title" src={logo} alt="Distribuidora del Sol" height="45" style={{ width: "auto", objectFit: "contain" }} />
+        <img className="brand-title" src={logo} alt="Distribuidora del Sol" height="52" style={{ width: "auto", maxWidth: "170px", objectFit: "contain" }} />
       </Link>
 
       <div

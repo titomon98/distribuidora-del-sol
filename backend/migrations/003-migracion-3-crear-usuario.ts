@@ -1,8 +1,8 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 /** Migración 3: tabla `usuario` (FK a tienda y rol). */
-export class Migracion3CrearUsuario0003 implements MigrationInterface {
-  name = 'Migracion3CrearUsuario0003';
+export class Migracion3CrearUsuario1700000000003 implements MigrationInterface {
+  name = 'Migracion3CrearUsuario1700000000003';
 
   public async up(q: QueryRunner): Promise<void> {
     await q.query(`

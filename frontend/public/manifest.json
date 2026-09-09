@@ -8,9 +8,9 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo-distribuidora.jpeg",
-      "type": "image/jpeg",
-      "sizes": "1600x1600"
+      "src": "favicon-sun.png",
+      "type": "image/png",
+      "sizes": "1189x964"
     }
   ],
   "start_url": ".",

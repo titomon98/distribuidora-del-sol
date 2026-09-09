@@ -6,8 +6,8 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
  * clave y solo la primera petición ejecuta la operación. El índice ÚNICO sobre
  * `clave` es la garantía contra escrituras concurrentes duplicadas.
  */
-export class Migracion5CrearIdempotencyKey0005 implements MigrationInterface {
-  name = 'Migracion5CrearIdempotencyKey0005';
+export class Migracion5CrearIdempotencyKey1700000000005 implements MigrationInterface {
+  name = 'Migracion5CrearIdempotencyKey1700000000005';
 
   public async up(q: QueryRunner): Promise<void> {
     await q.query(`
