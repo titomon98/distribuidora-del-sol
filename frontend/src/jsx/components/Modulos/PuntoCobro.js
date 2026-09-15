@@ -20,7 +20,7 @@ const PuntoCobro = () => {
 	// Tiempo real: cuando despacho confirma un pedido, avisa en caja.
 	useEffect(() => {
 		const s = getSocket();
-		const onDespachada = () => setAviso({ tipo: "info", texto: "Despacho confirmó un pedido ✓" });
+		const onDespachada = () => setAviso({ tipo: "info", texto: "Despacho confirmó un pedido" });
 		s.on("venta:despachada", onDespachada);
 		return () => s.off("venta:despachada", onDespachada);
 	}, []);

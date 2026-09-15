@@ -102,7 +102,7 @@ const ListView = ({ title, endpoint, columns, actions, emptyText, refreshKey,
 							{!loading && filas.map((row, i) => (
 								<tr key={row.id || i}>
 									{columns.map((c) => (
-										<td key={c.name}>{c.format ? c.format(row[c.name], row) : (row[c.name] ?? "—")}</td>
+										<td key={c.name}>{c.format ? c.format(row[c.name], row) : (row[c.name] ?? "-")}</td>
 									))}
 									{actions && <td className="text-end text-nowrap">{actions(row, reload)}</td>}
 								</tr>

@@ -56,7 +56,7 @@ const Despacho = () => {
 				title="Pedidos pendientes de despacho"
 				refreshKey={refreshKey}
 				endpoint="ventas?estadoDespacho=PENDIENTE"
-				emptyText="No hay pedidos pendientes. 🎉"
+				emptyText="No hay pedidos pendientes."
 				columns={[
 					{ name: "numeroVenta", label: "No. venta" },
 					{ name: "fecha", label: "Fecha", format: fecha },

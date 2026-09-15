@@ -54,7 +54,7 @@ const CrudResource = ({ title, endpoint, columns, fields }) => {
 	}, [fields]);
 
 	const lookupLabel = (fieldName, id) =>
-		(options[fieldName] || []).find((o) => o.id === id)?.label || "—";
+		(options[fieldName] || []).find((o) => o.id === id)?.label || "-";
 
 	const abrirNuevo = () => { setEditId(null); setForm({}); setShow(true); };
 	const abrirEdicion = (row) => {
@@ -101,7 +101,7 @@ const CrudResource = ({ title, endpoint, columns, fields }) => {
 	const cellValue = (col, row) => {
 		if (col.lookup) return lookupLabel(col.lookup, row[col.name]);
 		if (col.format) return col.format(row[col.name], row);
-		return row[col.name] ?? "—";
+		return row[col.name] ?? "-";
 	};
 
 	const filas = filtrarFilas(rows, columns, busqueda,
@@ -163,7 +163,7 @@ const CrudResource = ({ title, endpoint, columns, fields }) => {
 			<Modal show={show} onHide={() => setShow(false)} centered>
 				<form onSubmit={guardar}>
 					<div className="modal-header">
-						<h5 className="modal-title">{editId ? "Editar" : "Nuevo"} — {title}</h5>
+						<h5 className="modal-title">{editId ? "Editar" : "Nuevo"} - {title}</h5>
 						<button type="button" className="btn-close" onClick={() => setShow(false)}></button>
 					</div>
 					<div className="modal-body">

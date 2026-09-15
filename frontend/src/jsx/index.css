@@ -710,3 +710,9 @@ button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--r
 	height: auto;
 	display: contents;
 }
+/* --- Logo Distribuidora del Sol: ícono del sol solo en móvil, logo completo en escritorio --- */
+.nav-header .logo-abbr { display: none; }
+@media only screen and (max-width: 63.9375rem) {
+  .nav-header .brand-title { display: none; }
+  .nav-header .logo-abbr { display: inline-block; max-width: 3rem; height: auto; }
+}

@@ -2,7 +2,7 @@ import React from "react";
 import CrudResource from "./CrudResource";
 
 const money = (n) =>
-	n == null ? "—" : "Q " + Number(n).toLocaleString("es-GT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+	n == null ? "-" : "Q " + Number(n).toLocaleString("es-GT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 const Productos = () => (
 	<CrudResource

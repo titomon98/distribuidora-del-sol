@@ -81,11 +81,11 @@ const Inventario = () => {
 								)}
 								{!lotesModal?.cargando && (lotesModal?.lotes || []).map((l, i) => (
 									<tr key={i}>
-										<td>{l.codigoLote || "—"}</td>
+										<td>{l.codigoLote || "-"}</td>
 										<td className="text-center">{l.cantidadDisponible}</td>
 										<td className="text-end">{money(l.costoUnitario)}</td>
-										<td>{l.fechaIngreso ? String(l.fechaIngreso).slice(0, 10) : "—"}</td>
-										<td>{l.fechaVencimiento ? String(l.fechaVencimiento).slice(0, 10) : "—"}</td>
+										<td>{l.fechaIngreso ? String(l.fechaIngreso).slice(0, 10) : "-"}</td>
+										<td>{l.fechaVencimiento ? String(l.fechaVencimiento).slice(0, 10) : "-"}</td>
 									</tr>
 								))}
 							</tbody>

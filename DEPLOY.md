@@ -1,4 +1,4 @@
-# Despliegue — Distribuidora del Sol (DigitalOcean droplet, sin dominio de pago)
+# Despliegue - Distribuidora del Sol (DigitalOcean droplet, sin dominio de pago)
 
 Guía paso a paso para publicar el sistema en **un solo droplet**, con:
 
@@ -7,7 +7,7 @@ Guía paso a paso para publicar el sistema en **un solo droplet**, con:
 - **PostgreSQL** local en el droplet.
 - **HTTPS gratis** con **certbot** + un hostname gratuito (`sslip.io`), sin comprar dominio.
 
-El **build pesado de React se hace en tu máquina** y se sube ya compilado, para que el droplet no se quede sin memoria. Así basta un droplet de **1 GB ($6/mes)**.
+El **build pesado de React se hace en tu máquina** y se sube ya compilado, para que el droplet no se quede sin memoria. Este proyecto corre en un droplet de **512 MB** con **2 GB de swap** (ver paso 2.1); el swap es imprescindible en 512 MB.
 
 ---
 
@@ -51,17 +51,28 @@ El backend NO se compila en local (su build con `nest build` es liviano y se hac
 
 ## 2. Crear el droplet
 
-- **Ubuntu 24.04 LTS**, plan **Basic Regular, 1 GB / 1 vCPU ($6/mes)** (suficiente para 3 usuarios).
+- **Ubuntu 24.04 LTS**. Este despliegue corre en un droplet de **512 MB / 1 vCPU** (`s-1vcpu-512mb`).
 - Agrega tu llave SSH.
-- Anota la **IP pública** (ej. `203.0.113.45`).
+- **IP pública de este proyecto:** `104.236.254.247`
 
 Entra por SSH:
 
 ```bash
-ssh root@203.0.113.45
+ssh root@104.236.254.247
 ```
 
-(Opcional recomendado: crea un usuario no-root con sudo y trabaja con él.)
+> **512 MB es muy justo:** basta para el uso de 3 personas *en marcha*, pero `npm ci`, las migraciones y `nest build` se quedan sin memoria (`Killed`) sin swap. Por eso el **paso 2.1 (swap) es obligatorio** antes de instalar nada.
+
+### 2.1 Swap (OBLIGATORIO en 512 MB)
+
+```bash
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+free -h   # debe mostrar  Swap: 2.0Gi
+```
 
 ---
 
@@ -118,7 +129,7 @@ cp .env.production.example .env
 nano .env
 #   - DB_PASSWORD  = la clave que pusiste en el paso 4
 #   - JWT_SECRET   = genera uno:  openssl rand -hex 32
-#   - CORS_ORIGIN  = https://TU-IP-CON-GUIONES.sslip.io   (lo defines en el paso 8)
+#   - CORS_ORIGIN  = https://104.236.254.247.sslip.io   (lo defines en el paso 8)
 
 # Producción SIN datos de prueba: elimina la migración de los 50 registros demo.
 # (Deja el esquema + admin + roles + cliente CF, que sí se necesitan.)
@@ -148,8 +159,8 @@ sudo cp -r ~/distribuidora/frontend/build/* /var/www/distribuidora/
 
 ## 8. Nginx + hostname gratis + HTTPS (certbot)
 
-**Hostname gratis:** `sslip.io` resuelve a tu IP sin registrar nada. Para `203.0.113.45` usa
-`203-0-113-45.sslip.io` (con guiones) o `203.0.113.45.sslip.io` (con puntos).
+**Hostname gratis:** `sslip.io` resuelve a tu IP sin registrar nada. Aquí usamos
+`104.236.254.247.sslip.io` (que es a lo que se emitió el certificado). Debe ser el MISMO valor en el navegador, en `server_name` y en `CORS_ORIGIN`.
 
 ```bash
 # 1) Instala la config
@@ -157,24 +168,26 @@ sudo cp ~/distribuidora/deploy/nginx-distribuidora.conf /etc/nginx/sites-availab
 sudo ln -sf /etc/nginx/sites-available/distribuidora /etc/nginx/sites-enabled/distribuidora
 sudo rm -f /etc/nginx/sites-enabled/default
 
-# 2) Pon tu hostname en server_name
-sudo nano /etc/nginx/sites-available/distribuidora
-#   server_name 203-0-113-45.sslip.io;
+# 2) Pon tu hostname en server_name (IMPRESCINDIBLE: certbot NO reconoce "_")
+sudo sed -i 's/server_name _;/server_name 104.236.254.247.sslip.io;/' /etc/nginx/sites-available/distribuidora
 
 # 3) Prueba y recarga
 sudo nginx -t && sudo systemctl reload nginx
 
 # 4) HTTPS automático (edita Nginx y programa la renovación solo)
-sudo certbot --nginx -d 203-0-113-45.sslip.io
+sudo certbot --nginx -d 104.236.254.247.sslip.io
 ```
 
-Ya deberías abrir **https://203-0-113-45.sslip.io** en el navegador.
+> Si certbot dice *"Could not automatically find a matching server block"*, es que el `server_name` quedó en `_`. Corrige con el `sed` del paso 2, `sudo systemctl reload nginx`, y reinstala el cert:
+> `sudo certbot install --cert-name 104.236.254.247.sslip.io`
+
+Ya deberías abrir **https://104.236.254.247.sslip.io** en el navegador.
 
 **Ajusta el CORS del backend** al mismo origen y reinícialo:
 
 ```bash
 cd ~/distribuidora/backend
-nano .env      # CORS_ORIGIN=https://203-0-113-45.sslip.io
+nano .env      # CORS_ORIGIN=https://104.236.254.247.sslip.io
 pm2 restart distribuidora-api
 ```
 
@@ -191,7 +204,7 @@ pm2 restart distribuidora-api
 Checklist de seguridad:
 - [ ] `JWT_SECRET` largo y aleatorio (no el de ejemplo).
 - [ ] Clave fuerte de PostgreSQL.
-- [ ] HTTPS activo (certbot) — así las contraseñas no viajan en claro.
+- [ ] HTTPS activo (certbot) - así las contraseñas no viajan en claro.
 - [ ] Firewall `ufw` activo (solo SSH y Nginx).
 
 ---
@@ -204,7 +217,7 @@ cd frontend && npm run build && cd ..
 git add -f frontend/build && git commit -m "Nuevo build" && git push
 ```
 
-**En el droplet** — un solo comando con el script incluido:
+**En el droplet** - un solo comando con el script incluido:
 ```bash
 cd ~/distribuidora
 bash deploy/deploy.sh
@@ -224,11 +237,8 @@ cd backend && npm ci && npm run migration:run && npm run build && pm2 restart di
 
 ## 11. Notas útiles
 
-- **Memoria:** con el build hecho en local, 1 GB va sobrado. Si algún día compilas algo pesado en el server, agrega swap:
-  ```bash
-  sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile
-  echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
-  ```
+- **Memoria:** el swap de 2 GB (paso 2.1) es lo que permite que 512 MB aguante `npm ci` y `nest build`. Si ves `Killed`, casi siempre es que falta el swap. Alternativa: compilar el backend en tu Mac (`cd backend && npm run build`) y subir `dist/` con `git add -f backend/dist`.
+- **`main.js`:** Nest lo compila en `dist/src/main.js` (no `dist/main.js`); por eso `ecosystem.config.js` y `start:prod` apuntan ahí.
 - **Logs del backend:** `pm2 logs distribuidora-api`
 - **Estado:** `pm2 status`
 - **Backup de la BD:** `sudo -u postgres pg_dump distribuidora > backup_$(date +%F).sql`

@@ -5,7 +5,7 @@ import ListView from "./ListView";
 import axiosInstance from "../../../services/AxiosInstance";
 import { money } from "./format";
 
-const soloFecha = (v) => (v ? String(v).slice(0, 10) : "—");
+const soloFecha = (v) => (v ? String(v).slice(0, 10) : "-");
 
 const Creditos = () => {
 	const [abono, setAbono] = useState(null); // { tipo:'cobrar'|'pagar', row, reload }

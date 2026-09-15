@@ -31,7 +31,7 @@ const MiCuenta = () => {
 		<div className="row justify-content-center">
 			<div className="col-lg-6">
 				<div className="card">
-					<div className="card-header"><h4 className="card-title mb-0">Mi cuenta{nombre ? ` — ${nombre}` : ""}</h4></div>
+					<div className="card-header"><h4 className="card-title mb-0">Mi cuenta{nombre ? ` - ${nombre}` : ""}</h4></div>
 					<div className="card-body">
 						<form onSubmit={guardar}>
 							<div className="mb-3">

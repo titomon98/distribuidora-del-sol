@@ -10,10 +10,10 @@ import logo from '../../images/logo-full-transparent.png'
 
 function Login (props) {
 	const navigate = useNavigate();
-    const [email, setEmail] = useState('admin@distribuidora.local');
+    const [email, setEmail] = useState('');
     let errorsObj = { email: '', password: '' };
     const [errors, setErrors] = useState(errorsObj);
-    const [password, setPassword] = useState('admin123');
+    const [password, setPassword] = useState('');
     const dispatch = useDispatch();
 
     function onLogin(e) {
@@ -21,11 +21,11 @@ function Login (props) {
         let error = false;
         const errorObj = { ...errorsObj };
         if (email === '') {
-            errorObj.email = 'Email is Required';
+            errorObj.email = 'El usuario es obligatorio';
             error = true;
         }
         if (password === '') {
-            errorObj.password = 'Password is Required';
+            errorObj.password = 'La contraseña es obligatoria';
             error = true;
         }
         setErrors(errorObj);
@@ -77,13 +77,15 @@ function Login (props) {
 										)}
 										<form onSubmit={onLogin}>
 											<div className="mb-3">
-												<label className="mb-1"><strong>Email Address</strong></label>
-												<input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
+												<label className="mb-1"><strong>Usuario o correo</strong></label>
+												<input type="text" className="form-control" placeholder="Ingresa tu usuario o correo"
+													value={email} onChange={(e) => setEmail(e.target.value)} />
 												{errors.email && <div className="text-danger fs-12">{errors.email}</div>}
 											</div>
 											<div className="mb-3">
-												<label className="mb-1"><strong>Password</strong></label>
-												<input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
+												<label className="mb-1"><strong>Contraseña</strong></label>
+												<input type="password" className="form-control" placeholder="Ingresa tu contraseña"
+													value={password} onChange={(e) => setPassword(e.target.value)} />
 													{errors.password && <div className="text-danger fs-12">{errors.password}</div>}
 											</div>
 											<div className="mt-4 mb-2"></div>

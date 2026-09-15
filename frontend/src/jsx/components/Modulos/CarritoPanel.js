@@ -8,7 +8,7 @@ import SearchSelect from "./SearchSelect";
 /** Tabla del carrito + resumen (cliente, método de pago, total, cobrar) + recibo. */
 const CarritoPanel = ({ carrito }) => {
 	const { items, clienteId, setClienteId, descuento, setDescuento, pagos, agregarPago, quitarPago, actualizarPago, cobrando, recibo, setRecibo,
-		subtotal, total, unidades, setCantidad, quitar, vaciar, cobrar } = carrito;
+		subtotal, total, unidades, cambiarCantidad, setCantidad, quitar, vaciar, cobrar } = carrito;
 
 	const [clienteOpt, setClienteOpt] = useState(null);
 	// Al reiniciarse la venta (cobro) vuelve a Consumidor Final.
@@ -42,9 +42,12 @@ const CarritoPanel = ({ carrito }) => {
 											<td>{it.nombre}</td>
 											<td className="text-end">{money(it.precio)}</td>
 											<td className="text-center">
-												<input type="number" min="1" className="form-control form-control-sm text-center mx-auto"
-													style={{ width: 80 }} value={it.cantidad}
-													onChange={(e) => setCantidad(it.id, e.target.value)} />
+												<div className="input-group input-group-sm flex-nowrap" style={{ width: 130, margin: "0 auto" }}>
+													<button className="btn btn-outline-primary px-2" type="button" onClick={() => cambiarCantidad(it.id, -1)}>−</button>
+													<input type="number" min="1" className="form-control text-center px-1"
+														value={it.cantidad} onChange={(e) => setCantidad(it.id, e.target.value)} />
+													<button className="btn btn-outline-primary px-2" type="button" onClick={() => cambiarCantidad(it.id, 1)}>+</button>
+												</div>
 											</td>
 											<td className="text-end fw-bold">{money(it.precio * it.cantidad)}</td>
 											<td className="text-end">
@@ -78,7 +81,7 @@ const CarritoPanel = ({ carrito }) => {
 						<div className="d-flex justify-content-between align-items-center mb-2">
 							<label className="form-label mb-0">Pago(s)</label>
 							<button className="btn btn-sm btn-outline-primary py-0 px-2" onClick={agregarPago}>
-								<i className="bi bi-plus-lg"></i> Varios métodos de pago
+								<i className="bi bi-plus-lg"></i> Agregar método de pago
 							</button>
 						</div>
 						{pagos.map((p, i) => (

@@ -145,7 +145,7 @@ import { ThemeContext } from "../context/ThemeContext";
 const Markup = () => {
 
   const allroutes = [
-    /// Distribuidora del Sol — módulos
+    /// Distribuidora del Sol - módulos
     { url: "", component: <Home /> },
     { url: "dashboard", component: <Home /> },
     { url: "cobro", component: <PuntoCobro /> },
