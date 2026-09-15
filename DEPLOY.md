@@ -37,13 +37,13 @@ Sube el build ya compilado a GitHub. Como `frontend/build` está en `.gitignore`
 
 ```bash
 cd ..
-git add -f frontend/build
+git rm -r --cached --quiet frontend/build 2>/dev/null; git add -f frontend/build
 git add DEPLOY.md deploy/ backend/ecosystem.config.js backend/.env.production.example frontend/.env.production
 git commit -m "Build de producción + paquete de despliegue"
 git push
 ```
 
-> Alternativa sin ensuciar el repo: en vez de `git add -f frontend/build`, subir el build por `scp -r frontend/build/* usuario@IP:/var/www/distribuidora/`. Ambas sirven.
+> Alternativa sin ensuciar el repo: en vez de `git rm -r --cached --quiet frontend/build 2>/dev/null; git add -f frontend/build`, subir el build por `scp -r frontend/build/* usuario@IP:/var/www/distribuidora/`. Ambas sirven.
 
 El backend NO se compila en local (su build con `nest build` es liviano y se hace en el server).
 
@@ -214,7 +214,7 @@ Checklist de seguridad:
 **En tu máquina:**
 ```bash
 cd frontend && npm run build && cd ..
-git add -f frontend/build && git commit -m "Nuevo build" && git push
+git rm -r --cached --quiet frontend/build 2>/dev/null; git add -f frontend/build && git commit -m "Nuevo build" && git push
 ```
 
 **En el droplet** - un solo comando con el script incluido:
