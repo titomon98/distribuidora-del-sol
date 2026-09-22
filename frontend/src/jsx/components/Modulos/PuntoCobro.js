@@ -53,7 +53,7 @@ const PuntoCobro = () => {
 				<div className="card-body">
 					<label className="form-label fw-bold">Escanea el código de barras</label>
 					<input ref={inputRef} type="text" inputMode="numeric" autoComplete="off"
-						className="form-control form-control-lg" placeholder="Apunta la pistola y dispara…"
+						className="form-control form-control-lg" placeholder="Apunta la pistola y cobra…"
 						value={codigo} onChange={(e) => setCodigo(e.target.value)} onKeyDown={escanear} />
 					{aviso && <div className={`alert alert-${aviso.tipo} mt-3 mb-0 py-2`}>{aviso.texto}</div>}
 				</div>
