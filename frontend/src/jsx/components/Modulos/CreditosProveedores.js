@@ -7,20 +7,20 @@ import { money } from "./format";
 
 const soloFecha = (v) => (v ? String(v).slice(0, 10) : "-");
 
-const Creditos = () => {
-	const [abono, setAbono] = useState(null); // { tipo:'cobrar'|'pagar', row, reload }
+/** Cuentas por pagar (créditos de proveedores) + abonos. */
+const CreditosProveedores = () => {
+	const [abono, setAbono] = useState(null); // { row, reload }
 	const [monto, setMonto] = useState("");
 	const [guardando, setGuardando] = useState(false);
 
-	const abrir = (tipo, row, reload) => { setAbono({ tipo, row, reload }); setMonto(""); };
+	const abrir = (row, reload) => { setAbono({ row, reload }); setMonto(""); };
 
 	const registrarAbono = async () => {
 		const m = Number(monto);
 		if (!m || m <= 0) { swal("Monto inválido", "Ingrese un monto mayor a 0.", "warning"); return; }
-		const ruta = abono.tipo === "cobrar" ? "por-cobrar" : "por-pagar";
 		setGuardando(true);
 		try {
-			await axiosInstance.post(`/creditos/${ruta}/${abono.row.id}/abono`, { monto: m });
+			await axiosInstance.post(`/creditos/por-pagar/${abono.row.id}/abono`, { monto: m });
 			const reload = abono.reload;
 			setAbono(null);
 			await reload();
@@ -29,29 +29,8 @@ const Creditos = () => {
 		} finally { setGuardando(false); }
 	};
 
-	const accion = (tipo) => (row, reload) => (
-		<button className="btn btn-sm btn-primary" onClick={() => abrir(tipo, row, reload)}>
-			<i className="bi bi-cash-stack me-1"></i>Abonar
-		</button>
-	);
-
 	return (
 		<>
-			<ListView
-				title="Cuentas por cobrar (clientes)"
-				endpoint="creditos/por-cobrar"
-				emptyText="Sin saldos por cobrar."
-				totalField="saldo"
-				columns={[
-					{ name: "cliente", label: "Cliente" },
-					{ name: "numeroVenta", label: "Venta" },
-					{ name: "montoTotal", label: "Monto", format: money },
-					{ name: "saldo", label: "Saldo", format: money },
-					{ name: "fechaVencimiento", label: "Vence", format: soloFecha },
-				]}
-				actions={accion("cobrar")}
-			/>
-
 			<ListView
 				title="Cuentas por pagar (proveedores)"
 				endpoint="creditos/por-pagar"
@@ -64,21 +43,22 @@ const Creditos = () => {
 					{ name: "saldo", label: "Saldo", format: money },
 					{ name: "fechaVencimiento", label: "Vence", format: soloFecha },
 				]}
-				actions={accion("pagar")}
+				actions={(row, reload) => (
+					<button className="btn btn-sm btn-primary" onClick={() => abrir(row, reload)}>
+						<i className="bi bi-cash-stack me-1"></i>Abonar
+					</button>
+				)}
 			/>
 
 			<Modal show={!!abono} onHide={() => setAbono(null)} centered>
 				<div className="modal-header">
-					<h5 className="modal-title">Registrar abono</h5>
+					<h5 className="modal-title">Registrar abono a proveedor</h5>
 					<button type="button" className="btn-close" onClick={() => setAbono(null)}></button>
 				</div>
 				<div className="modal-body">
 					{abono && (
 						<>
-							<p className="mb-1">
-								<strong>{abono.tipo === "cobrar" ? abono.row.cliente : abono.row.proveedor}</strong>
-								{" · "}{abono.tipo === "cobrar" ? abono.row.numeroVenta : abono.row.numeroCompra}
-							</p>
+							<p className="mb-1"><strong>{abono.row.proveedor}</strong> · {abono.row.numeroCompra}</p>
 							<p className="mb-3">Saldo actual: <strong className="text-primary">{money(abono.row.saldo)}</strong></p>
 							<label className="form-label">Monto a abonar (Q)</label>
 							<input type="number" step="0.01" min="0.01" max={abono.row.saldo}
@@ -98,4 +78,4 @@ const Creditos = () => {
 	);
 };
 
-export default Creditos;
+export default CreditosProveedores;

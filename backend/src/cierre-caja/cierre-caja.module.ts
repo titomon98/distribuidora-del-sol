@@ -12,29 +12,58 @@ class CierreCajaService {
   async resumen(tiendaId: string, fecha?: string) {
     // fecha = 'YYYY-MM-DD'; por defecto hoy.
     const dia = fecha && /^\d{4}-\d{2}-\d{2}$/.test(fecha) ? fecha : null;
-    const filtroFecha = dia
-      ? `v.fecha >= $2::date AND v.fecha < ($2::date + interval '1 day')`
-      : `v.fecha >= date_trunc('day', now()) AND v.fecha < date_trunc('day', now()) + interval '1 day'`;
+    // Filtros por día para venta (v.fecha) y abono (a.fecha).
+    const filtro = (col: string) => dia
+      ? `${col} >= $2::date AND ${col} < ($2::date + interval '1 day')`
+      : `${col} >= date_trunc('day', now()) AND ${col} < date_trunc('day', now()) + interval '1 day'`;
     const params = dia ? [tiendaId, dia] : [tiendaId];
 
+    // Número de ventas del día (informativo).
     const totales = (await this.ds.query(
-      `SELECT COALESCE(SUM(v.total),0)::numeric AS total, COUNT(*)::int AS cantidad
-       FROM venta v WHERE v.tienda_id=$1 AND v.estado='ACTIVO' AND ${filtroFecha};`,
+      `SELECT COUNT(*)::int AS cantidad
+       FROM venta v WHERE v.tienda_id=$1 AND v.estado='ACTIVO' AND ${filtro('v.fecha')};`,
       params,
     ))[0];
 
-    const porMetodo = await this.ds.query(
-      `SELECT v.metodo_pago AS "metodoPago", COALESCE(SUM(v.total),0)::numeric AS total, COUNT(*)::int AS cantidad
-       FROM venta v WHERE v.tienda_id=$1 AND v.estado='ACTIVO' AND ${filtroFecha}
-       GROUP BY v.metodo_pago ORDER BY total DESC;`,
+    // Dinero recibido al momento de cada venta del día, por método.
+    const pagosVenta = await this.ds.query(
+      `SELECT vp.metodo_pago AS "metodoPago", COALESCE(SUM(vp.monto),0)::numeric AS total, COUNT(*)::int AS cantidad
+       FROM venta_pago vp JOIN venta v ON v.id = vp.venta_id
+       WHERE v.tienda_id=$1 AND v.estado='ACTIVO' AND ${filtro('v.fecha')}
+       GROUP BY vp.metodo_pago;`,
       params,
     );
 
+    // Abonos a créditos de clientes cobrados ese día, por método.
+    const abonosDia = await this.ds.query(
+      `SELECT a.metodo_pago AS "metodoPago", COALESCE(SUM(a.monto),0)::numeric AS total, COUNT(*)::int AS cantidad
+       FROM abono a
+       WHERE a.tienda_id=$1 AND a.estado='ACTIVO' AND ${filtro('a.fecha')}
+       GROUP BY a.metodo_pago;`,
+      params,
+    );
+
+    // Combina pagos de venta + abonos por método = dinero recibido en el día.
+    const mapa: Record<string, { metodoPago: string; total: number; cantidad: number }> = {};
+    const sumar = (rows: any[]) => rows.forEach((r) => {
+      const k = r.metodoPago || 'EFECTIVO';
+      if (!mapa[k]) mapa[k] = { metodoPago: k, total: 0, cantidad: 0 };
+      mapa[k].total += Number(r.total);
+      mapa[k].cantidad += Number(r.cantidad);
+    });
+    sumar(pagosVenta);
+    sumar(abonosDia);
+
+    const porMetodo = Object.values(mapa).sort((a, b) => b.total - a.total);
+    const total = porMetodo.reduce((s, r) => s + r.total, 0);
+    const abonos = abonosDia.reduce((s: number, r: any) => s + Number(r.total), 0);
+
     return {
       fecha: dia ?? new Date().toISOString().slice(0, 10),
-      total: Number(totales.total),
+      total: +total.toFixed(2),
       cantidad: totales.cantidad,
-      porMetodo: porMetodo.map((r: any) => ({ ...r, total: Number(r.total) })),
+      abonos: +abonos.toFixed(2),
+      porMetodo,
     };
   }
 }

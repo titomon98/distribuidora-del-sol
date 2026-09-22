@@ -19,6 +19,9 @@ export class ProductoDto {
   @IsOptional() @IsUUID()
   tipoProductoId?: string;
 
+  @IsOptional() @IsUUID()
+  presentacionId?: string;
+
   @IsOptional() @IsNumber() @Min(0)
   precioCompra?: number;
 

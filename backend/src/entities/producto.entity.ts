@@ -21,6 +21,9 @@ export class Producto extends BaseTiendaEntity {
   @Column({ type: 'uuid', name: 'tipo_producto_id', nullable: true })
   tipoProductoId?: string | null;
 
+  @Column({ type: 'uuid', name: 'presentacion_id', nullable: true })
+  presentacionId?: string | null;
+
   @Column({ type: 'varchar', length: 200 })
   nombre: string;
 

@@ -10,7 +10,8 @@ const labelCliente = (c) => `${c.nombre}${c.nit ? ` (${c.nit})` : ""}`;
 
 /** Tabla del carrito + resumen (cliente, método de pago, total, cobrar) + recibo. */
 const CarritoPanel = ({ carrito }) => {
-	const { items, clienteId, setClienteId, descuento, setDescuento, pagos, agregarPago, quitarPago, actualizarPago, cobrando, recibo, setRecibo,
+	const { items, clienteId, setClienteId, descuento, setDescuento, fechaVencimiento, setFechaVencimiento,
+		pagos, agregarPago, quitarPago, actualizarPago, cobrando, recibo, setRecibo,
 		subtotal, total, unidades, cambiarCantidad, setCantidad, quitar, vaciar, cobrar } = carrito;
 
 	const [clienteOpt, setClienteOpt] = useState(null);
@@ -158,6 +159,17 @@ const CarritoPanel = ({ carrito }) => {
 							onClick={() => cobrar((m) => swal("No se pudo cobrar", m, "error"))}>
 							{cobrando ? "Cobrando…" : "Cobrar"}
 						</button>
+						<hr className="my-2" />
+						<div className="mb-2">
+							<label className="form-label mb-1">Vencimiento del crédito (opcional)</label>
+							<input type="date" className="form-control form-control-sm"
+								value={fechaVencimiento} onChange={(e) => setFechaVencimiento(e.target.value)} />
+							<small className="text-muted">El pago que escriba arriba es el abono inicial; el resto queda como saldo del cliente.</small>
+						</div>
+						<button className="btn btn-warning btn-block" disabled={items.length === 0 || cobrando}
+							onClick={() => cobrar((m) => swal("No se pudo registrar", m, "warning"), "CREDITO")}>
+							<i className="bi bi-wallet2 me-1"></i>{cobrando ? "Registrando…" : "Vender al crédito"}
+						</button>
 						<button className="btn btn-outline-danger btn-block mt-2" disabled={items.length === 0} onClick={vaciar}>
 							Vaciar
 						</button>
@@ -214,7 +226,15 @@ const CarritoPanel = ({ carrito }) => {
 										<tr key={i}><td>{it.cantidad} × {it.producto}</td><td className="text-end">{money(it.subtotal)}</td></tr>
 									))}
 								</tbody>
-								<tfoot><tr className="fw-bold"><td>Total</td><td className="text-end text-primary">{money(recibo.total)}</td></tr></tfoot>
+								<tfoot>
+									{Number(recibo.descuento) > 0 && (
+										<>
+											<tr><td>Subtotal</td><td className="text-end">{money(recibo.subtotal)}</td></tr>
+											<tr><td>Descuento</td><td className="text-end text-danger">-{money(recibo.descuento)}</td></tr>
+										</>
+									)}
+									<tr className="fw-bold"><td>Total</td><td className="text-end text-primary">{money(recibo.total)}</td></tr>
+								</tfoot>
 							</table>
 						</>
 					)}

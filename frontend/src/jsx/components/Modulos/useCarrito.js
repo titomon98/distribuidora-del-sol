@@ -15,6 +15,7 @@ export function useCarrito() {
 	const [items, setItems] = useState([]); // { id, nombre, precio, cantidad }
 	const [clienteId, setClienteId] = useState(""); // "" = Consumidor Final
 	const [descuento, setDescuento] = useState("");
+	const [fechaVencimiento, setFechaVencimiento] = useState(""); // solo venta al crédito
 	const [pagos, setPagos] = useState([{ metodoPago: "EFECTIVO", monto: "" }]);
 	const [cobrando, setCobrando] = useState(false);
 	const [recibo, setRecibo] = useState(null);
@@ -25,12 +26,17 @@ export function useCarrito() {
 	const actualizarPago = (i, campo, valor) =>
 		setPagos((p) => p.map((x, j) => (j === i ? { ...x, [campo]: valor } : x)));
 
+	// Agrega una unidad al carrito. No agrega si supera el stock disponible;
+	// devuelve { ok, stock, nombre } para que el llamador muestre la alerta.
 	const agregar = (producto) => {
+		const stock = Number(producto.stock ?? 0);
+		const actual = items.find((it) => it.id === producto.id)?.cantidad ?? 0;
+		if (actual + 1 > stock) return { ok: false, stock, nombre: producto.nombre };
 		setItems((prev) => {
 			const i = prev.findIndex((it) => it.id === producto.id);
 			if (i >= 0) {
 				const copy = [...prev];
-				copy[i] = { ...copy[i], cantidad: copy[i].cantidad + 1 };
+				copy[i] = { ...copy[i], cantidad: copy[i].cantidad + 1, stock };
 				return copy;
 			}
 			return [...prev, {
@@ -38,20 +44,28 @@ export function useCarrito() {
 				nombre: producto.nombre,
 				precio: Number(producto.precioVenta),
 				cantidad: 1,
+				stock,
 			}];
 		});
+		return { ok: true, stock };
 	};
 
 	const cambiarCantidad = (id, delta) =>
 		setItems((prev) => prev
-			.map((it) => (it.id === id ? { ...it, cantidad: it.cantidad + delta } : it))
+			.map((it) => {
+				if (it.id !== id) return it;
+				let n = it.cantidad + delta;
+				if (it.stock != null) n = Math.min(n, it.stock); // no pasar del stock
+				return { ...it, cantidad: n };
+			})
 			.filter((it) => it.cantidad > 0));
 
-	// Fija la cantidad manualmente (mínimo 1).
+	// Fija la cantidad manualmente (mínimo 1, tope el stock disponible).
 	const setCantidad = (id, valor) =>
 		setItems((prev) => prev.map((it) => {
 			if (it.id !== id) return it;
-			const n = Math.max(1, parseInt(valor, 10) || 1);
+			let n = Math.max(1, parseInt(valor, 10) || 1);
+			if (it.stock != null) n = Math.min(n, it.stock);
 			return { ...it, cantidad: n };
 		}));
 
@@ -76,19 +90,33 @@ export function useCarrito() {
 		});
 	};
 
-	const cobrar = async (onError) => {
+	// tipo: 'CONTADO' (default) o 'CREDITO'. En crédito los pagos son abono
+	// inicial opcional; el resto queda como saldo del cliente.
+	const cobrar = async (onError, tipo = "CONTADO") => {
 		if (items.length === 0 || cobrando) return;
+		const esCredito = tipo === "CREDITO";
+		if (esCredito && !clienteId) {
+			if (onError) onError("La venta al crédito requiere seleccionar un cliente.");
+			return;
+		}
 		setCobrando(true);
 		try {
+			const pagosPayload = esCredito
+				? pagos.filter((p) => p.monto !== "" && Number(p.monto) > 0)
+					.map((p) => ({ metodoPago: p.metodoPago, monto: Number(p.monto) }))
+				: construirPagos();
 			const { data } = await axiosInstance.post("/ventas", {
 				...(clienteId ? { clienteId } : {}),
+				tipo,
+				...(esCredito && fechaVencimiento ? { fechaVencimiento } : {}),
 				descuento: desc,
-				pagos: construirPagos(),
+				pagos: pagosPayload,
 				items: items.map((it) => ({ productoId: it.id, cantidad: it.cantidad, precioUnitario: it.precio })),
 			}, { headers: { "Idempotency-Key": idemKey.current } });
 			setItems([]);
 			setClienteId("");
 			setDescuento("");
+			setFechaVencimiento("");
 			setPagos([{ metodoPago: "EFECTIVO", monto: "" }]);
 			setRecibo(data);
 			idemKey.current = uuid();
@@ -101,7 +129,8 @@ export function useCarrito() {
 	};
 
 	return {
-		items, clienteId, setClienteId, descuento, setDescuento, pagos, agregarPago, quitarPago, actualizarPago,
+		items, clienteId, setClienteId, descuento, setDescuento, fechaVencimiento, setFechaVencimiento,
+		pagos, agregarPago, quitarPago, actualizarPago,
 		cobrando, recibo, setRecibo,
 		subtotal, total, unidades, agregar, cambiarCantidad, setCantidad, quitar, vaciar, cobrar,
 	};

@@ -34,6 +34,15 @@ class VentasController {
     return this.service.detalle(reqUser(req).tiendaId, id);
   }
 
+  @Patch(':id/fecha')
+  cambiarFecha(@Param('id') id: string, @Body('fecha') fecha: string, @Req() req: Request) {
+    const u = reqUser(req);
+    if (u.rol !== 'ADMINISTRADOR') {
+      throw new ForbiddenException('Solo el administrador puede cambiar la fecha de una venta.');
+    }
+    return this.service.cambiarFecha(u.tiendaId, u.sub, id, fecha);
+  }
+
   @Patch(':id/despachar')
   despachar(@Param('id') id: string, @Req() req: Request) {
     const u = reqUser(req);

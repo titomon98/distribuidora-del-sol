@@ -21,9 +21,13 @@ export const MenuList = [
     },
     {
         title: 'Ventas',
+        classsChange: 'mm-collapse',
         iconStyle: "bi bi-receipt",
-        to: 'ventas',
         roles: ['ADMINISTRADOR'],
+        content: [
+            { title: 'Listado', to: 'ventas' },
+            { title: 'Abonos', to: 'abonos' },
+        ],
     },
     {
         title: 'Punto de despacho',
@@ -54,6 +58,12 @@ export const MenuList = [
         roles: ['ADMINISTRADOR'],
     },
     {
+        title: 'Proveedores',
+        iconStyle: "bi bi-truck",
+        to: 'proveedores',
+        roles: ['ADMINISTRADOR'],
+    },
+    {
         title: 'Catálogo',
         classsChange: 'mm-collapse',
         iconStyle: "bi bi-tags",
@@ -62,12 +72,19 @@ export const MenuList = [
             { title: 'Productos', to: 'productos' },
             { title: 'Categorías', to: 'categorias' },
             { title: 'Marcas', to: 'marcas' },
+            { title: 'Presentaciones', to: 'presentaciones' },
         ],
     },
     {
-        title: 'Créditos',
+        title: 'Créditos clientes',
         iconStyle: "bi bi-wallet2",
-        to: 'creditos',
+        to: 'creditos-clientes',
+        roles: ['ADMINISTRADOR'],
+    },
+    {
+        title: 'Créditos proveedores',
+        iconStyle: "bi bi-wallet",
+        to: 'creditos-proveedores',
         roles: ['ADMINISTRADOR'],
     },
     {

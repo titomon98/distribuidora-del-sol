@@ -28,6 +28,9 @@ export class VentasService {
   detalle(tiendaId: string, id: string) {
     return this.repo.detalle(tiendaId, id);
   }
+  cambiarFecha(tiendaId: string, userId: string, id: string, fecha: string) {
+    return this.repo.cambiarFecha(tiendaId, userId, id, fecha);
+  }
   async despachar(tiendaId: string, userId: string, id: string) {
     const res = await this.repo.marcarDespachado(tiendaId, userId, id);
     if (res.actualizado) this.events.ventaDespachada(tiendaId, { id });

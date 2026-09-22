@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import axiosInstance from "../../../services/AxiosInstance";
 import { filtrarFilas } from "./tableFilter";
 import { exportarExcel, exportarPdf } from "./exportar";
+import Paginacion from "./Paginacion";
 
 /**
  * Tabla de solo lectura reutilizable.
@@ -22,6 +23,8 @@ const ListView = ({ title, endpoint, columns, actions, emptyText, refreshKey,
 	const [desde, setDesde] = useState("");
 	const [hasta, setHasta] = useState("");
 	const [filtros, setFiltros] = useState({}); // { campo: valor seleccionado }
+	const [page, setPage] = useState(1);
+	const [pageSize, setPageSize] = useState(25);
 
 	const reload = useCallback(async () => {
 		setLoading(true);
@@ -53,6 +56,11 @@ const ListView = ({ title, endpoint, columns, actions, emptyText, refreshKey,
 	const filasFiltradas = rows.filter((row) =>
 		(filters || []).every((f) => !filtros[f.name] || row[f.name] === filtros[f.name]));
 	const filas = filtrarFilas(filasFiltradas, columns, busqueda, (c, row) => row[c.name]);
+
+	// Paginación en cliente (los totales/export usan todas las filas filtradas).
+	useEffect(() => { setPage(1); }, [busqueda, filtros, desde, hasta, rows, pageSize]);
+	const inicio = (page - 1) * pageSize;
+	const filasPagina = filas.slice(inicio, inicio + pageSize);
 
 	const matrizExport = () => {
 		const headers = columns.map((c) => c.label);
@@ -113,7 +121,7 @@ const ListView = ({ title, endpoint, columns, actions, emptyText, refreshKey,
 							{!loading && filas.length === 0 && (
 								<tr><td colSpan={colCount} className="text-center text-muted py-4">{busqueda ? "Sin coincidencias." : (emptyText || "Sin registros.")}</td></tr>
 							)}
-							{!loading && filas.map((row, i) => (
+							{!loading && filasPagina.map((row, i) => (
 								<tr key={row.id || i}>
 									{columns.map((c) => (
 										<td key={c.name}>{c.format ? c.format(row[c.name], row) : (row[c.name] ?? "-")}</td>
@@ -140,6 +148,10 @@ const ListView = ({ title, endpoint, columns, actions, emptyText, refreshKey,
 						})()}
 					</table>
 				</div>
+				{!loading && filas.length > 0 && (
+					<Paginacion total={filas.length} page={page} pageSize={pageSize}
+						onPage={setPage} onPageSize={setPageSize} />
+				)}
 			</div>
 		</div>
 	);

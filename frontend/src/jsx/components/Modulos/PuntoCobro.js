@@ -35,8 +35,12 @@ const PuntoCobro = () => {
 		if (!code) return;
 		try {
 			const { data } = await axiosInstance.get(`/productos/barcode/${encodeURIComponent(code)}`);
-			carrito.agregar(data);
-			setAviso({ tipo: "success", texto: `Agregado: ${data.nombre}` });
+			const res = carrito.agregar(data);
+			if (res.ok) {
+				setAviso({ tipo: "success", texto: `Agregado: ${data.nombre}` });
+			} else {
+				setAviso({ tipo: "danger", texto: `${data.nombre}: sin existencia suficiente (disponible ${res.stock})` });
+			}
 		} catch (err) {
 			const msg = err?.response?.data?.message || "Producto no encontrado";
 			setAviso({ tipo: "danger", texto: `${code}: ${msg}` });

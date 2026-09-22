@@ -4,6 +4,7 @@ import swal from "sweetalert";
 import axiosInstance from "../../../services/AxiosInstance";
 import { filtrarFilas } from "./tableFilter";
 import SearchSelect from "./SearchSelect";
+import Paginacion from "./Paginacion";
 
 /**
  * Recurso CRUD genérico reutilizable para los módulos de catálogo/directorio.
@@ -24,6 +25,8 @@ const CrudResource = ({ title, endpoint, columns, fields }) => {
 	const [form, setForm] = useState({});
 	const [saving, setSaving] = useState(false);
 	const [busqueda, setBusqueda] = useState("");
+	const [page, setPage] = useState(1);
+	const [pageSize, setPageSize] = useState(25);
 
 	const cargar = useCallback(async () => {
 		setLoading(true);
@@ -107,6 +110,11 @@ const CrudResource = ({ title, endpoint, columns, fields }) => {
 	const filas = filtrarFilas(rows, columns, busqueda,
 		(c, row) => (c.lookup ? lookupLabel(c.lookup, row[c.name]) : row[c.name]));
 
+	// Paginación en cliente.
+	useEffect(() => { setPage(1); }, [busqueda, rows, pageSize]);
+	const inicio = (page - 1) * pageSize;
+	const filasPagina = filas.slice(inicio, inicio + pageSize);
+
 	return (
 		<div className="row">
 			<div className="col-12">
@@ -138,7 +146,7 @@ const CrudResource = ({ title, endpoint, columns, fields }) => {
 									{!loading && filas.length === 0 && (
 										<tr><td colSpan={columns.length + 1} className="text-center text-muted py-4">{busqueda ? "Sin coincidencias." : "Sin registros. Cree el primero."}</td></tr>
 									)}
-									{!loading && filas.map((row) => (
+									{!loading && filasPagina.map((row) => (
 										<tr key={row.id}>
 											{columns.map((c) => <td key={c.name}>{cellValue(c, row)}</td>)}
 											<td className="text-end text-nowrap">
@@ -156,6 +164,10 @@ const CrudResource = ({ title, endpoint, columns, fields }) => {
 								</tbody>
 							</table>
 						</div>
+						{!loading && filas.length > 0 && (
+							<Paginacion total={filas.length} page={page} pageSize={pageSize}
+								onPage={setPage} onPageSize={setPageSize} />
+						)}
 					</div>
 				</div>
 			</div>

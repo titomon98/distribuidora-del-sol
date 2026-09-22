@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import swal from "sweetalert";
 import axiosInstance from "../../../services/AxiosInstance";
 import { useCarrito } from "./useCarrito";
 import CarritoPanel from "./CarritoPanel";
@@ -46,7 +47,11 @@ const VentaManual = () => {
 							{!buscando && resultados.map((p) => (
 								<button key={p.id} type="button"
 									className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-									onClick={() => { carrito.agregar(p); setQ(""); }}>
+									onClick={() => {
+									const res = carrito.agregar(p);
+									if (res.ok) setQ("");
+									else swal("Sin existencia", `No hay suficiente stock de ${p.nombre} (disponible ${res.stock}).`, "warning");
+								}}>
 									<span>{p.nombre} <small className="text-muted">{p.codigoBarras || ""}</small></span>
 									<span className="text-primary fw-bold">{money(p.precioVenta)}</span>
 								</button>

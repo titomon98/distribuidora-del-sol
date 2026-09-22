@@ -11,10 +11,31 @@ const esAdmin = () => {
 	catch { return false; }
 };
 
+// Convierte una fecha (ISO/timestamptz) a 'YYYY-MM-DD' para el input date.
+const paraInputFecha = (v) => {
+	const d = new Date(v);
+	return isNaN(d) ? "" : `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+};
+
 const VentasListado = () => {
 	const [detalle, setDetalle] = useState(null);
 	const [cargando, setCargando] = useState(false);
+	const [editarFecha, setEditarFecha] = useState(null); // { row, reload, valor }
+	const [guardandoFecha, setGuardandoFecha] = useState(false);
 	const admin = esAdmin();
+
+	const guardarFecha = async () => {
+		if (!editarFecha.valor) { swal("Fecha requerida", "Elija una fecha.", "warning"); return; }
+		setGuardandoFecha(true);
+		try {
+			await axiosInstance.patch(`/ventas/${editarFecha.row.id}/fecha`, { fecha: editarFecha.valor });
+			const reload = editarFecha.reload;
+			setEditarFecha(null);
+			await reload();
+		} catch (err) {
+			swal("Error", err?.response?.data?.message || "No se pudo cambiar la fecha.", "error");
+		} finally { setGuardandoFecha(false); }
+	};
 
 	const ver = async (row) => {
 		setCargando(true);
@@ -60,6 +81,12 @@ const VentasListado = () => {
 							<i className="bi bi-eye"></i>
 						</button>
 						{admin && row.estado !== "ANULADO" && (
+							<button className="btn btn-sm btn-warning light me-1" title="Cambiar fecha"
+								onClick={() => setEditarFecha({ row, reload, valor: paraInputFecha(row.fecha) })}>
+								<i className="bi bi-calendar-event"></i>
+							</button>
+						)}
+						{admin && row.estado !== "ANULADO" && (
 							<button className="btn btn-sm btn-danger light" title="Anular venta" onClick={() => anular(row, reload)}>
 								<i className="bi bi-x-octagon"></i>
 							</button>
@@ -67,6 +94,24 @@ const VentasListado = () => {
 					</>
 				)}
 			/>
+
+			<Modal show={!!editarFecha} onHide={() => setEditarFecha(null)} centered>
+				<div className="modal-header">
+					<h5 className="modal-title">Cambiar fecha de {editarFecha?.row?.numeroVenta || "la venta"}</h5>
+					<button type="button" className="btn-close" onClick={() => setEditarFecha(null)}></button>
+				</div>
+				<div className="modal-body">
+					<label className="form-label">Nueva fecha</label>
+					<input type="date" className="form-control" value={editarFecha?.valor || ""}
+						onChange={(e) => setEditarFecha((s) => ({ ...s, valor: e.target.value }))} />
+				</div>
+				<div className="modal-footer">
+					<button type="button" className="btn btn-secondary" onClick={() => setEditarFecha(null)}>Cancelar</button>
+					<button type="button" className="btn btn-primary" disabled={guardandoFecha} onClick={guardarFecha}>
+						{guardandoFecha ? "Guardando…" : "Guardar"}
+					</button>
+				</div>
+			</Modal>
 
 			<Modal show={!!detalle} onHide={() => setDetalle(null)} centered>
 				<div className="modal-header">

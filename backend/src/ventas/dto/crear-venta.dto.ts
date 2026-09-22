@@ -35,6 +35,9 @@ export class CrearVentaDto {
   @IsOptional() @IsString()
   tipo?: string;
 
+  @IsOptional() @IsString()
+  fechaVencimiento?: string;
+
   @IsOptional() @IsNumber() @Min(0)
   descuento?: number;
 

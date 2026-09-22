@@ -23,7 +23,7 @@ export abstract class CrudService<T extends ObjectLiteral> {
     return this.repo.find({
       where,
       order: { createdAt: 'DESC' } as any,
-      take: 50,
+      take: search ? 50 : 500,
     });
   }
 

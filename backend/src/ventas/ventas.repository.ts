@@ -19,6 +19,8 @@ export interface CrearVentaInput {
   pagos?: PagoVenta[];
   tipo?: string;
   descuento?: number;
+  /** Solo para tipo CREDITO: fecha de vencimiento opcional (YYYY-MM-DD). */
+  fechaVencimiento?: string;
   items: ItemVenta[];
   idempotencyKey?: string;
 }
@@ -44,22 +46,41 @@ export class VentasRepository {
         if (prev.length) return this.detalle(tiendaId, prev[0].id, m);
       }
 
+      const esCredito = dto.tipo === 'CREDITO';
+      // El crédito necesita un deudor: no se permite a Consumidor Final.
+      if (esCredito && !dto.clienteId) {
+        throw new BadRequestException('La venta al crédito requiere seleccionar un cliente.');
+      }
       const clienteId = dto.clienteId ?? (await this.clienteCF(tiendaId, m));
       const subtotal = +dto.items.reduce((s, i) => s + i.cantidad * i.precioUnitario, 0).toFixed(2);
       const descuento = Math.min(Math.max(dto.descuento ?? 0, 0), subtotal);
       const total = +(subtotal - descuento).toFixed(2);
 
-      // Pago mixto: normaliza a lista de pagos y valida que sumen el TOTAL (con descuento).
-      const pagos: PagoVenta[] = (dto.pagos && dto.pagos.length)
-        ? dto.pagos
-        : [{ metodoPago: dto.metodoPago ?? 'EFECTIVO', monto: total }];
-      const sumaPagos = +pagos.reduce((s, p) => s + Number(p.monto), 0).toFixed(2);
-      if (Math.abs(sumaPagos - total) > 0.01) {
-        throw new BadRequestException(
-          `Los pagos (Q${sumaPagos}) no cuadran con el total (Q${total}).`,
-        );
+      // CONTADO: los pagos deben cuadrar con el total.
+      // CREDITO: los pagos son el abono inicial (opcional); el resto queda como saldo.
+      let pagos: PagoVenta[];
+      let sumaPagos: number;
+      if (esCredito) {
+        pagos = (dto.pagos ?? []).filter((p) => Number(p.monto) > 0);
+        sumaPagos = +pagos.reduce((s, p) => s + Number(p.monto), 0).toFixed(2);
+        if (sumaPagos > total + 0.01) {
+          throw new BadRequestException(`El abono inicial (Q${sumaPagos}) supera el total (Q${total}).`);
+        }
+      } else {
+        pagos = (dto.pagos && dto.pagos.length)
+          ? dto.pagos
+          : [{ metodoPago: dto.metodoPago ?? 'EFECTIVO', monto: total }];
+        sumaPagos = +pagos.reduce((s, p) => s + Number(p.monto), 0).toFixed(2);
+        if (Math.abs(sumaPagos - total) > 0.01) {
+          throw new BadRequestException(
+            `Los pagos (Q${sumaPagos}) no cuadran con el total (Q${total}).`,
+          );
+        }
       }
-      const metodoResumen = pagos.length > 1 ? 'MIXTO' : pagos[0].metodoPago;
+      const saldo = +(total - sumaPagos).toFixed(2);
+      const metodoResumen = esCredito
+        ? 'CREDITO'
+        : (pagos.length > 1 ? 'MIXTO' : pagos[0].metodoPago);
 
       const ventaRows = await m.query(
         `INSERT INTO venta (tienda_id, cliente_id, usuario_id, numero_venta, subtotal,
@@ -71,11 +92,21 @@ export class VentasRepository {
       );
       const ventaId = ventaRows[0].id;
 
+      // Abono inicial / pagos: registran el dinero recibido al momento de la venta.
       for (const p of pagos) {
         await m.query(
           `INSERT INTO venta_pago (tienda_id, venta_id, metodo_pago, monto, created_by)
            VALUES ($1,$2,$3,$4,$5);`,
           [tiendaId, ventaId, p.metodoPago, p.monto, userId],
+        );
+      }
+
+      // Saldo pendiente -> crédito del cliente (cuenta por cobrar).
+      if (esCredito && saldo > 0.005) {
+        await m.query(
+          `INSERT INTO credito_cliente (tienda_id, cliente_id, venta_id, monto_total, saldo, fecha_vencimiento, created_by)
+           VALUES ($1,$2,$3,$4,$5,$6,$7);`,
+          [tiendaId, clienteId, ventaId, total, saldo, dto.fechaVencimiento || null, userId],
         );
       }
 
@@ -86,7 +117,7 @@ export class VentasRepository {
       await auditar(m, {
         usuarioId: userId, tiendaId, accion: 'INSERT', tabla: 'venta',
         registroId: ventaId,
-        datosNuevos: { total, descuento, items: dto.items.length },
+        datosNuevos: { total, descuento, saldo, items: dto.items.length },
       });
 
       return this.detalle(tiendaId, ventaId, m);
@@ -174,6 +205,24 @@ export class VentasRepository {
        ORDER BY v.fecha DESC LIMIT 300;`,
       params,
     );
+  }
+
+  /** Cambia la fecha de una venta (solo admin lo llama desde el controlador). */
+  async cambiarFecha(tiendaId: string, userId: string, ventaId: string, fecha: string) {
+    if (!fecha || isNaN(new Date(fecha).getTime())) {
+      throw new BadRequestException('Fecha inválida.');
+    }
+    const res = await this.ds.query(
+      `UPDATE venta SET fecha=$3::timestamptz, updated_by=$4
+       WHERE tienda_id=$1 AND id=$2 AND estado<>'ELIMINADO' RETURNING id;`,
+      [tiendaId, ventaId, fecha, userId],
+    );
+    if (!res.length) throw new BadRequestException('Venta no encontrada');
+    await auditar(this.ds, {
+      usuarioId: userId, tiendaId, accion: 'UPDATE', tabla: 'venta',
+      registroId: ventaId, datosNuevos: { fecha },
+    });
+    return { id: ventaId, fecha };
   }
 
   /** Anula una venta: devuelve el stock a cada lote y cancela su crédito. */

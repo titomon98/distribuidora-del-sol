@@ -26,7 +26,7 @@ const CierreCaja = () => {
 
 	useEffect(() => { cargar(fecha); }, [fecha, cargar]);
 
-	const r = data || { total: 0, cantidad: 0, porMetodo: [] };
+	const r = data || { total: 0, cantidad: 0, abonos: 0, porMetodo: [] };
 
 	const cierreHtml = () => {
 		const q = (n) => "Q " + Number(n || 0).toLocaleString("es-GT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -40,8 +40,9 @@ const CierreCaja = () => {
 			<h1>Distribuidora del Sol</h1>
 			<div class="muted">Cierre de caja · ${r.fecha}</div><hr>
 			<div><strong>Ventas del día:</strong> ${r.cantidad}</div>
-			<div class="tot"><strong>Total:</strong> ${q(r.total)}</div>
-			<table><thead><tr><th>Método</th><th style="text-align:center">Ventas</th><th style="text-align:right">Total</th></tr></thead>
+			<div><strong>Abonos a crédito (incluidos):</strong> ${q(r.abonos)}</div>
+			<div class="tot"><strong>Total recibido:</strong> ${q(r.total)}</div>
+			<table><thead><tr><th>Método</th><th style="text-align:center">Mov.</th><th style="text-align:right">Total</th></tr></thead>
 			<tbody>${filas || '<tr><td colspan="3" style="text-align:center">Sin ventas</td></tr>'}</tbody></table>
 			</body></html>`;
 	};
@@ -63,16 +64,22 @@ const CierreCaja = () => {
 			{error && <div className="alert alert-warning">{error}</div>}
 
 			<div className="row">
-				<div className="col-sm-6">
+				<div className="col-sm-4">
 					<div className="card"><div className="card-body">
-						<span className="text-muted">Total vendido</span>
+						<span className="text-muted">Total recibido (caja)</span>
 						<h2 className="text-primary mb-0">{money(r.total)}</h2>
 					</div></div>
 				</div>
-				<div className="col-sm-6">
+				<div className="col-sm-4">
 					<div className="card"><div className="card-body">
 						<span className="text-muted">Número de ventas</span>
 						<h2 className="mb-0">{r.cantidad}</h2>
+					</div></div>
+				</div>
+				<div className="col-sm-4">
+					<div className="card"><div className="card-body">
+						<span className="text-muted">Abonos a crédito (incluidos)</span>
+						<h2 className="mb-0">{money(r.abonos)}</h2>
 					</div></div>
 				</div>
 			</div>

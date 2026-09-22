@@ -7,6 +7,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { ProductosModule } from './productos/productos.module';
 import { MarcasModule } from './marcas/marcas.module';
 import { CategoriasModule } from './categorias/categorias.module';
+import { PresentacionesModule } from './presentaciones/presentaciones.module';
 import { InventarioModule } from './inventario/inventario.module';
 import { VentasModule } from './ventas/ventas.module';
 import { CierreCajaModule } from './cierre-caja/cierre-caja.module';
@@ -36,6 +37,7 @@ import { CreditosModule } from './creditos/creditos.module';
     ProductosModule,
     MarcasModule,
     CategoriasModule,
+    PresentacionesModule,
     InventarioModule,
     VentasModule,
     CierreCajaModule,

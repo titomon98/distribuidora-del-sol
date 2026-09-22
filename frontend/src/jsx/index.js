@@ -21,12 +21,16 @@ import VentaManual from "./components/Modulos/VentaManual";
 import Productos from "./components/Modulos/Productos";
 import Categorias from "./components/Modulos/Categorias";
 import Marcas from "./components/Modulos/Marcas";
+import Presentaciones from "./components/Modulos/Presentaciones";
+import Proveedores from "./components/Modulos/Proveedores";
 import Inventario from "./components/Modulos/Inventario";
 import ComprasRegistrar from "./components/Modulos/ComprasRegistrar";
 import ComprasListado from "./components/Modulos/ComprasListado";
 import VentasListado from "./components/Modulos/VentasListado";
 import Clientes from "./components/Modulos/Clientes";
-import Creditos from "./components/Modulos/Creditos";
+import CreditosClientes from "./components/Modulos/CreditosClientes";
+import CreditosProveedores from "./components/Modulos/CreditosProveedores";
+import AbonosListado from "./components/Modulos/AbonosListado";
 import MiCuenta from "./components/Modulos/MiCuenta";
 import Despacho from "./components/Modulos/Despacho";
 import CierreCaja from "./components/Modulos/CierreCaja";
@@ -151,6 +155,7 @@ const Markup = () => {
     { url: "cobro", component: <PuntoCobro /> },
     { url: "venta-manual", component: <VentaManual /> },
     { url: "ventas", component: <VentasListado /> },
+    { url: "abonos", component: <AbonosListado /> },
     { url: "clientes", component: <Clientes /> },
     { url: "despacho", component: <Despacho /> },
     { url: "inventario", component: <Inventario /> },
@@ -159,8 +164,11 @@ const Markup = () => {
     { url: "productos", component: <Productos /> },
     { url: "categorias", component: <Categorias /> },
     { url: "marcas", component: <Marcas /> },
+    { url: "presentaciones", component: <Presentaciones /> },
+    { url: "proveedores", component: <Proveedores /> },
     { url: "cierre-caja", component: <CierreCaja /> },
-    { url: "creditos", component: <Creditos /> },
+    { url: "creditos-clientes", component: <CreditosClientes /> },
+    { url: "creditos-proveedores", component: <CreditosProveedores /> },
     { url: "mi-cuenta", component: <MiCuenta /> },
     { url: "usuarios", component: <Usuarios /> },
     { url: "reporte-ventas", component: <ReporteVentas /> },

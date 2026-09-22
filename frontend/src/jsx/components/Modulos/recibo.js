@@ -1,13 +1,24 @@
 // Genera e imprime un recibo/ticket interno (NO fiscal) de una venta.
+import { fecha as fmtFecha } from "./format";
+
 const q = (n) =>
 	"Q " + Number(n || 0).toLocaleString("es-GT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+// Sello fecha-hora para el nombre de archivo (YYYYMMDD-HHMMSS), evita duplicados.
+const selloArchivo = (v) => {
+	const d = new Date(v || Date.now());
+	const p = (n) => String(n).padStart(2, "0");
+	return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+};
 
 /** Construye el HTML del ticket (formato angosto tipo impresora de punto de venta). */
 export function reciboHtml(venta) {
 	const items = venta.items || [];
 	const numero = venta.numeroVenta || venta.numero_venta || "";
 	const metodo = venta.metodoPago || venta.metodo_pago || "";
-	const fecha = new Date(venta.fecha || Date.now()).toLocaleString("es-GT");
+	const fecha = fmtFecha(venta.fecha || Date.now());
+	// nombre-archivo-fecha-hora: es el nombre por defecto al "Guardar como PDF".
+	const nombreArchivo = `recibo-${numero || "venta"}-${selloArchivo(venta.fecha)}`;
 	const filas = items.map((it) => `
 		<tr>
 			<td class="l">${it.cantidad} x ${it.producto}</td>
@@ -20,7 +31,7 @@ export function reciboHtml(venta) {
 		: "";
 
 	return `<!doctype html><html lang="es"><head><meta charset="utf-8">
-	<title>Recibo ${numero}</title>
+	<title>${nombreArchivo}</title>
 	<style>
 		* { font-family: 'Courier New', monospace; }
 		body { width: 280px; margin: 0 auto; padding: 8px; color: #000; }
@@ -46,6 +57,10 @@ export function reciboHtml(venta) {
 		<hr>
 		<table>${filas}</table>
 		<hr>
+		${Number(venta.descuento) > 0 ? `<table>
+			<tr><td class="l">Subtotal</td><td class="r">${q(venta.subtotal)}</td></tr>
+			<tr><td class="l">Descuento</td><td class="r">-${q(venta.descuento)}</td></tr>
+		</table>` : ""}
 		<table><tr><td class="l tot">TOTAL</td><td class="r tot">${q(venta.total)}</td></tr></table>
 		${filasPagos}
 		<div class="foot">¡Gracias por su compra!</div>

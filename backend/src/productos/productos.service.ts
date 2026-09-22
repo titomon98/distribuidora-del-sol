@@ -18,7 +18,8 @@ export class ProductosService extends CrudService<Producto> {
     return this.repo.query(
       `SELECT p.id, p.nombre, p.descripcion, p.estado,
               p.codigo_barras AS "codigoBarras", p.marca_id AS "marcaId",
-              p.tipo_producto_id AS "tipoProductoId", p.precio_compra AS "precioCompra",
+              p.tipo_producto_id AS "tipoProductoId", p.presentacion_id AS "presentacionId",
+              p.precio_compra AS "precioCompra",
               p.precio_mayorista AS "precioMayorista", p.precio_venta AS "precioVenta",
               p.stock_minimo AS "stockMinimo",
               COALESCE(SUM(l.cantidad_disponible), 0)::int AS stock,
@@ -34,13 +35,22 @@ export class ProductosService extends CrudService<Producto> {
     );
   }
 
-  async getByBarcode(tiendaId: string, codigo: string): Promise<Producto> {
-    const producto = await this.repo.findOne({
-      where: { tiendaId, codigoBarras: codigo, estado: 'ACTIVO' },
-    });
-    if (!producto) {
+  async getByBarcode(tiendaId: string, codigo: string): Promise<any> {
+    // Incluye el stock (suma de lotes activos) para validar existencia al cobrar.
+    const rows = await this.repo.query(
+      `SELECT p.id, p.nombre, p.descripcion, p.estado,
+              p.codigo_barras AS "codigoBarras", p.precio_venta AS "precioVenta",
+              p.precio_mayorista AS "precioMayorista",
+              COALESCE(SUM(l.cantidad_disponible), 0)::int AS stock
+       FROM producto p
+       LEFT JOIN lote l ON l.producto_id = p.id AND l.estado = 'ACTIVO'
+       WHERE p.tienda_id = $1 AND p.codigo_barras = $2 AND p.estado = 'ACTIVO'
+       GROUP BY p.id;`,
+      [tiendaId, codigo],
+    );
+    if (!rows.length) {
       throw new NotFoundException(`No hay un producto con el código ${codigo}`);
     }
-    return producto;
+    return rows[0];
   }
 }
