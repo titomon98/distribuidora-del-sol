@@ -3,9 +3,8 @@ import { Modal } from "react-bootstrap";
 import swal from "sweetalert";
 import ListView from "./ListView";
 import axiosInstance from "../../../services/AxiosInstance";
-import { money } from "./format";
+import { money, fechaCorta } from "./format";
 
-const soloFecha = (v) => (v ? String(v).slice(0, 10) : "-");
 
 /** Cuentas por cobrar (créditos a clientes) + registro de abonos con método. */
 const CreditosClientes = () => {
@@ -42,7 +41,7 @@ const CreditosClientes = () => {
 					{ name: "numeroVenta", label: "Venta" },
 					{ name: "montoTotal", label: "Monto", format: money },
 					{ name: "saldo", label: "Saldo", format: money },
-					{ name: "fechaVencimiento", label: "Vence", format: soloFecha },
+					{ name: "fechaVencimiento", label: "Vence", format: fechaCorta },
 				]}
 				actions={(row, reload) => (
 					<button className="btn btn-sm btn-primary" onClick={() => abrir(row, reload)}>

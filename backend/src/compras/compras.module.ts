@@ -14,6 +14,7 @@ class ItemCompraDto {
   @IsUUID() productoId: string;
   @IsInt() @Min(1) cantidad: number;
   @IsNumber() @Min(0) costoUnitario: number;
+  @IsOptional() @IsString() fechaVencimiento?: string; // opcional: hay productos que no vencen
 }
 class CrearCompraDto {
   @IsString() proveedorId: string;

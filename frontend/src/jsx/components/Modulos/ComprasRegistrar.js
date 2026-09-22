@@ -4,12 +4,18 @@ import axiosInstance from "../../../services/AxiosInstance";
 import { money } from "./format";
 import SearchSelect from "./SearchSelect";
 
+const hoy = () => {
+	const d = new Date();
+	return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+};
+
 const ComprasRegistrar = () => {
 	const [proveedorOpt, setProveedorOpt] = useState(null);
 	const [tipoPago, setTipoPago] = useState("CONTADO");
 	const [prodOpt, setProdOpt] = useState(null);
 	const [cantidad, setCantidad] = useState("");
 	const [costo, setCosto] = useState("");
+	const [vence, setVence] = useState(""); // fecha de vencimiento opcional del lote
 	const [items, setItems] = useState([]);
 	const [montoPagado, setMontoPagado] = useState("");
 	const [saving, setSaving] = useState(false);
@@ -21,9 +27,14 @@ const ComprasRegistrar = () => {
 		setItems([...items, {
 			productoId: prodOpt.value, nombre: prodOpt.label,
 			cantidad: Number(cantidad), costoUnitario: Number(costo),
+			fechaVencimiento: vence || "", // opcional
 		}]);
-		setProdOpt(null); setCantidad(""); setCosto("");
+		setProdOpt(null); setCantidad(""); setCosto(""); setVence("");
 	};
+
+	// Cambia la fecha de vencimiento de un ítem ya agregado (por si hubo error).
+	const cambiarVence = (i, valor) =>
+		setItems(items.map((it, j) => (j === i ? { ...it, fechaVencimiento: valor } : it)));
 
 	const total = items.reduce((s, it) => s + it.cantidad * it.costoUnitario, 0);
 
@@ -35,7 +46,10 @@ const ComprasRegistrar = () => {
 		try {
 			await axiosInstance.post("/compras", {
 				proveedorId: proveedorOpt.value, tipoPago, montoPagado: pagado,
-				items: items.map((it) => ({ productoId: it.productoId, cantidad: it.cantidad, costoUnitario: it.costoUnitario })),
+				items: items.map((it) => ({
+					productoId: it.productoId, cantidad: it.cantidad, costoUnitario: it.costoUnitario,
+					...(it.fechaVencimiento ? { fechaVencimiento: it.fechaVencimiento } : {}),
+				})),
 			});
 			const saldo = Math.max(total - pagado, 0);
 			swal("Compra registrada",
@@ -68,20 +82,24 @@ const ComprasRegistrar = () => {
 				</div>
 
 				<div className="row align-items-end">
-					<div className="col-md-5 mb-2">
+					<div className="col-md-4 mb-2">
 						<label className="form-label">Producto</label>
 						<SearchSelect endpoint="productos" value={prodOpt}
 							placeholder="Buscar producto…"
 							getLabel={(p) => `${p.nombre}${p.codigoBarras ? ` · ${p.codigoBarras}` : ""}`}
 							onChange={setProdOpt} />
 					</div>
-					<div className="col-md-3 mb-2">
+					<div className="col-md-2 mb-2">
 						<label className="form-label">Cantidad</label>
 						<input type="number" className="form-control" value={cantidad} onChange={(e) => setCantidad(e.target.value)} />
 					</div>
-					<div className="col-md-4 mb-2">
+					<div className="col-md-3 mb-2">
 						<label className="form-label">Costo unitario (Q)</label>
 						<input type="number" step="0.01" className="form-control" value={costo} onChange={(e) => setCosto(e.target.value)} />
+					</div>
+					<div className="col-md-3 mb-2">
+						<label className="form-label">Vence (opcional)</label>
+						<input type="date" className="form-control" min={hoy()} value={vence} onChange={(e) => setVence(e.target.value)} />
 					</div>
 				</div>
 				<button className="btn btn-outline-primary mb-2" onClick={agregarItem}>
@@ -90,7 +108,7 @@ const ComprasRegistrar = () => {
 
 				{items.length > 0 && (
 					<table className="table table-sm mt-3">
-						<thead><tr><th>Producto</th><th className="text-center">Cantidad</th><th className="text-end">Costo</th><th className="text-end">Subtotal</th><th></th></tr></thead>
+						<thead><tr><th>Producto</th><th className="text-center">Cantidad</th><th className="text-end">Costo</th><th className="text-end">Subtotal</th><th style={{ width: 160 }}>Vence</th><th></th></tr></thead>
 						<tbody>
 							{items.map((it, i) => (
 								<tr key={i}>
@@ -98,6 +116,10 @@ const ComprasRegistrar = () => {
 									<td className="text-center">{it.cantidad}</td>
 									<td className="text-end">{money(it.costoUnitario)}</td>
 									<td className="text-end">{money(it.cantidad * it.costoUnitario)}</td>
+									<td>
+										<input type="date" className="form-control form-control-sm" min={hoy()}
+											value={it.fechaVencimiento || ""} onChange={(e) => cambiarVence(i, e.target.value)} />
+									</td>
 									<td className="text-end">
 										<button className="btn btn-sm btn-danger light" onClick={() => setItems(items.filter((_, j) => j !== i))}>
 											<i className="bi bi-trash"></i>
@@ -106,7 +128,7 @@ const ComprasRegistrar = () => {
 								</tr>
 							))}
 						</tbody>
-						<tfoot><tr className="fw-bold"><td colSpan={3}>Total</td><td className="text-end text-primary">{money(total)}</td><td></td></tr></tfoot>
+						<tfoot><tr className="fw-bold"><td colSpan={3}>Total</td><td className="text-end text-primary">{money(total)}</td><td colSpan={2}></td></tr></tfoot>
 					</table>
 				)}
 

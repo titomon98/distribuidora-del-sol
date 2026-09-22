@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import ListView from "./ListView";
 import axiosInstance from "../../../services/AxiosInstance";
-import { money, fecha, alertaBadge } from "./format";
+import { money, fecha, fechaCorta, alertaBadge } from "./format";
 
 const Inventario = () => {
 	const navigate = useNavigate();
@@ -84,8 +84,8 @@ const Inventario = () => {
 										<td>{l.codigoLote || "-"}</td>
 										<td className="text-center">{l.cantidadDisponible}</td>
 										<td className="text-end">{money(l.costoUnitario)}</td>
-										<td>{l.fechaIngreso ? String(l.fechaIngreso).slice(0, 10) : "-"}</td>
-										<td>{l.fechaVencimiento ? String(l.fechaVencimiento).slice(0, 10) : "-"}</td>
+										<td>{fechaCorta(l.fechaIngreso)}</td>
+										<td>{fechaCorta(l.fechaVencimiento)}</td>
 									</tr>
 								))}
 							</tbody>

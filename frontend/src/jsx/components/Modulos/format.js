@@ -12,6 +12,13 @@ export const fecha = (v) => {
 	});
 };
 
+// Fecha corta dd/mm/aaaa para columnas DATE (sin hora, sin desfase de zona horaria).
+export const fechaCorta = (v) => {
+	if (!v) return "-";
+	const [y, m, d] = String(v).slice(0, 10).split("-");
+	return (y && m && d) ? `${d}/${m}/${y}` : "-";
+};
+
 /** Badge de alerta de stock (JSX). */
 export const alertaBadge = (a) => {
 	const map = { OK: "success", BAJO: "warning", AGOTADO: "danger" };

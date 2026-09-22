@@ -7,6 +7,8 @@ export interface ItemCompra {
   productoId: string;
   cantidad: number;
   costoUnitario: number;
+  /** Opcional: fecha de vencimiento del lote (algunos productos no vencen). */
+  fechaVencimiento?: string;
 }
 export interface CrearCompraInput {
   proveedorId: string;
@@ -65,10 +67,10 @@ export class ComprasRepository {
         // Lote nuevo = entrada de stock.
         const loteRows = await m.query(
           `INSERT INTO lote (tienda_id, producto_id, codigo_lote, cantidad_inicial,
-                             cantidad_disponible, costo_unitario, fecha_ingreso, created_by)
-           VALUES ($1,$2,'LOTE-'||substr(md5(random()::text),1,8),$3,$3,$4,CURRENT_DATE,$5)
+                             cantidad_disponible, costo_unitario, fecha_ingreso, fecha_vencimiento, created_by)
+           VALUES ($1,$2,'LOTE-'||substr(md5(random()::text),1,8),$3,$3,$4,CURRENT_DATE,$5,$6)
            RETURNING id;`,
-          [tiendaId, item.productoId, item.cantidad, item.costoUnitario, userId],
+          [tiendaId, item.productoId, item.cantidad, item.costoUnitario, item.fechaVencimiento || null, userId],
         );
         await m.query(
           `INSERT INTO detalle_compra (tienda_id, compra_id, producto_id, lote_id, cantidad, precio_unitario, subtotal, created_by)
