@@ -38,12 +38,15 @@ class ReportesService {
   productos(t: string) {
     return this.ds.query(
       `SELECT p.nombre, p.codigo_barras AS "codigoBarras", p.precio_venta AS "precioVenta",
+              m.nombre AS marca, tp.nombre AS categoria,
               COALESCE(SUM(l.cantidad_disponible),0)::int AS stock,
               COALESCE((SELECT SUM(dv.cantidad) FROM detalle_venta dv WHERE dv.producto_id=p.id AND dv.estado<>'ELIMINADO'),0)::int AS vendidos
        FROM producto p
        LEFT JOIN lote l ON l.producto_id=p.id AND l.estado='ACTIVO'
+       LEFT JOIN marca m ON m.id=p.marca_id
+       LEFT JOIN tipo_producto tp ON tp.id=p.tipo_producto_id
        WHERE p.tienda_id=$1 AND p.estado<>'ELIMINADO'
-       GROUP BY p.id ORDER BY vendidos DESC;`, [t]);
+       GROUP BY p.id, m.nombre, tp.nombre ORDER BY vendidos DESC;`, [t]);
   }
 
   usuarios(t: string, desde?: string, hasta?: string) {
