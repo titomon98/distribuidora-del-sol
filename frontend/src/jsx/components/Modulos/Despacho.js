@@ -78,7 +78,7 @@ const Despacho = () => {
 				</div>
 				<div className="modal-body">
 					<p className="mb-2"><strong>Cliente:</strong> {detalle?.cliente || "Consumidor Final"}</p>
-					<p className="text-muted">Verifica que todos los productos estén disponibles físicamente antes de confirmar.</p>
+					<p className="text-muted">Verifique que todos los productos estén disponibles físicamente antes de confirmar.</p>
 					<div className="table-responsive">
 						<table className="table table-striped">
 							<thead><tr><th>Producto</th><th className="text-center">Cantidad</th><th className="text-end">Subtotal</th></tr></thead>
@@ -97,8 +97,8 @@ const Despacho = () => {
 					</div>
 				</div>
 				<div className="modal-footer">
-					<button type="button" className="btn btn-secondary" onClick={() => setDetalle(null)}>Cancelar</button>
-					<button type="button" className="btn btn-primary" disabled={despachando || cargando} onClick={confirmar}>
+					<button type="button" className="btn btn-danger" onClick={() => setDetalle(null)}>Cancelar</button>
+					<button type="button" className="btn btn-success" disabled={despachando || cargando} onClick={confirmar}>
 						<i className="bi bi-check2-circle me-1"></i>{despachando ? "Despachando…" : "Confirmar despacho"}
 					</button>
 				</div>

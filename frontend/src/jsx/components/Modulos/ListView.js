@@ -14,13 +14,14 @@ import { exportarExcel, exportarPdf } from "./exportar";
  *  - exportable?: agrega botones Exportar Excel / PDF, exportName? nombre de archivo
  */
 const ListView = ({ title, endpoint, columns, actions, emptyText, refreshKey,
-	dateFilter, exportable, exportName, totalField }) => {
+	dateFilter, exportable, exportName, totalField, filters }) => {
 	const [rows, setRows] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
 	const [busqueda, setBusqueda] = useState("");
 	const [desde, setDesde] = useState("");
 	const [hasta, setHasta] = useState("");
+	const [filtros, setFiltros] = useState({}); // { campo: valor seleccionado }
 
 	const reload = useCallback(async () => {
 		setLoading(true);
@@ -46,7 +47,12 @@ const ListView = ({ title, endpoint, columns, actions, emptyText, refreshKey,
 	useEffect(() => { reload(); }, [reload, refreshKey]);
 
 	const colCount = columns.length + (actions ? 1 : 0);
-	const filas = filtrarFilas(rows, columns, busqueda, (c, row) => row[c.name]);
+	// Opciones de cada filtro: valores distintos presentes en los datos.
+	const opcionesFiltro = (name) =>
+		[...new Set(rows.map((r) => r[name]).filter((v) => v != null && v !== ""))].sort();
+	const filasFiltradas = rows.filter((row) =>
+		(filters || []).every((f) => !filtros[f.name] || row[f.name] === filtros[f.name]));
+	const filas = filtrarFilas(filasFiltradas, columns, busqueda, (c, row) => row[c.name]);
 
 	const matrizExport = () => {
 		const headers = columns.map((c) => c.label);
@@ -70,6 +76,14 @@ const ListView = ({ title, endpoint, columns, actions, emptyText, refreshKey,
 								value={hasta} onChange={(e) => setHasta(e.target.value)} title="Hasta" />
 						</>
 					)}
+					{(filters || []).map((f) => (
+						<select key={f.name} className="form-control form-control-sm" style={{ width: 160 }}
+							value={filtros[f.name] || ""} title={f.label}
+							onChange={(e) => setFiltros({ ...filtros, [f.name]: e.target.value })}>
+							<option value="">{f.label}: todas</option>
+							{opcionesFiltro(f.name).map((v) => <option key={v} value={v}>{v}</option>)}
+						</select>
+					))}
 					<input type="search" className="form-control form-control-sm" style={{ maxWidth: 200 }}
 						placeholder="Buscar…" value={busqueda} onChange={(e) => setBusqueda(e.target.value)} />
 					{exportable && (

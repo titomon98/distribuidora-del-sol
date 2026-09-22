@@ -42,7 +42,7 @@ const SearchSelect = ({
 		menuPortalTarget: typeof document !== "undefined" ? document.body : null,
 		styles: estilos,
 		classNamePrefix: "rs",
-		noOptionsMessage: ({ inputValue }) => (inputValue ? "Sin resultados" : "Escribe para buscar…"),
+		noOptionsMessage: ({ inputValue }) => (inputValue ? "Sin resultados" : "Escriba para buscar…"),
 		loadingMessage: () => "Buscando…",
 	};
 

@@ -136,7 +136,7 @@ const CrudResource = ({ title, endpoint, columns, fields }) => {
 										<tr><td colSpan={columns.length + 1} className="text-center py-4">Cargando…</td></tr>
 									)}
 									{!loading && filas.length === 0 && (
-										<tr><td colSpan={columns.length + 1} className="text-center text-muted py-4">{busqueda ? "Sin coincidencias." : "Sin registros. Crea el primero."}</td></tr>
+										<tr><td colSpan={columns.length + 1} className="text-center text-muted py-4">{busqueda ? "Sin coincidencias." : "Sin registros. Cree el primero."}</td></tr>
 									)}
 									{!loading && filas.map((row) => (
 										<tr key={row.id}>

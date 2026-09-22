@@ -37,7 +37,7 @@ const VentaManual = () => {
 				</div>
 				<div className="card-body">
 					<label className="form-label fw-bold">Buscar producto por nombre o código</label>
-					<input type="text" className="form-control form-control-lg" placeholder="Escribe para buscar…"
+					<input type="text" className="form-control form-control-lg" placeholder="Escriba para buscar…"
 						value={q} onChange={(e) => setQ(e.target.value)} autoFocus />
 					{q.trim() && (
 						<div className="list-group mt-2">

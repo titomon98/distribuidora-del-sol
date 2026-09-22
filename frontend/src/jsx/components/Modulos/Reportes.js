@@ -34,9 +34,12 @@ export const ReporteCompras = () => (
 export const ReporteProductos = () => (
 	<ListView title="Reporte de productos" endpoint="reportes/productos" emptyText="Sin productos."
 		exportable exportName="reporte-productos"
+		filters={[{ name: "marca", label: "Marca" }, { name: "categoria", label: "Categoría" }]}
 		columns={[
 			{ name: "nombre", label: "Producto" },
 			{ name: "codigoBarras", label: "Código" },
+			{ name: "marca", label: "Marca" },
+			{ name: "categoria", label: "Categoría" },
 			{ name: "precioVenta", label: "Precio venta", format: money, exportFormat: num },
 			{ name: "stock", label: "Stock" },
 			{ name: "vendidos", label: "Unid. vendidas" },

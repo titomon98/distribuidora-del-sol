@@ -16,7 +16,7 @@ const Creditos = () => {
 
 	const registrarAbono = async () => {
 		const m = Number(monto);
-		if (!m || m <= 0) { swal("Monto inválido", "Ingresa un monto mayor a 0.", "warning"); return; }
+		if (!m || m <= 0) { swal("Monto inválido", "Ingrese un monto mayor a 0.", "warning"); return; }
 		const ruta = abono.tipo === "cobrar" ? "por-cobrar" : "por-pagar";
 		setGuardando(true);
 		try {

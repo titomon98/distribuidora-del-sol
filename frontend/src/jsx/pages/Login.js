@@ -63,7 +63,7 @@ function Login (props) {
 									<div className="sign-in-your">
 										<div className="text-center mb-3">
 											<h4 className="fs-20 font-w800 text-black">Iniciar sesión</h4>
-											<span className="dlab-sign-up">Distribuidora del Sol</span>
+											<span className="text-muted">Distribuidora del Sol</span>
 										</div>
 										{props.errorMessage && (
 											<div className='bg-red-300 text-red-900 border border-red-900 p-1 my-2'>
@@ -78,13 +78,13 @@ function Login (props) {
 										<form onSubmit={onLogin}>
 											<div className="mb-3">
 												<label className="mb-1"><strong>Usuario o correo</strong></label>
-												<input type="text" className="form-control" placeholder="Ingresa tu usuario o correo"
+												<input type="text" className="form-control" placeholder="Ingrese su usuario o correo"
 													value={email} onChange={(e) => setEmail(e.target.value)} />
 												{errors.email && <div className="text-danger fs-12">{errors.email}</div>}
 											</div>
 											<div className="mb-3">
 												<label className="mb-1"><strong>Contraseña</strong></label>
-												<input type="password" className="form-control" placeholder="Ingresa tu contraseña"
+												<input type="password" className="form-control" placeholder="Ingrese su contraseña"
 													value={password} onChange={(e) => setPassword(e.target.value)} />
 													{errors.password && <div className="text-danger fs-12">{errors.password}</div>}
 											</div>

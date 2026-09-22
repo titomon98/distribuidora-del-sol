@@ -20,7 +20,7 @@ const MiCuenta = () => {
 		setGuardando(true);
 		try {
 			await axiosInstance.patch("/usuarios/me/password", { actual, nueva });
-			swal("Listo", "Tu contraseña se actualizó.", "success");
+			swal("Listo", "Su contraseña se actualizó.", "success");
 			setActual(""); setNueva(""); setConfirmar("");
 		} catch (err) {
 			swal("Error", err?.response?.data?.message || "No se pudo cambiar.", "error");

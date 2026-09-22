@@ -4,6 +4,9 @@ import swal from "sweetalert";
 import { money } from "./format";
 import { imprimirRecibo } from "./recibo";
 import SearchSelect from "./SearchSelect";
+import axiosInstance from "../../../services/AxiosInstance";
+
+const labelCliente = (c) => `${c.nombre}${c.nit ? ` (${c.nit})` : ""}`;
 
 /** Tabla del carrito + resumen (cliente, método de pago, total, cobrar) + recibo. */
 const CarritoPanel = ({ carrito }) => {
@@ -13,6 +16,32 @@ const CarritoPanel = ({ carrito }) => {
 	const [clienteOpt, setClienteOpt] = useState(null);
 	// Al reiniciarse la venta (cobro) vuelve a Consumidor Final.
 	useEffect(() => { if (!clienteId) setClienteOpt(null); }, [clienteId]);
+
+	// Alta rápida de cliente desde la venta.
+	const [showCliente, setShowCliente] = useState(false);
+	const [nuevoCliente, setNuevoCliente] = useState({ nombre: "", nit: "", telefono: "" });
+	const [guardandoCliente, setGuardandoCliente] = useState(false);
+
+	const guardarCliente = async (e) => {
+		e.preventDefault();
+		if (!nuevoCliente.nombre.trim()) { swal("Falta el nombre", "El nombre es obligatorio.", "warning"); return; }
+		setGuardandoCliente(true);
+		try {
+			const payload = { nombre: nuevoCliente.nombre.trim() };
+			if (nuevoCliente.nit.trim()) payload.nit = nuevoCliente.nit.trim();
+			if (nuevoCliente.telefono.trim()) payload.telefono = nuevoCliente.telefono.trim();
+			const { data } = await axiosInstance.post("/clientes", payload);
+			const opt = { value: data.id, label: labelCliente(data), raw: data };
+			setClienteOpt(opt); setClienteId(data.id); // queda seleccionado
+			setShowCliente(false);
+			setNuevoCliente({ nombre: "", nit: "", telefono: "" });
+		} catch (err) {
+			const msg = err?.response?.data?.message;
+			swal("Error", Array.isArray(msg) ? msg.join("\n") : (msg || "No se pudo guardar."), "error");
+		} finally {
+			setGuardandoCliente(false);
+		}
+	};
 
 	const sumaPagos = pagos.reduce((s, p) => s + (p.monto === "" ? 0 : Number(p.monto)), 0);
 	const hayBlanco = pagos.some((p) => p.monto === "");
@@ -35,7 +64,7 @@ const CarritoPanel = ({ carrito }) => {
 								</thead>
 								<tbody>
 									{items.length === 0 && (
-										<tr><td colSpan={5} className="text-center text-muted py-4">Agrega productos para vender.</td></tr>
+										<tr><td colSpan={5} className="text-center text-muted py-4">Agregue productos para vender.</td></tr>
 									)}
 									{items.map((it) => (
 										<tr key={it.id}>
@@ -69,10 +98,16 @@ const CarritoPanel = ({ carrito }) => {
 					<div className="card-header"><h4 className="card-title">Resumen</h4></div>
 					<div className="card-body">
 						<div className="mb-3">
-							<label className="form-label">Cliente</label>
+							<div className="d-flex justify-content-between align-items-center mb-1">
+								<label className="form-label mb-0">Cliente</label>
+								<button type="button" className="btn btn-sm btn-outline-primary py-0 px-2"
+									onClick={() => setShowCliente(true)}>
+									<i className="bi bi-plus-lg"></i> Nuevo cliente
+								</button>
+							</div>
 							<SearchSelect endpoint="clientes" value={clienteOpt}
 								placeholder="Consumidor Final (buscar cliente)"
-								getLabel={(c) => `${c.nombre}${c.nit ? ` (${c.nit})` : ""}`}
+								getLabel={labelCliente}
 								onChange={(o) => { setClienteOpt(o); setClienteId(o?.value || ""); }} />
 						</div>
 						<div className="d-flex justify-content-between mb-2"><span>Artículos</span><span>{items.length}</span></div>
@@ -129,6 +164,38 @@ const CarritoPanel = ({ carrito }) => {
 					</div>
 				</div>
 			</div>
+
+			<Modal show={showCliente} onHide={() => setShowCliente(false)} centered>
+				<form onSubmit={guardarCliente}>
+					<div className="modal-header">
+						<h5 className="modal-title">Nuevo cliente</h5>
+						<button type="button" className="btn-close" onClick={() => setShowCliente(false)}></button>
+					</div>
+					<div className="modal-body">
+						<div className="mb-3">
+							<label className="form-label">Nombre<span className="text-danger"> *</span></label>
+							<input type="text" className="form-control" autoFocus value={nuevoCliente.nombre}
+								onChange={(e) => setNuevoCliente({ ...nuevoCliente, nombre: e.target.value })} />
+						</div>
+						<div className="mb-3">
+							<label className="form-label">NIT</label>
+							<input type="text" className="form-control" value={nuevoCliente.nit}
+								onChange={(e) => setNuevoCliente({ ...nuevoCliente, nit: e.target.value })} />
+						</div>
+						<div className="mb-3">
+							<label className="form-label">Teléfono</label>
+							<input type="text" className="form-control" value={nuevoCliente.telefono}
+								onChange={(e) => setNuevoCliente({ ...nuevoCliente, telefono: e.target.value })} />
+						</div>
+					</div>
+					<div className="modal-footer">
+						<button type="button" className="btn btn-secondary" onClick={() => setShowCliente(false)}>Cancelar</button>
+						<button type="submit" className="btn btn-primary" disabled={guardandoCliente}>
+							{guardandoCliente ? "Guardando…" : "Guardar y seleccionar"}
+						</button>
+					</div>
+				</form>
+			</Modal>
 
 			<Modal show={!!recibo} onHide={() => setRecibo(null)} centered>
 				<div className="modal-header">

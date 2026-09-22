@@ -16,7 +16,7 @@ const ComprasRegistrar = () => {
 
 	const agregarItem = () => {
 		if (!prodOpt || !cantidad || !costo) {
-			swal("Faltan datos", "Elige producto, cantidad y costo.", "warning"); return;
+			swal("Faltan datos", "Elija producto, cantidad y costo.", "warning"); return;
 		}
 		setItems([...items, {
 			productoId: prodOpt.value, nombre: prodOpt.label,
@@ -28,9 +28,9 @@ const ComprasRegistrar = () => {
 	const total = items.reduce((s, it) => s + it.cantidad * it.costoUnitario, 0);
 
 	const registrar = async () => {
-		if (!proveedorOpt) { swal("Falta proveedor", "Selecciona un proveedor.", "warning"); return; }
-		if (items.length === 0) { swal("Sin productos", "Agrega al menos un producto.", "warning"); return; }
-		const pagado = montoPagado === "" ? total : Number(montoPagado);
+		if (!proveedorOpt) { swal("Falta proveedor", "Seleccione un proveedor.", "warning"); return; }
+		if (items.length === 0) { swal("Sin productos", "Agregue al menos un producto.", "warning"); return; }
+		const pagado = montoPagado === "" ? 0 : Number(montoPagado);
 		setSaving(true);
 		try {
 			await axiosInstance.post("/compras", {
@@ -115,20 +115,21 @@ const ComprasRegistrar = () => {
 						<div className="col-md-4 mb-2">
 							<label className="form-label">Pago inmediato (Q)</label>
 							<input type="number" step="0.01" className="form-control"
-								placeholder={total.toFixed(2)} value={montoPagado}
+								placeholder="0" value={montoPagado}
 								onChange={(e) => setMontoPagado(e.target.value)} />
-							<small className="text-muted">Vacío = pagar todo ({money(total)}).</small>
 						</div>
 						<div className="col-md-4 mb-2">
 							<div className="alert alert-info py-2 mb-0">
-								A crédito: <strong>{money(Math.max(total - (montoPagado === "" ? total : Number(montoPagado)), 0))}</strong>
+								A crédito: <strong>{money(Math.max(total - (montoPagado === "" ? 0 : Number(montoPagado)), 0))}</strong>
 							</div>
 						</div>
 					</div>
 				)}
-				<button className="btn btn-primary mt-2" disabled={saving} onClick={registrar}>
-					{saving ? "Registrando…" : "Registrar compra"}
-				</button>
+				{items.length > 0 && (
+					<button className="btn btn-primary mt-2" disabled={saving} onClick={registrar}>
+						{saving ? "Registrando…" : "Registrar compra"}
+					</button>
+				)}
 			</div>
 		</div>
 	);

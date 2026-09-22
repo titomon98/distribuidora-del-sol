@@ -1,7 +1,7 @@
 import * as XLSX from "xlsx";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-import logo from "../../../images/logo-full.png"; // <10KB -> CRA lo inlina como data URL
+import logo from "../../../images/logo-full.jpeg"; // logo oficial del cliente (>10KB, no se inlina)
 
 /** Exporta una tabla (headers + filas) a un archivo .xlsx. */
 export function exportarExcel(nombre, headers, filas) {
@@ -11,17 +11,29 @@ export function exportarExcel(nombre, headers, filas) {
 	XLSX.writeFile(wb, `${nombre}.xlsx`);
 }
 
-/** Exporta una tabla a un archivo .pdf con título y encabezado. */
-export function exportarPdf(nombre, titulo, headers, filas) {
+// Carga el logo una sola vez como HTMLImageElement (jsPDF lo dibuja directo).
+let logoImg;
+function cargarLogo() {
+	if (logoImg) return Promise.resolve(logoImg);
+	return new Promise((resolve) => {
+		const img = new Image();
+		img.onload = () => { logoImg = img; resolve(img); };
+		img.onerror = () => resolve(null);
+		img.src = logo;
+	});
+}
+
+/** Exporta una tabla a un archivo .pdf con título y encabezado (logo del cliente). */
+export async function exportarPdf(nombre, titulo, headers, filas) {
 	const doc = new jsPDF();
-	// Encabezado: logo (204x45) en la esquina superior izquierda.
-	doc.addImage(logo, "PNG", 14, 10, 40, 40 * 45 / 204);
+	const img = await cargarLogo();
+	if (img) doc.addImage(img, "JPEG", 14, 8, 22, 22); // logo cuadrado, esquina superior izquierda
 	doc.setFontSize(14);
-	doc.text(titulo, 14, 34);
+	doc.text(titulo, 40, 22);
 	autoTable(doc, {
 		head: [headers],
 		body: filas,
-		startY: 40,
+		startY: 36,
 		styles: { fontSize: 8 },
 		headStyles: { fillColor: [209, 143, 44] }, // Egg Yellow
 	});

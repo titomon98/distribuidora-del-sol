@@ -129,10 +129,11 @@ const SideBar = () => {
                               <span className="nav-text">{data.title}</span>
                           </NavLink>
                         }
-                        <Collapse in={state.active === data.title ? true :false}>
+                        {data.content && data.content.length > 0 &&
+                      <Collapse in={state.active === data.title ? true :false}>
                           <ul className={`${menuClass === "mm-collapse" ? "mm-show" : ""}`}>
-                            {data.content && data.content.map((data,index) => {									
-                              return(	
+                            {data.content && data.content.map((data,index) => {
+                              return(
                                 <>
                                   <li key={index}
                                     className={`${ state.activeSubmenu === data.title ? "mm-active" : ""}`}                                    
@@ -149,10 +150,11 @@ const SideBar = () => {
                                         {data.title}
                                       </Link>
                                     }
+                                    {data.content && data.content.length > 0 &&
                                     <Collapse in={state.activeSubmenu === data.title ? true :false}>
                                       <ul className={`${menuClass === "mm-collapse" ? "mm-show" : ""}`}>
                                         {data.content && data.content.map((data,index) => {
-                                          return(	
+                                          return(
                                             <>
                                               <li key={index}>
                                                 <Link className={`${path === data.to ? "mm-active" : ""}`} to={data.to}>{data.title}</Link>
@@ -162,13 +164,15 @@ const SideBar = () => {
                                         })}
                                       </ul>
                                     </Collapse>
+                                    }
                                   </li>
                                 </>
                               )
                             })}
                           </ul>
                         </Collapse>
-                      </li>	
+                        }
+                      </li>
                     )
                 }
               })}
