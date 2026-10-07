@@ -91,7 +91,7 @@ export const MenuList = [
         title: 'Cierre de caja',
         iconStyle: "bi bi-journal-check",
         to: 'cierre-caja',
-        roles: ['ADMINISTRADOR'],
+        roles: ['ADMINISTRADOR', 'CAJERO'],
     },
     {
         title: 'Usuarios',
